@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "443172052173",
+    "firebase_url": "https://scoach-9919c.firebaseio.com",
+    "project_id": "scoach-9919c",
+    "storage_bucket": "scoach-9919c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443172052173:android:8114f561641765ae645d84",
+        "android_client_info": {
+          "package_name": "com.mertguven.scoach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443172052173-gedij719edolkrefd41486ivms5fsatd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mertguven.scoach",
+            "certificate_hash": "289f0b469fdfd1871fbadaa943acbdb8a3c4e1bc"
+          }
+        },
+        {
+          "client_id": "443172052173-a8bdk7vbljhulgne0j616ku3lpjndc5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBguy1T5SBK93iPucv80hcZUnZxs22HoIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443172052173-a8bdk7vbljhulgne0j616ku3lpjndc5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
