@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:scoach/screens/home_page.dart';
 import 'package:scoach/screens/login_page.dart';
 
-void main() => runApp(LoginApp());
+void main() => runApp(MainPage());
 FirebaseUser _user;
 
-class LoginApp extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     _checkUser();
@@ -16,20 +21,33 @@ class LoginApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Scoach',
         theme: ThemeData(primarySwatch: Colors.deepPurple),
-        home: LoginPage(),
+        home: LoginPage(
+          onSignIn: (user) {
+            _updateUser(user);
+          },
+        ),
       );
-    }
-    if (_user != null) {
+    } else {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Scoach',
         theme: ThemeData(primarySwatch: Colors.deepPurple),
-        home: HomePage(),
+        home: HomePage(
+          onSignOut: () {
+            _updateUser(null);
+          },
+        ),
       );
     }
   }
-}
 
-Future<void> _checkUser() async {
-  _user = await FirebaseAuth.instance.currentUser();
+  Future<void> _checkUser() async {
+    _user = await FirebaseAuth.instance.currentUser();
+  }
+
+  void _updateUser(FirebaseUser user) {
+    setState(() {
+      _user = user;
+    });
+  }
 }

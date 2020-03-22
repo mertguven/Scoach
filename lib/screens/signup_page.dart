@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../design_settings.dart';
 
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool _beniHatirla = false;
   Widget _beniHatirlaCB() {
     return Container(
@@ -26,7 +26,7 @@ class _SignInPageState extends State<SignInPage> {
           ),
           Text(
             'Beni hatırla',
-            style: kLabelStyle,
+            style: mLabelStyle,
           )
         ],
       ),
@@ -35,7 +35,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _kAdiBox() {
     return Container(
-      decoration: kBoxDecorationStyle,
+      decoration: mBoxDecorationStyle,
       height: 60,
       child: TextField(
         keyboardType: TextInputType.text,
@@ -48,14 +48,14 @@ class _SignInPageState extends State<SignInPage> {
               color: Colors.white,
             ),
             hintText: 'Kullanıcı Adı',
-            hintStyle: kHintTextStyle),
+            hintStyle: mHintTextStyle),
       ),
     );
   }
 
   Widget _sifreBox() {
     return Container(
-      decoration: kBoxDecorationStyle,
+      decoration: mBoxDecorationStyle,
       height: 60,
       child: TextField(
         obscureText: true,
@@ -69,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
               color: Colors.white,
             ),
             hintText: 'Şifre',
-            hintStyle: kHintTextStyle),
+            hintStyle: mHintTextStyle),
       ),
     );
   }
