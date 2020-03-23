@@ -25,6 +25,9 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+      body: Container(
+        child: Text("güncelleme deneme"),
+      ),
     );
   }
 }

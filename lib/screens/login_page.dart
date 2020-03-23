@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoach/screens/signup_page.dart';
 
 import '../design_settings.dart';
 
@@ -14,12 +16,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _beniHatirla = false;
-
-    Widget _kAdiBox() {
+    Widget _eMailBox() {
       return Container(
         decoration: mBoxDecorationStyle,
         height: 60,
+        margin: EdgeInsets.symmetric(horizontal: 40),
         child: TextField(
           keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
@@ -27,10 +28,10 @@ class LoginPage extends StatelessWidget {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(vertical: 20),
               prefixIcon: Icon(
-                Icons.person,
+                Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Kullanıcı Adı',
+              hintText: 'E-posta',
               hintStyle: mHintTextStyle),
         ),
       );
@@ -40,6 +41,7 @@ class LoginPage extends StatelessWidget {
       return Container(
         decoration: mBoxDecorationStyle,
         height: 60,
+        margin: EdgeInsets.symmetric(horizontal: 40),
         child: TextField(
           obscureText: true,
           keyboardType: TextInputType.text,
@@ -59,19 +61,20 @@ class LoginPage extends StatelessWidget {
 
     Widget _loginBtn() {
       return Container(
-        padding: EdgeInsets.symmetric(vertical: 40.0),
+        margin: EdgeInsets.symmetric(horizontal: 50),
+        padding: EdgeInsets.only(top: 40),
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
           padding: EdgeInsets.all(15),
-          color: Color(0xFF0277BD),
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
           child: Text(
             "Giriş",
             style: TextStyle(
-                color: Colors.white,
+                color: Color(0xFF0277BD),
                 letterSpacing: 2,
                 fontSize: 17,
                 fontFamily: 'OpenSans',
@@ -84,25 +87,56 @@ class LoginPage extends StatelessWidget {
 
     Widget _anonimBtn() {
       return Container(
+        margin: EdgeInsets.symmetric(horizontal: 90),
         padding: EdgeInsets.symmetric(vertical: 10.0),
         width: double.infinity,
-        child: RaisedButton(
-          elevation: 5.0,
-          padding: EdgeInsets.all(15),
-          color: Color(0xFF0277BD),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+        child: RaisedButton.icon(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          elevation: 5,
+          color: Colors.white,
+          onPressed: _misafirGirisi,
+          icon: Icon(
+            Icons.android,
+            color: Color(0xFF0277BD),
           ),
-          child: Text(
-            "Anonim olarak giriş yap",
+          label: Text(
+            "Anonim Giriş Yap",
             style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 2,
-                fontSize: 17,
+                color: Color(0xFF0277BD),
+                letterSpacing: 1,
+                fontSize: 15,
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold),
           ),
-          onPressed: _misafirGirisi,
+        ),
+      );
+    }
+
+    Widget _kayitOlText() {
+      return Center(
+        child: FlatButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignUpPage(),
+              ),
+            );
+          },
+          splashColor: Colors.transparent,
+          child: Text.rich(
+            TextSpan(
+                text: "Hesabınız yok mu? ",
+                children: [
+                  TextSpan(
+                    text: "Kayıt Ol!",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                  ),
+                ],
+                style: mHintTextStyle),
+          ),
         ),
       );
     }
@@ -136,7 +170,7 @@ class LoginPage extends StatelessWidget {
               height: double.infinity,
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 40),
+                padding: EdgeInsets.symmetric(vertical: 75),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -149,12 +183,12 @@ class LoginPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(height: 10),
-                        _kAdiBox(),
+                        _eMailBox(),
                         SizedBox(height: 20),
                         _sifreBox(),
-                        SizedBox(height: 10),
                         _loginBtn(),
                         _anonimBtn(),
+                        _kayitOlText(),
                       ],
                     ),
                   ],
