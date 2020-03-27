@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoach/screens/signup_page.dart';
@@ -6,14 +5,6 @@ import 'package:scoach/screens/signup_page.dart';
 import '../design_settings.dart';
 
 class LoginPage extends StatelessWidget {
-  final Function(FirebaseUser) onSignIn;
-
-  const LoginPage({Key key, @required this.onSignIn}) : super(key: key);
-  void _misafirGirisi() async {
-    AuthResult sonuc = await FirebaseAuth.instance.signInAnonymously();
-    onSignIn(sonuc.user);
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget _eMailBox() {
@@ -80,7 +71,9 @@ class LoginPage extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold),
           ),
-          onPressed: () {},
+          onPressed: () {
+            //Navigator.push(context, MaterialPageRoute(builder: (context)=> SplashPage()));
+          },
         ),
       );
     }
@@ -95,7 +88,7 @@ class LoginPage extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           elevation: 5,
           color: Colors.white,
-          onPressed: _misafirGirisi,
+          onPressed: () {},
           icon: Icon(
             Icons.android,
             color: Color(0xFF0277BD),

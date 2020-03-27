@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../design_settings.dart';
@@ -8,6 +9,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Widget _tamAdBox() {
     return Container(
       decoration: mBoxDecorationStyle,
@@ -74,6 +77,8 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _kayitOlBtn() {
+    String mail = _eMailBox().toString();
+    String sifre = _sifreBox().toString();
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 50),
       padding: EdgeInsets.only(top: 40),
@@ -94,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: _firebaseKayitOl,
       ),
     );
   }
@@ -184,5 +189,15 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  void _firebaseKayitOl() async {
+    String mail = "mertguven789@gmail.com";
+    String sifre = "123456";
+    var firebaseUser = await _auth
+        .createUserWithEmailAndPassword(email: mail, password: sifre)
+        .catchError((e) {
+      debugPrint("Hata: ${e}");
+    });
   }
 }

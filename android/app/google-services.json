@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "443172052173",
-    "firebase_url": "https://scoach-9919c.firebaseio.com",
-    "project_id": "scoach-9919c",
-    "storage_bucket": "scoach-9919c.appspot.com"
+    "project_number": "29308191291",
+    "firebase_url": "https://scoach-bc78f.firebaseio.com",
+    "project_id": "scoach-bc78f",
+    "storage_bucket": "scoach-bc78f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443172052173:android:8114f561641765ae645d84",
+        "mobilesdk_app_id": "1:29308191291:android:0783e204488a7884b6921e",
         "android_client_info": {
           "package_name": "com.mertguven.scoach"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443172052173-gedij719edolkrefd41486ivms5fsatd.apps.googleusercontent.com",
+          "client_id": "29308191291-0ssvfon4t4kgjlf5ilq3a5rufugsh98d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mertguven.scoach",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "443172052173-a8bdk7vbljhulgne0j616ku3lpjndc5h.apps.googleusercontent.com",
+          "client_id": "29308191291-cn52saajfm10l3b2q9ans4d23tdvqu8d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBguy1T5SBK93iPucv80hcZUnZxs22HoIY"
+          "current_key": "AIzaSyBjshVYUj9YDh_f3oXWnKe397DuuQmZ2aI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "443172052173-a8bdk7vbljhulgne0j616ku3lpjndc5h.apps.googleusercontent.com",
+              "client_id": "29308191291-cn52saajfm10l3b2q9ans4d23tdvqu8d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
