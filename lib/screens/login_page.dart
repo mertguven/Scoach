@@ -1,12 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scoach/model/user_model.dart';
 import 'package:scoach/screens/signup_page.dart';
+import 'package:scoach/view_model/user_model.dart';
 
 import '../design_settings.dart';
 
 class LoginPage extends StatelessWidget {
+  void _googleIleGiris(BuildContext context) async {
+    final _userModel = Provider.of<UserModel>(context);
+    User _user = await _userModel.signInWithGoogle();
+    if (_user != null) print("Oturum açan user id:" + _user.userID.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    //final _userModel = Provider.of<UserModel>(context);
+
     Widget _eMailBox() {
       return Container(
         decoration: mBoxDecorationStyle,
@@ -78,30 +89,32 @@ class LoginPage extends StatelessWidget {
       );
     }
 
-    Widget _anonimBtn() {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 90),
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        width: double.infinity,
-        child: RaisedButton.icon(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-          elevation: 5,
-          color: Colors.white,
-          onPressed: () {},
-          icon: Icon(
-            Icons.android,
-            color: Color(0xFF0277BD),
-          ),
-          label: Text(
-            "Anonim Giriş Yap",
-            style: TextStyle(
-                color: Color(0xFF0277BD),
-                letterSpacing: 1,
-                fontSize: 15,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold),
-          ),
+    Widget _googleBtn() {
+      return GestureDetector(
+        onTap: () => _googleIleGiris(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/google.jpg'),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -110,12 +123,8 @@ class LoginPage extends StatelessWidget {
       return Center(
         child: FlatButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SignUpPage(),
-              ),
-            );
+            Navigator.of(context)
+                .push(CupertinoPageRoute(builder: (context) => SignUpPage()));
           },
           splashColor: Colors.transparent,
           child: Text.rich(
@@ -180,7 +189,17 @@ class LoginPage extends StatelessWidget {
                         SizedBox(height: 20),
                         _sifreBox(),
                         _loginBtn(),
-                        _anonimBtn(),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "~veya~",
+                              style: mHintTextStyle,
+                            )
+                          ],
+                        ),
+                        _googleBtn(),
                         _kayitOlText(),
                       ],
                     ),

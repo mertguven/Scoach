@@ -1,62 +1,25 @@
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:provider/provider.dart';
+import 'package:scoach/screens/home_page.dart';
+import 'package:scoach/screens/login_page.dart';
+import 'package:scoach/view_model/user_model.dart';
 
-class SplashPage extends StatefulWidget {
-  @override
-  _SplashPageState createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 3), () {
-      debugPrint("splash durdu");
-    });
-  }
-
+class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Opacity(
-                opacity: 0.5,
-                child: Image.asset('assets/images/bg.png'),
-              ),
-              Shimmer.fromColors(
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "Scoach",
-                    style: TextStyle(
-                      fontSize: 90,
-                      fontFamily: 'Pacifico',
-                      shadows: <Shadow>[
-                        Shadow(
-                          blurRadius: 18,
-                          color: Colors.black87,
-                          offset: Offset.fromDirection(120, 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                baseColor: Color(0xFF0288D1),
-                highlightColor: Color(0xFF4FC3F7),
-              ),
-            ],
-          ),
+    final _userModel = Provider.of<UserModel>(context);
+    if (_userModel.state == ViewState.Idle) {
+      if (_userModel.user == null) {
+        return LoginPage();
+      } else {
+        return HomePage(user: _userModel.user);
+      }
+    } else {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
-      ),
-    );
+      );
+    }
   }
 }

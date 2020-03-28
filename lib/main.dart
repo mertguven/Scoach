@@ -1,22 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scoach/screens/login_page.dart';
+import 'package:provider/provider.dart';
+import 'package:scoach/locator.dart';
+import 'package:scoach/screens/splash_page.dart';
+import 'package:scoach/view_model/user_model.dart';
 
-void main() => runApp(MainPage());
-
-class MainPage extends StatefulWidget {
-  @override
-  _MainPageState createState() => _MainPageState();
+void main() {
+  setupLocator();
+  runApp(MainPage());
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Scoach',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
+      home: ChangeNotifierProvider(
+          create: (context) => UserModel(), child: SplashPage()),
     );
   }
 }
