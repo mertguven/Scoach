@@ -16,7 +16,7 @@ class FirebaseAuthService implements AuthBase {
     GoogleSignIn _googleSignIn = GoogleSignIn();
     GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
 
-    if (_googleUser == null) {
+    if (_googleUser != null) {
       GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
       if (_googleAuth.idToken != null && _googleAuth.accessToken != null) {
         AuthResult sonuc = await _firebaseAuth.signInWithCredential(
@@ -36,6 +36,8 @@ class FirebaseAuthService implements AuthBase {
   @override
   Future<bool> signOut() async {
     try {
+      final _googleSignIn = GoogleSignIn();
+      await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
       return true;
     } catch (e) {
@@ -50,7 +52,7 @@ class FirebaseAuthService implements AuthBase {
       FirebaseUser user = await _firebaseAuth.currentUser();
       return _userFromFirebase(user);
     } catch (e) {
-      debugPrint("CurrenUser hata: " + e);
+      print("HATA CURRENT USER" + e.toString());
       return null;
     }
   }

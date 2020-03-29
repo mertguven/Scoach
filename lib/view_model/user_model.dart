@@ -66,7 +66,7 @@ class UserModel with ChangeNotifier implements AuthBase {
       return sonuc;
     } catch (e) {
       debugPrint("View modeldeki signOut hata: " + e.toString());
-      return null;
+      return false;
     } finally {
       state = ViewState.Idle;
     }

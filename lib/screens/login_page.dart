@@ -90,32 +90,22 @@ class LoginPage extends StatelessWidget {
     }
 
     Widget _googleBtn() {
-      return GestureDetector(
-        onTap: () => _googleIleGiris(context),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              height: 50,
-              width: 50,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FlatButton(
+            onPressed: () => _googleIleGiris(context),
+            child: Container(
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/google.jpg'),
-                ),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 6,
-                  ),
-                ],
+                  borderRadius: BorderRadius.circular(25), color: Colors.white),
+              child: Image(
+                image: AssetImage('assets/images/google.png'),
+                width: 40,
+                height: 40,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
@@ -189,7 +179,7 @@ class LoginPage extends StatelessWidget {
                         SizedBox(height: 20),
                         _sifreBox(),
                         _loginBtn(),
-                        SizedBox(height: 10),
+                        SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -199,6 +189,7 @@ class LoginPage extends StatelessWidget {
                             )
                           ],
                         ),
+                        SizedBox(height: 8),
                         _googleBtn(),
                         _kayitOlText(),
                       ],

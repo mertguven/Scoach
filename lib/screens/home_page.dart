@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<void> _cikisYap(BuildContext context) async {
+  Future<bool> _cikisYap(BuildContext context) async {
     final _userModel = Provider.of<UserModel>(context);
     bool sonuc = await _userModel.signOut();
     return sonuc;

@@ -7,7 +7,7 @@ class UserRepository implements AuthBase {
   FirebaseAuthService _firebaseAuthService = locator<FirebaseAuthService>();
   @override
   Future<User> currentUser() async {
-    return _firebaseAuthService.currentUser();
+    return await _firebaseAuthService.currentUser();
   }
 
   @override
@@ -18,11 +18,11 @@ class UserRepository implements AuthBase {
 
   @override
   Future<User> signInWithGoogle() async {
-    return _firebaseAuthService.signInWithGoogle();
+    return await _firebaseAuthService.signInWithGoogle();
   }
 
   @override
   Future<bool> signOut() async {
-    return _firebaseAuthService.signOut();
+    return await _firebaseAuthService.signOut();
   }
 }
