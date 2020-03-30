@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,28 +15,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _page = 0;
+  final StreamController<int> _streamController = StreamController<int>();
+  int _page = 1;
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _userModel = Provider.of<UserModel>(context);
-    final controller = PageController(initialPage: _page);
-    final pageView = PageView(
-      controller: controller,
-      children: <Widget>[
-        HomeGraph(),
-        HomeAdd(),
-        HomeProfile(user: _userModel.user)
-      ],
-    );
     return SafeArea(
       child: Scaffold(
-        body: pageView,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              StreamBuilder<int>(
+                initialData: _page,
+                stream: _streamController.stream,
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  if (_page == 0) {
+                    return HomeGraph();
+                  } else if (_page == 1) {
+                    return HomeAdd();
+                  } else {
+                    return HomeProfile(user: _userModel.user);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
         bottomNavigationBar: CurvedNavigationBar(
+          index: 1,
           onTap: (index) {
-            setState(() {
-              _page = index;
-              debugPrint('page index: ' + _page.toString());
-            });
+            if (index == 0) {
+              _streamController.sink.add(_page = 0);
+            } else if (index == 1) {
+              _streamController.sink.add(_page = 1);
+            } else {
+              _streamController.sink.add(_page = 2);
+            }
           },
           animationCurve: Curves.easeInOutQuart,
           height: 50,
