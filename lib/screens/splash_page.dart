@@ -12,7 +12,7 @@ class SplashPage extends StatelessWidget {
       if (_userModel.user == null) {
         return LoginPage();
       } else {
-        return HomePage(user: _userModel.user);
+        return HomePage();
       }
     } else {
       return Scaffold(
