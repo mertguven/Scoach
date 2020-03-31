@@ -13,14 +13,12 @@ void main() {
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Scoach',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: ChangeNotifierProvider(
-          create: (context) => UserModel(), child: SplashPage()),
+    return ChangeNotifierProvider(
+      create: (context) => UserModel(),
+      child: MaterialApp(
+          title: 'Scoach',
+          debugShowCheckedModeBanner: false,
+          home: SplashPage()),
     );
   }
 }

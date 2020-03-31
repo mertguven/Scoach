@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scoach/model/user_model.dart';
+import 'package:scoach/view_model/user_model.dart';
 
 import '../design_settings.dart';
 
@@ -8,24 +12,43 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  String _email, _sifre;
+  double opcty = 0;
+
+  final _formKey = GlobalKey<FormState>();
+
+  _formSubmit() async {
+    _formKey.currentState.save();
+    debugPrint("eposta: ${_email} sifre:${_sifre}");
+    final _userModel = Provider.of<UserModel>(context);
+    User _olusturulanUser =
+        await _userModel.createUserWithEmailandPassword(_email, _sifre);
+    if (_olusturulanUser != null) {
+      await _userModel.signOut();
+      opcty = opcty + 1;
+      print("Oturum açan user id:" + _olusturulanUser.userID.toString());
+    } else {}
+  }
+
   Widget _tamAdBox() {
     return Container(
       decoration: mBoxDecorationStyle,
       height: 60,
       margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextField(
-        obscureText: true,
-        keyboardType: TextInputType.text,
+      child: TextFormField(
+        autofocus: false,
+        keyboardType: TextInputType.emailAddress,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 20),
-            prefixIcon: Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            hintText: 'Ad Soyad',
-            hintStyle: mHintTextStyle),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 20),
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.white,
+          ),
+          hintText: 'Tam Ad',
+          hintStyle: mHintTextStyle,
+        ),
       ),
     );
   }
@@ -35,10 +58,11 @@ class _SignUpPageState extends State<SignUpPage> {
       decoration: mBoxDecorationStyle,
       height: 60,
       margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextField(
-        keyboardType: TextInputType.text,
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
+      child: TextFormField(
+          autofocus: false,
+          keyboardType: TextInputType.emailAddress,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 20),
             prefixIcon: Icon(
@@ -46,8 +70,11 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             hintText: 'E-posta',
-            hintStyle: mHintTextStyle),
-      ),
+            hintStyle: mHintTextStyle,
+          ),
+          onSaved: (String girilenMail) {
+            _email = girilenMail;
+          }),
     );
   }
 
@@ -56,11 +83,12 @@ class _SignUpPageState extends State<SignUpPage> {
       decoration: mBoxDecorationStyle,
       height: 60,
       margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextField(
-        obscureText: true,
-        keyboardType: TextInputType.text,
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
+      child: TextFormField(
+          obscureText: true,
+          autofocus: false,
+          keyboardType: TextInputType.emailAddress,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 20),
             prefixIcon: Icon(
@@ -68,8 +96,11 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             hintText: 'Şifre',
-            hintStyle: mHintTextStyle),
-      ),
+            hintStyle: mHintTextStyle,
+          ),
+          onSaved: (String girilenSifre) {
+            _sifre = girilenSifre;
+          }),
     );
   }
 
@@ -94,7 +125,10 @@ class _SignUpPageState extends State<SignUpPage> {
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
+        onPressed: () {
+          _formSubmit();
+          setState(() {});
+        },
       ),
     );
   }
@@ -167,13 +201,53 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: <Widget>[
                         _tamAdBox(),
                         SizedBox(height: 20),
-                        _eMailBox(),
-                        SizedBox(height: 20),
-                        _sifreBox(),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              _eMailBox(),
+                              SizedBox(height: 20),
+                              _sifreBox(),
+                            ],
+                          ),
+                        ),
                         _kayitOlBtn(),
                         SizedBox(height: 10),
                         _girisYapText(),
-                        //_loginBtn(),
+                        SizedBox(height: 20),
+                        Opacity(
+                          opacity: opcty,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 6.0,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                                color: Colors.lightGreen,
+                                borderRadius: BorderRadius.circular(30)),
+                            margin: EdgeInsets.symmetric(horizontal: 110),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.done,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    "Kayıt Başarılı!",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ],

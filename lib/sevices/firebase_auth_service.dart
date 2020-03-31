@@ -6,10 +6,6 @@ import 'package:scoach/sevices/auth_base.dart';
 
 class FirebaseAuthService implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  @override
-  Future<User> emailAndPassSignIn() {
-    return null;
-  }
 
   @override
   Future<User> signInWithGoogle() async {
@@ -60,5 +56,30 @@ class FirebaseAuthService implements AuthBase {
   User _userFromFirebase(FirebaseUser user) {
     if (user == null) return null;
     return User(userID: user.uid);
+  }
+
+  @override
+  Future<User> createUserWithEmailandPassword(
+      String email, String sifre) async {
+    try {
+      AuthResult sonuc = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: sifre);
+      return _userFromFirebase(sonuc.user);
+    } catch (e) {
+      print("kayıt olma hata: " + e.toString());
+      return null;
+    }
+  }
+
+  @override
+  Future<User> signInWithEmailandPassword(String email, String sifre) async {
+    try {
+      AuthResult sonuc = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: sifre);
+      return _userFromFirebase(sonuc.user);
+    } catch (e) {
+      print("Email and sifre giris hata:" + e.toString());
+      return null;
+    }
   }
 }

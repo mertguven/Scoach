@@ -7,11 +7,30 @@ import 'package:scoach/view_model/user_model.dart';
 
 import '../design_settings.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _email, _sifre;
+
+  final _formKey = GlobalKey<FormState>();
+
   void _googleIleGiris(BuildContext context) async {
     final _userModel = Provider.of<UserModel>(context);
     User _user = await _userModel.signInWithGoogle();
     if (_user != null) print("Oturum açan user id:" + _user.userID.toString());
+  }
+
+  _formSubmit() async {
+    _formKey.currentState.save();
+    debugPrint("eposta: ${_email} sifre:${_sifre}");
+    final _userModel = Provider.of<UserModel>(context);
+    User _girisYapanUser =
+        await _userModel.signInWithEmailandPassword(_email, _sifre);
+    if (_girisYapanUser != null)
+      print("Oturum açan user id:" + _girisYapanUser.userID.toString());
   }
 
   @override
@@ -23,18 +42,23 @@ class LoginPage extends StatelessWidget {
         decoration: mBoxDecorationStyle,
         height: 60,
         margin: EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          keyboardType: TextInputType.text,
+        child: TextFormField(
+          autofocus: false,
+          keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 20),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'E-posta',
-              hintStyle: mHintTextStyle),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 20),
+            prefixIcon: Icon(
+              Icons.email,
+              color: Colors.white,
+            ),
+            hintText: 'E-posta',
+            hintStyle: mHintTextStyle,
+          ),
+          onSaved: (String girilenMail) {
+            _email = girilenMail;
+          },
         ),
       );
     }
@@ -44,11 +68,12 @@ class LoginPage extends StatelessWidget {
         decoration: mBoxDecorationStyle,
         height: 60,
         margin: EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          obscureText: true,
-          keyboardType: TextInputType.text,
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
+        child: TextFormField(
+            obscureText: true,
+            autofocus: false,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(vertical: 20),
               prefixIcon: Icon(
@@ -56,8 +81,11 @@ class LoginPage extends StatelessWidget {
                 color: Colors.white,
               ),
               hintText: 'Şifre',
-              hintStyle: mHintTextStyle),
-        ),
+              hintStyle: mHintTextStyle,
+            ),
+            onSaved: (String girilenSifre) {
+              _sifre = girilenSifre;
+            }),
       );
     }
 
@@ -82,9 +110,7 @@ class LoginPage extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold),
           ),
-          onPressed: () {
-            //Navigator.push(context, MaterialPageRoute(builder: (context)=> SplashPage()));
-          },
+          onPressed: () => _formSubmit(),
         ),
       );
     }
@@ -175,9 +201,18 @@ class LoginPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(height: 10),
-                        _eMailBox(),
-                        SizedBox(height: 20),
-                        _sifreBox(),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              _eMailBox(),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              _sifreBox(),
+                            ],
+                          ),
+                        ),
                         _loginBtn(),
                         SizedBox(height: 15),
                         Row(

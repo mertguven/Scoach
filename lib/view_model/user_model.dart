@@ -39,11 +39,6 @@ class UserModel with ChangeNotifier implements AuthBase {
   }
 
   @override
-  Future<User> emailAndPassSignIn() {
-    return null;
-  }
-
-  @override
   Future<User> signInWithGoogle() async {
     try {
       state = ViewState.Busy;
@@ -67,6 +62,37 @@ class UserModel with ChangeNotifier implements AuthBase {
     } catch (e) {
       debugPrint("View modeldeki signOut hata: " + e.toString());
       return false;
+    } finally {
+      state = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<User> createUserWithEmailandPassword(
+      String email, String sifre) async {
+    try {
+      state = ViewState.Busy;
+      _user =
+          await _userRepository.createUserWithEmailandPassword(email, sifre);
+      return _user;
+    } catch (e) {
+      debugPrint("View modeldeki createUser hata: " + e.toString());
+      return null;
+    } finally {
+      state = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<User> signInWithEmailandPassword(String email, String sifre) async {
+    try {
+      state = ViewState.Busy;
+      _user = await _userRepository.signInWithEmailandPassword(email, sifre);
+      return _user;
+    } catch (e) {
+      debugPrint(
+          "View modeldeki signInWithEmailAndPassword hata: " + e.toString());
+      return null;
     } finally {
       state = ViewState.Idle;
     }

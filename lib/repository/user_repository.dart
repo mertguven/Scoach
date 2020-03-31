@@ -11,12 +11,6 @@ class UserRepository implements AuthBase {
   }
 
   @override
-  Future<User> emailAndPassSignIn() {
-    // TODO: implement emailAndPassSignIn
-    return null;
-  }
-
-  @override
   Future<User> signInWithGoogle() async {
     return await _firebaseAuthService.signInWithGoogle();
   }
@@ -24,5 +18,17 @@ class UserRepository implements AuthBase {
   @override
   Future<bool> signOut() async {
     return await _firebaseAuthService.signOut();
+  }
+
+  @override
+  Future<User> createUserWithEmailandPassword(
+      String email, String sifre) async {
+    return await _firebaseAuthService.createUserWithEmailandPassword(
+        email, sifre);
+  }
+
+  @override
+  Future<User> signInWithEmailandPassword(String email, String sifre) async {
+    return await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
   }
 }
