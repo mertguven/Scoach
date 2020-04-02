@@ -12,9 +12,26 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String _email, _sifre;
-  double opcty = 0;
+  /*
+  Widget _kayitBasarili() {
+    return Row(
+      children: <Widget>[
+        Icon(
+          Icons.done,
+          color: Colors.white,
+        ),
+        Text(
+          "Kayıt Başarılı!",
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    );
+  }*/
 
+  String _email, _sifre;
+  User usr;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
   _formSubmit() async {
@@ -24,10 +41,56 @@ class _SignUpPageState extends State<SignUpPage> {
     User _olusturulanUser =
         await _userModel.createUserWithEmailandPassword(_email, _sifre);
     if (_olusturulanUser != null) {
+      usr = _olusturulanUser;
+      _showSnackBar();
       await _userModel.signOut();
-      opcty = opcty + 1;
-      print("Oturum açan user id:" + _olusturulanUser.userID.toString());
-    } else {}
+    } else {
+      usr = _olusturulanUser;
+      _showSnackBar();
+    }
+  }
+
+  _showSnackBar() {
+    if (usr != null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.lightGreen,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.done,
+              color: Colors.white,
+            ),
+            Text(
+              "Kayıt Başarılı!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (usr == null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              "Eposta adresi hatalı veya kullanılmış!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 
   Widget _tamAdBox() {
@@ -160,6 +223,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
             Container(
@@ -213,41 +277,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         _kayitOlBtn(),
                         SizedBox(height: 10),
-                        _girisYapText(),
-                        SizedBox(height: 20),
-                        Opacity(
-                          opacity: opcty,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 6.0,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(30)),
-                            margin: EdgeInsets.symmetric(horizontal: 110),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.done,
-                                    color: Colors.white,
-                                  ),
-                                  Text(
-                                    "Kayıt Başarılı!",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                        _girisYapText()
                       ],
                     ),
                   ],
