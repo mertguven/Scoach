@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _formSubmit() async {
     _formKey.currentState.save();
-    debugPrint("eposta: ${_email} sifre:${_sifre}");
+    debugPrint("eposta: ${_email.toString()} sifre:${_sifre.toString()}");
     final _userModel = Provider.of<UserModel>(context);
     User _olusturulanUser =
         await _userModel.createUserWithEmailandPassword(_email, _sifre);
