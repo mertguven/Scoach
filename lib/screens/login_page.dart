@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
 import 'package:scoach/screens/signup_page.dart';
-import 'package:scoach/view_model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scoach/viewmodel/user_model.dart';
 
 import '../design_settings.dart';
 
@@ -39,29 +40,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _email, _sifre;
+  String _email = '';
+  String _sifre = '';
+  FirebaseUser user;
 
-  final _formKey = GlobalKey<FormState>();
-
-  void _googleIleGiris(BuildContext context) async {
-    final _userModel = Provider.of<UserModel>(context);
-    User _user = await _userModel.signInWithGoogle();
-    if (_user != null) print("Oturum açan user id:" + _user.userID.toString());
-  }
-
-  _formSubmit() async {
-    _formKey.currentState.save();
-    debugPrint("eposta: ${_email.toString()} sifre:${_sifre.toString()}");
-    final _userModel = Provider.of<UserModel>(context);
-    User _girisYapanUser =
-        await _userModel.signInWithEmailandPassword(_email, _sifre);
-    if (_girisYapanUser != null)
-      print("Oturum açan user id:" + _girisYapanUser.userID.toString());
-  }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    //final _userModel = Provider.of<UserModel>(context);
 
     Widget _eMailBox() {
       return Container(
@@ -82,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
             hintText: 'E-posta',
             hintStyle: mHintTextStyle,
           ),
-          onSaved: (String girilenMail) {
+          onChanged: (String girilenMail) {
             _email = girilenMail;
           },
         ),
@@ -109,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
               hintText: 'Şifre',
               hintStyle: mHintTextStyle,
             ),
-            onSaved: (String girilenSifre) {
+            onChanged: (String girilenSifre) {
               _sifre = girilenSifre;
             }),
       );
@@ -136,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold),
           ),
-          onPressed: () => _formSubmit(),
+          onPressed: () {
+            _formSubmit();
+          },
         ),
       );
     }
@@ -146,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            onPressed: () => _googleIleGiris(context),
+            onPressed: () => _googleIleGiris(),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25), color: Colors.white),
@@ -262,5 +250,16 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _formSubmit() async{
+    _formKey.currentState.save();
+    final _userModel = Provider.of<UserModel>(context,listen: false);
+    User _girisYapanUser = await _userModel.signInWithEmailandPassword(_email, _sifre);
+  }
+
+  _googleIleGiris() async{
+    final _userModel = Provider.of<UserModel>(context,listen: false);
+    User _googleIleGirisYapanUser = await _userModel.signInWithGoogle();
   }
 }

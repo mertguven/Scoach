@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:29308191291:android:0783e204488a7884b6921e",
+        "mobilesdk_app_id": "1:29308191291:android:b32864e3da67a7e6b6921e",
         "android_client_info": {
           "package_name": "com.mertguven.scoach"
         }
       },
       "oauth_client": [
         {
-          "client_id": "29308191291-0ssvfon4t4kgjlf5ilq3a5rufugsh98d.apps.googleusercontent.com",
+          "client_id": "29308191291-opq9u0ceul556904e34ciker0rgleqdn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mertguven.scoach",
-            "certificate_hash": "289f0b469fdfd1871fbadaa943acbdb8a3c4e1bc"
+            "certificate_hash": "c26f11e3e4603d63047737b118595e5d2054ce41"
           }
         },
         {

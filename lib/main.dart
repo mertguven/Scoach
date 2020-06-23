@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/locator.dart';
 import 'package:scoach/screens/splash_page.dart';
-import 'package:scoach/view_model/user_model.dart';
+import 'package:scoach/viewmodel/user_model.dart';
 
 void main() {
   setupLocator();
@@ -16,9 +16,10 @@ class MainPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserModel(),
       child: MaterialApp(
-          title: 'Scoach',
-          debugShowCheckedModeBanner: false,
-          home: SplashPage()),
+        title: 'Scoach',
+        debugShowCheckedModeBanner: false,
+        home: SplashPage(),
+      ),
     );
   }
 }

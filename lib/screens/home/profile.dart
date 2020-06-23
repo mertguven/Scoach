@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
-import 'package:scoach/view_model/user_model.dart';
+import 'package:scoach/viewmodel/user_model.dart';
 
 class HomeProfile extends StatelessWidget {
   final User user;
@@ -27,7 +27,7 @@ class HomeProfile extends StatelessWidget {
   }
 
   Future<bool> _cikisYap(BuildContext context) async {
-    final _userModel = Provider.of<UserModel>(context);
+    final _userModel = Provider.of<UserModel>(context,listen: false);
     bool sonuc = await _userModel.signOut();
     return sonuc;
   }
@@ -35,7 +35,7 @@ class HomeProfile extends StatelessWidget {
   Widget _oturumAcanUser() {
     return Container(
       child: Center(
-        child: Text('Hoşgeldiniz: ${user.userID}'),
+        child: Text('Hoşgeldiniz ${user.userMail}'),
       ),
     );
   }

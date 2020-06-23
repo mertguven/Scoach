@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
-import 'package:scoach/view_model/user_model.dart';
-
+import 'package:scoach/viewmodel/user_model.dart';
 import '../design_settings.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -12,86 +11,12 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  /*
-  Widget _kayitBasarili() {
-    return Row(
-      children: <Widget>[
-        Icon(
-          Icons.done,
-          color: Colors.white,
-        ),
-        Text(
-          "Kayıt Başarılı!",
-          style: TextStyle(color: Colors.white),
-        ),
-      ],
-    );
-  }*/
 
   String _email, _sifre;
   User usr;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-
-  _formSubmit() async {
-    _formKey.currentState.save();
-    debugPrint("eposta: ${_email.toString()} sifre:${_sifre.toString()}");
-    final _userModel = Provider.of<UserModel>(context);
-    User _olusturulanUser =
-        await _userModel.createUserWithEmailandPassword(_email, _sifre);
-    if (_olusturulanUser != null) {
-      usr = _olusturulanUser;
-      _showSnackBar();
-      await _userModel.signOut();
-    } else {
-      usr = _olusturulanUser;
-      _showSnackBar();
-    }
-  }
-
-  _showSnackBar() {
-    if (usr != null) {
-      final snackBar = SnackBar(
-        duration: Duration(seconds: 7),
-        backgroundColor: Colors.lightGreen,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.done,
-              color: Colors.white,
-            ),
-            Text(
-              "Kayıt Başarılı!",
-              style: mLabelStyle,
-            ),
-          ],
-        ),
-      );
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-    }
-    if (usr == null) {
-      final snackBar = SnackBar(
-        duration: Duration(seconds: 7),
-        backgroundColor: Colors.red,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.close,
-              color: Colors.white,
-            ),
-            Text(
-              "Eposta adresi hatalı veya kullanılmış!",
-              style: mLabelStyle,
-            ),
-          ],
-        ),
-      );
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-    }
-  }
 
   Widget _tamAdBox() {
     return Container(
@@ -117,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _eMailBox() {
+
     return Container(
       decoration: mBoxDecorationStyle,
       height: 60,
@@ -188,10 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold),
         ),
-        onPressed: () {
-          _formSubmit();
-          setState(() {});
-        },
+        onPressed: () => _formSubmit(),
       ),
     );
   }
@@ -288,5 +211,62 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  _formSubmit() async{
+    _formKey.currentState.save();
+    final _userModel = Provider.of<UserModel>(context,listen: false);
+    User _kayitOlanUser =await _userModel.createUserWithEmailandPassword(_email, _sifre);
+    if (_kayitOlanUser != null) {
+      usr = _kayitOlanUser;
+      _showSnackBar();
+      await _userModel.signOut();
+    } else {
+      usr = _kayitOlanUser;
+      _showSnackBar();
+    }
+  }
+
+  _showSnackBar() {
+    if (usr != null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.lightGreen,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.done,
+              color: Colors.white,
+            ),
+            Text(
+              "Kayıt Başarılı!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (usr == null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              "Eposta adresi hatalı veya kullanılmış!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 }

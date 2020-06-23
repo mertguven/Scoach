@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class User {
-  final String userID;
+class User{
 
-  User({@required this.userID});
+  final String userId;
+  final String userMail;
+
+  User({@required this.userId, @required this.userMail});
 }

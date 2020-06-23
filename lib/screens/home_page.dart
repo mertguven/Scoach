@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:scoach/screens/home/add.dart';
 import 'package:scoach/screens/home/graph.dart';
 import 'package:scoach/screens/home/profile.dart';
-import 'package:scoach/view_model/user_model.dart';
+import 'package:scoach/viewmodel/user_model.dart';
 
 class HomePage extends StatefulWidget {
+
   @override
   _HomePageState createState() => _HomePageState();
 }
