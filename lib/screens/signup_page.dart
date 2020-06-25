@@ -133,10 +133,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextSpan(
                   text: "Giriş Yap!",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                      fontWeight: FontWeight.bold, color: Colors.indigo),
                 ),
               ],
-              style: mHintTextStyle),
+              style: TextStyle(color: Colors.white)),
         ),
       ),
     );

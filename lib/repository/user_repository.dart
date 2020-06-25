@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:scoach/locator.dart';
 import 'package:scoach/model/user_model.dart';
 import 'package:scoach/services/auth_base.dart';
@@ -30,6 +31,11 @@ class UserRepository implements AuthBase{
   @override
   Future<User> signInWithGoogle() async{
     return await _firebaseAuthService.signInWithGoogle();
+  }
+
+  @override
+  Future<void> forgotPassword(String email) async{
+    await _firebaseAuthService.forgotPassword(email);
   }
 
 }

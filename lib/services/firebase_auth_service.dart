@@ -77,4 +77,9 @@ class FirebaseAuthService implements AuthBase{
       return null;
     }
   }
+
+  @override
+  Future<void> forgotPassword(String email) async{
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }

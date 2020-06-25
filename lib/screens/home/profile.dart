@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
@@ -13,7 +14,6 @@ class HomeProfile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        // buraya kullanıcı fotosu gelecek
         _oturumAcanUser(),
         SizedBox(height: 5),
         FlatButton(

@@ -95,4 +95,18 @@ class UserModel with ChangeNotifier implements AuthBase{
       state = ViewState.Idle;
     }
   }
+
+  @override
+  Future<bool> forgotPassword(String email) async{
+    try{
+      state = ViewState.Busy;
+      await _userRepository.forgotPassword(email);
+      return true;
+    }catch(e){
+      debugPrint("ViewModel forgotPassword hata: "+ e.toString());
+      return false;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
 }

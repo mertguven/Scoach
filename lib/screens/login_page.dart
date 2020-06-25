@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
+import 'package:scoach/screens/forgotpasword_page.dart';
 import 'package:scoach/screens/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scoach/viewmodel/user_model.dart';
@@ -40,8 +41,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _email = '';
-  String _sifre = '';
+  String _email;
+  String _sifre;
   FirebaseUser user;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -149,6 +150,18 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    Widget _sifremiUnuttumText(){
+      return Center(
+        child: FlatButton(
+          onPressed: () {
+            Navigator.push(context, SlideRightRoute(page: ForgotPasswordPage()));
+          },
+          splashColor: Colors.transparent,
+          child: Text("Şifreni mi Unuttun?",style: TextStyle(color: Colors.white),),
+        ),
+      );
+    }
+
     Widget _kayitOlText() {
       return Center(
         child: FlatButton(
@@ -163,10 +176,10 @@ class _LoginPageState extends State<LoginPage> {
                   TextSpan(
                     text: "Kayıt Ol!",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                        fontWeight: FontWeight.bold, color: Colors.indigo),
                   ),
                 ],
-                style: mHintTextStyle),
+                style: TextStyle(color: Colors.white)),
           ),
         ),
       );
@@ -227,17 +240,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         _loginBtn(),
-                        SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "~veya~",
-                              style: mHintTextStyle,
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 10),
+                        _sifremiUnuttumText(),
                         _googleBtn(),
                         _kayitOlText(),
                       ],
