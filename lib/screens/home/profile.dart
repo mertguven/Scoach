@@ -36,7 +36,7 @@ class HomeProfile extends StatelessWidget {
   Widget _oturumAcanUser() {
     return Container(
       child: Center(
-        child: Text('Hoşgeldiniz '),
+        child: Text('Hoşgeldiniz ${user.userMail}'),
       ),
     );
   }
