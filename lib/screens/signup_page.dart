@@ -12,7 +12,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
 
-  String _email, _sifre;
+  String _email, _sifre, _kullaniciAdi;
   User usr;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -31,12 +31,15 @@ class _SignUpPageState extends State<SignUpPage> {
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 20),
           prefixIcon: Icon(
-            Icons.email,
+            Icons.person,
             color: Colors.white,
           ),
-          hintText: 'Tam Ad',
+          hintText: 'Kullanıcı Adı',
           hintStyle: mHintTextStyle,
         ),
+          onSaved: (String girilenKullaniciAdi) {
+            _kullaniciAdi = girilenKullaniciAdi;
+          }
       ),
     );
   }
@@ -186,12 +189,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _tamAdBox(),
-                        SizedBox(height: 20),
                         Form(
                           key: _formKey,
                           child: Column(
                             children: <Widget>[
+                              _tamAdBox(),
+                              SizedBox(height: 20),
                               _eMailBox(),
                               SizedBox(height: 20),
                               _sifreBox(),
@@ -216,7 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
   _formSubmit() async{
     _formKey.currentState.save();
     final _userModel = Provider.of<UserModel>(context,listen: false);
-    User _kayitOlanUser =await _userModel.createUserWithEmailandPassword(_email, _sifre);
+    User _kayitOlanUser =await _userModel.createUserWithEmailandPassword(_kullaniciAdi,_email, _sifre);
     if (_kayitOlanUser != null) {
       usr = _kayitOlanUser;
       _showSnackBar();

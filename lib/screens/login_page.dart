@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scoach/model/user_model.dart';
 import 'package:scoach/screens/forgotpasword_page.dart';
 import 'package:scoach/screens/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -259,11 +258,11 @@ class _LoginPageState extends State<LoginPage> {
   _formSubmit() async{
     _formKey.currentState.save();
     final _userModel = Provider.of<UserModel>(context,listen: false);
-    User _girisYapanUser = await _userModel.signInWithEmailandPassword(_email, _sifre);
+    await _userModel.signInWithEmailandPassword(_email, _sifre);
   }
 
   _googleIleGiris() async{
     final _userModel = Provider.of<UserModel>(context,listen: false);
-    User _googleIleGirisYapanUser = await _userModel.signInWithGoogle();
+    await _userModel.signInWithGoogle();
   }
 }

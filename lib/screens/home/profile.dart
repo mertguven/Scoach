@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user_model.dart';
+import 'package:scoach/services/firestore_db_service.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 class HomeProfile extends StatelessWidget {
@@ -35,7 +36,7 @@ class HomeProfile extends StatelessWidget {
   Widget _oturumAcanUser() {
     return Container(
       child: Center(
-        child: Text('Hoşgeldiniz ${user.userMail}'),
+        child: Text('Hoşgeldiniz '),
       ),
     );
   }
