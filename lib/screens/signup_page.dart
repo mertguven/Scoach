@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 import '../design_settings.dart';
 

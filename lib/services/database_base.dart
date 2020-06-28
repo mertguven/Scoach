@@ -1,6 +1,7 @@
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 
 abstract class DBBase {
 
   Future<bool> saveUser(String kullaniciAdi,User user);
+  Future<User> readUser(User user);
 }

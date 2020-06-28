@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:scoach/locator.dart';
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/repository/user_repository.dart';
 import 'package:scoach/services/auth_base.dart';
 

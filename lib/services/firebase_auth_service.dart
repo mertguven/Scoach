@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
 
 class FirebaseAuthService implements AuthBase{

@@ -120,7 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                 letterSpacing: 2,
                 fontSize: 17,
                 fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold
+            ),
           ),
           onPressed: () {
             _formSubmit();

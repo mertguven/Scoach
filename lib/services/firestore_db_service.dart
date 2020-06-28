@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/services/database_base.dart';
 
 class FirestoreDBService implements DBBase {
@@ -16,10 +16,16 @@ class FirestoreDBService implements DBBase {
         .document(user.userId)
         .setData(_eklenecekUser);
 
+
+    return true;
+  }
+
+  @override
+  Future<User> readUser(User user) async{
     DocumentSnapshot _okunanUser = await Firestore.instance.document("users/${user.userId}").get();
     Map _okunanUserMap = _okunanUser.data;
-    User okunanUserBilgiler = User.fromMap(_okunanUserMap);
-    return true;
+    User _okunanUserBilgiler = User.fromMap(_okunanUserMap);
+    return _okunanUserBilgiler;
   }
 
 }

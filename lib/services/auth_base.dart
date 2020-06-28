@@ -1,4 +1,4 @@
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 
 abstract class AuthBase {
 

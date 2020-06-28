@@ -1,5 +1,5 @@
 import 'package:scoach/locator.dart';
-import 'package:scoach/model/user_model.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
 import 'package:scoach/services/firebase_auth_service.dart';
 import 'package:scoach/services/firestore_db_service.dart';
@@ -21,7 +21,8 @@ class UserRepository implements AuthBase{
 
   @override
   Future<User> signInWithEmailandPassword(String email, String sifre) async{
-    return await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
+    User _user = await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
+    return await _firestoreDBService.readUser(_user);
   }
 
   @override
@@ -29,7 +30,7 @@ class UserRepository implements AuthBase{
     User _user = await _firebaseAuthService.createUserWithEmailandPassword(kullaniciAdi,email, sifre);
     bool _sonuc = await _firestoreDBService.saveUser(kullaniciAdi,_user);
     if(_sonuc){
-      return _user;
+      return await _firestoreDBService.readUser(_user);
     }else{
       return null;
     }

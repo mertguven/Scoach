@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scoach/model/user_model.dart';
-import 'package:scoach/services/firestore_db_service.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 class HomeProfile extends StatelessWidget {
@@ -12,11 +11,45 @@ class HomeProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Stack(
+          overflow: Overflow.visible,
+          alignment: Alignment.center,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height /3.5,
+              decoration: BoxDecoration(
+                color: Color(0xFF0288D1),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60),bottomRight: Radius.circular(60)),
+              ),
+            ),
+            Positioned(
+              bottom: -50,
+              child: CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage("assets/images/coach.png"),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 80),
         _oturumAcanUser(),
-        SizedBox(height: 5),
+        SizedBox(height: 30),
+        FlatButton(
+          color: Color(0xFF0288D1),
+          textColor: Colors.white,
+          onPressed: () {},
+          child: Text("Şifre Değiştir"),
+        ),
+        SizedBox(height: 10),
+        FlatButton(
+          color: Color(0xFF0288D1),
+          textColor: Colors.white,
+          onPressed: () {},
+          child: Text("E-Posta Değiştir"),
+        ),
+        SizedBox(height: 10),
         FlatButton(
           color: Color(0xFF0288D1),
           textColor: Colors.white,
@@ -33,11 +66,30 @@ class HomeProfile extends StatelessWidget {
     return sonuc;
   }
 
-  Widget _oturumAcanUser() {
+  Widget _oturumAcanUser(){
     return Container(
       child: Center(
-        child: Text('Hoşgeldiniz ${user.userMail}'),
+        child: Text('Hoşgeldin ${user.userName} !',
+          style: TextStyle(
+            color: Colors.black,
+            letterSpacing: 2,
+            fontSize: 17,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
   }
 }
+
+/*
+_oturumAcanUser(),
+                    SizedBox(height: 5),
+                    FlatButton(
+                      color: Color(0xFF0288D1),
+                      textColor: Colors.white,
+                      onPressed: () => _cikisYap(context),
+                      child: Text("Çıkış Yap"),
+                    ),
+ */
