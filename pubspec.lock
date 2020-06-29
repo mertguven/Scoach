@@ -91,7 +91,7 @@ packages:
       name: curved_navigation_bar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2"
+    version: "0.3.3"
   firebase:
     dependency: transitive
     description:

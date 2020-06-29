@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Icons.person,
             color: Colors.white,
           ),
-          hintText: 'Kullanıcı Adı',
+          hintText: 'Ad - Soyad',
           hintStyle: mHintTextStyle,
         ),
           onSaved: (String girilenKullaniciAdi) {

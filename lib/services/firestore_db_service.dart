@@ -15,8 +15,6 @@ class FirestoreDBService implements DBBase {
         .collection("users")
         .document(user.userId)
         .setData(_eklenecekUser);
-
-
     return true;
   }
 

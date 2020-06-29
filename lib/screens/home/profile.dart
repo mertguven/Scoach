@@ -34,7 +34,7 @@ class HomeProfile extends StatelessWidget {
           ],
         ),
         SizedBox(height: 80),
-        _oturumAcanUser(),
+        _oturumAcanUser(context),
         SizedBox(height: 30),
         FlatButton(
           color: Color(0xFF0288D1),
@@ -66,30 +66,20 @@ class HomeProfile extends StatelessWidget {
     return sonuc;
   }
 
-  Widget _oturumAcanUser(){
+  Widget _oturumAcanUser(BuildContext context){
+    final _userModel = Provider.of<UserModel>(context);
     return Container(
       child: Center(
-        child: Text('Hoşgeldin ${user.userName} !',
+        child: Text('Hoşgeldin ${_userModel.user.userName} !',
           style: TextStyle(
-            color: Colors.black,
-            letterSpacing: 2,
-            fontSize: 17,
-            fontFamily: 'OpenSans',
-            fontWeight: FontWeight.bold
+              color: Colors.black,
+              letterSpacing: 2,
+              fontSize: 17,
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold
           ),
         ),
       ),
     );
   }
 }
-
-/*
-_oturumAcanUser(),
-                    SizedBox(height: 5),
-                    FlatButton(
-                      color: Color(0xFF0288D1),
-                      textColor: Colors.white,
-                      onPressed: () => _cikisYap(context),
-                      child: Text("Çıkış Yap"),
-                    ),
- */

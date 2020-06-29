@@ -11,7 +11,8 @@ class UserRepository implements AuthBase{
 
   @override
   Future<User> currentUser() async{
-    return await _firebaseAuthService.currentUser();
+    User _user = await _firebaseAuthService.currentUser();
+    return await _firestoreDBService.readUser(_user);
   }
 
   @override
@@ -39,9 +40,9 @@ class UserRepository implements AuthBase{
   @override
   Future<User> signInWithGoogle() async{
     User _user = await _firebaseAuthService.signInWithGoogle();
-    bool _sonuc = await _firestoreDBService.saveUser("",_user);
+    bool _sonuc = await _firestoreDBService.saveUser(_user.userMail.substring(0,_user.userMail.indexOf('@')),_user);
     if(_sonuc){
-      return _user;
+      return await _firestoreDBService.readUser(_user);
     }else{
       return null;
     }
@@ -51,5 +52,4 @@ class UserRepository implements AuthBase{
   Future<void> forgotPassword(String email) async{
     await _firebaseAuthService.forgotPassword(email);
   }
-
 }
