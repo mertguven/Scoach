@@ -156,7 +156,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   _sifreDegistir() async{
     _formKey.currentState.save();
-    if(_sifre == _sifreTekrar){
+    if(_sifre == _sifreTekrar && _sifre.length >= 6){
       final _userModel = Provider.of<UserModel>(context, listen: false);
       bool sonuc = await _userModel.changePassword(_sifre);
       if(sonuc == true){
