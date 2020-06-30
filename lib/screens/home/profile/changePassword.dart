@@ -1,74 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scoach/model/user.dart';
+import 'package:scoach/design_settings.dart';
 import 'package:scoach/viewmodel/user_model.dart';
-import '../design_settings.dart';
 
-class SignUpPage extends StatefulWidget {
+class ChangePasswordPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
-  String _email, _sifre, _kullaniciAdi;
-  User usr;
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String _sifre, _sifreTekrar;
   final _formKey = GlobalKey<FormState>();
-
-  Widget _tamAdBox() {
-    return Container(
-      decoration: mBoxDecorationStyle,
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextFormField(
-        autofocus: false,
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 20),
-          prefixIcon: Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          hintText: 'Ad - Soyad',
-          hintStyle: mHintTextStyle,
-        ),
-          onSaved: (String girilenKullaniciAdi) {
-            _kullaniciAdi = girilenKullaniciAdi;
-          }
-      ),
-    );
-  }
-
-  Widget _eMailBox() {
-
-    return Container(
-      decoration: mBoxDecorationStyle,
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextFormField(
-          autofocus: false,
-          keyboardType: TextInputType.emailAddress,
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 20),
-            prefixIcon: Icon(
-              Icons.email,
-              color: Colors.white,
-            ),
-            hintText: 'E-posta',
-            hintStyle: mHintTextStyle,
-          ),
-          onSaved: (String girilenMail) {
-            _email = girilenMail;
-          }),
-    );
-  }
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _sifreBox() {
     return Container(
@@ -78,6 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: TextFormField(
           obscureText: true,
           autofocus: false,
+          keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -89,13 +34,40 @@ class _SignUpPageState extends State<SignUpPage> {
             hintText: 'Şifre',
             hintStyle: mHintTextStyle,
           ),
-          onSaved: (String girilenSifre) {
+      onChanged: (String girilenSifre){
             _sifre = girilenSifre;
-          }),
+      }),
     );
   }
 
-  Widget _kayitOlBtn() {
+  Widget _sifreTekrarBox() {
+    return Container(
+      decoration: mBoxDecorationStyle,
+      height: 60,
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      child: TextFormField(
+          obscureText: true,
+          autofocus: false,
+          keyboardType: TextInputType.text,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 20),
+            prefixIcon: Icon(
+              Icons.keyboard_return,
+              color: Colors.white,
+            ),
+            hintText: 'Tekrar Şifre',
+            hintStyle: mHintTextStyle,
+          ),
+          onChanged: (String girilenSifre){
+            _sifreTekrar = girilenSifre;
+          }
+      ),
+    );
+  }
+
+  Widget _guncelleBtn() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 50),
       padding: EdgeInsets.only(top: 40),
@@ -108,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
           borderRadius: BorderRadius.circular(25),
         ),
         child: Text(
-          "Kayıt Ol",
+          "Şifreyi Güncelle",
           style: TextStyle(
               color: Color(0xFF0277BD),
               letterSpacing: 2,
@@ -116,30 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold),
         ),
-        onPressed: () => _formSubmit(),
-      ),
-    );
-  }
-
-  Widget _girisYapText() {
-    return Center(
-      child: FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        splashColor: Colors.transparent,
-        child: Text.rich(
-          TextSpan(
-              text: "Hesabınız var mı? ",
-              children: [
-                TextSpan(
-                  text: "Giriş Yap!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.indigo),
-                ),
-              ],
-              style: TextStyle(color: Colors.white)),
-        ),
+        onPressed: () => _sifreDegistir(),
       ),
     );
   }
@@ -149,6 +98,11 @@ class _SignUpPageState extends State<SignUpPage> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            "Şifre Değiştir",
+          ),
+        ),
         body: Stack(
           children: <Widget>[
             Container(
@@ -172,65 +126,51 @@ class _SignUpPageState extends State<SignUpPage> {
                     ]),
               ),
             ),
-            Container(
-              height: double.infinity,
+            Center(
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 75),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/images/logo.png'),
-                      width: 150,
-                      height: 150,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              _tamAdBox(),
-                              SizedBox(height: 20),
-                              _eMailBox(),
-                              SizedBox(height: 20),
-                              _sifreBox(),
-                            ],
-                          ),
-                        ),
-                        _kayitOlBtn(),
-                        SizedBox(height: 10),
-                        _girisYapText()
-                      ],
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          _sifreBox(),
+                          SizedBox(height: 20),
+                          _sifreTekrarBox(),
+                          SizedBox(height: 20),
+                          _guncelleBtn(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
 
-  _formSubmit() async{
+  _sifreDegistir() async{
     _formKey.currentState.save();
-    final _userModel = Provider.of<UserModel>(context,listen: false);
-    User _kayitOlanUser =await _userModel.createUserWithEmailandPassword(_kullaniciAdi,_email, _sifre);
-    if (_kayitOlanUser != null) {
-      usr = _kayitOlanUser;
-      _showSnackBar();
-      await _userModel.signOut();
-    } else {
-      usr = _kayitOlanUser;
-      _showSnackBar();
+    if(_sifre == _sifreTekrar){
+      final _userModel = Provider.of<UserModel>(context, listen: false);
+      bool sonuc = await _userModel.changePassword(_sifre);
+      if(sonuc == true){
+        _showSnackBar(true);
+      }else{
+        _showSnackBar(false);
+      }
+    }else{
+      _showSnackBar(false);
     }
   }
 
-  _showSnackBar() {
-    if (usr != null) {
+  _showSnackBar(bool deger) {
+    if (deger == true) {
       final snackBar = SnackBar(
         duration: Duration(seconds: 7),
         backgroundColor: Colors.lightGreen,
@@ -242,7 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             Text(
-              "Kayıt Başarılı!",
+              "Şifreniz Yenilendi!",
               style: mLabelStyle,
             ),
           ],
@@ -250,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
-    if (usr == null) {
+    if (deger == false) {
       final snackBar = SnackBar(
         duration: Duration(seconds: 7),
         backgroundColor: Colors.red,
@@ -262,7 +202,7 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             Text(
-              "Eposta adresi hatalı veya kullanılmış!",
+              "Şifreler aynı değil veya yanlış şifre kullanımı!",
               style: mLabelStyle,
             ),
           ],
@@ -271,4 +211,5 @@ class _SignUpPageState extends State<SignUpPage> {
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }
+
 }

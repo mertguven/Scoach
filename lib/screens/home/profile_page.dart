@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user.dart';
+import 'package:scoach/screens/home/profile/changeEmail.dart';
+import 'package:scoach/screens/home/profile/changePassword.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 class HomeProfile extends StatelessWidget {
   final User user;
 
   const HomeProfile({Key key, this.user}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,10 +20,12 @@ class HomeProfile extends StatelessWidget {
           alignment: Alignment.center,
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height /3.5,
+              height: MediaQuery.of(context).size.height / 3.5,
               decoration: BoxDecoration(
                 color: Color(0xFF0288D1),
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60),bottomRight: Radius.circular(60)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(60),
+                    bottomRight: Radius.circular(60)),
               ),
             ),
             Positioned(
@@ -39,14 +44,28 @@ class HomeProfile extends StatelessWidget {
         FlatButton(
           color: Color(0xFF0288D1),
           textColor: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangePasswordPage(),
+              ),
+            );
+          },
           child: Text("Şifre Değiştir"),
         ),
         SizedBox(height: 10),
         FlatButton(
           color: Color(0xFF0288D1),
           textColor: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeEmailPage(),
+              ),
+            );
+          },
           child: Text("E-Posta Değiştir"),
         ),
         SizedBox(height: 10),
@@ -61,23 +80,23 @@ class HomeProfile extends StatelessWidget {
   }
 
   Future<bool> _cikisYap(BuildContext context) async {
-    final _userModel = Provider.of<UserModel>(context,listen: false);
+    final _userModel = Provider.of<UserModel>(context, listen: false);
     bool sonuc = await _userModel.signOut();
     return sonuc;
   }
 
-  Widget _oturumAcanUser(BuildContext context){
+  Widget _oturumAcanUser(BuildContext context) {
     final _userModel = Provider.of<UserModel>(context);
     return Container(
       child: Center(
-        child: Text('Hoşgeldin ${_userModel.user.userName} !',
+        child: Text(
+          'Hoşgeldin ${_userModel.user.userName} !',
           style: TextStyle(
               color: Colors.black,
               letterSpacing: 2,
               fontSize: 17,
               fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold
-          ),
+              fontWeight: FontWeight.bold),
         ),
       ),
     );

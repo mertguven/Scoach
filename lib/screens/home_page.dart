@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scoach/screens/home/add.dart';
-import 'package:scoach/screens/home/graph.dart';
-import 'package:scoach/screens/home/profile.dart';
+import 'package:scoach/screens/home/add_page.dart';
+import 'package:scoach/screens/home/graph_page.dart';
+import 'package:scoach/screens/home/profile_page.dart';
 
 class HomePage extends StatefulWidget {
 

@@ -23,7 +23,12 @@ class UserRepository implements AuthBase{
   @override
   Future<User> signInWithEmailandPassword(String email, String sifre) async{
     User _user = await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
-    return await _firestoreDBService.readUser(_user);
+    bool _sonuc = await _firestoreDBService.saveUser(_user.userMail.substring(0,_user.userMail.indexOf('@')),_user);
+    if(_sonuc){
+      return await _firestoreDBService.readUser(_user);
+    }else{
+      return null;
+    }
   }
 
   @override
@@ -51,5 +56,15 @@ class UserRepository implements AuthBase{
   @override
   Future<void> forgotPassword(String email) async{
     await _firebaseAuthService.forgotPassword(email);
+  }
+
+  @override
+  Future<void> changePassword(String sifre) async{
+    await _firebaseAuthService.changePassword(sifre);
+  }
+
+  @override
+  Future<void> changeEmail(String email) async{
+    await _firebaseAuthService.changeEmail(email);
   }
 }

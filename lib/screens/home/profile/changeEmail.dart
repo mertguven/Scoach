@@ -1,51 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scoach/model/user.dart';
+import 'package:scoach/design_settings.dart';
 import 'package:scoach/viewmodel/user_model.dart';
-import '../design_settings.dart';
 
-class SignUpPage extends StatefulWidget {
+class ChangeEmailPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _ChangeEmailPageState createState() => _ChangeEmailPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-
-  String _email, _sifre, _kullaniciAdi;
-  User usr;
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class _ChangeEmailPageState extends State<ChangeEmailPage> {
+  String _mevcutEposta, _eposta;
   final _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Widget _tamAdBox() {
-    return Container(
-      decoration: mBoxDecorationStyle,
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 40),
-      child: TextFormField(
-        autofocus: false,
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 20),
-          prefixIcon: Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          hintText: 'Ad - Soyad',
-          hintStyle: mHintTextStyle,
-        ),
-          onSaved: (String girilenKullaniciAdi) {
-            _kullaniciAdi = girilenKullaniciAdi;
-          }
-      ),
-    );
-  }
-
-  Widget _eMailBox() {
-
+  Widget _currentEmailBox() {
     return Container(
       decoration: mBoxDecorationStyle,
       height: 60,
@@ -61,41 +30,41 @@ class _SignUpPageState extends State<SignUpPage> {
               Icons.email,
               color: Colors.white,
             ),
-            hintText: 'E-posta',
+            hintText: 'Mevcut Eposta',
             hintStyle: mHintTextStyle,
           ),
-          onSaved: (String girilenMail) {
-            _email = girilenMail;
+          onChanged: (String girilenMail) {
+            _mevcutEposta = girilenMail;
           }),
     );
   }
 
-  Widget _sifreBox() {
+  Widget _changeEmailBox() {
     return Container(
       decoration: mBoxDecorationStyle,
       height: 60,
       margin: EdgeInsets.symmetric(horizontal: 40),
       child: TextFormField(
-          obscureText: true,
           autofocus: false,
+          keyboardType: TextInputType.text,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 20),
             prefixIcon: Icon(
-              Icons.lock,
+              Icons.send,
               color: Colors.white,
             ),
-            hintText: 'Şifre',
+            hintText: 'Eposta',
             hintStyle: mHintTextStyle,
           ),
-          onSaved: (String girilenSifre) {
-            _sifre = girilenSifre;
+          onChanged: (String girilenMail) {
+            _eposta = girilenMail;
           }),
     );
   }
 
-  Widget _kayitOlBtn() {
+  Widget _guncelleBtn() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 50),
       padding: EdgeInsets.only(top: 40),
@@ -108,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
           borderRadius: BorderRadius.circular(25),
         ),
         child: Text(
-          "Kayıt Ol",
+          "Epostayı Güncelle",
           style: TextStyle(
               color: Color(0xFF0277BD),
               letterSpacing: 2,
@@ -116,30 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold),
         ),
-        onPressed: () => _formSubmit(),
-      ),
-    );
-  }
-
-  Widget _girisYapText() {
-    return Center(
-      child: FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        splashColor: Colors.transparent,
-        child: Text.rich(
-          TextSpan(
-              text: "Hesabınız var mı? ",
-              children: [
-                TextSpan(
-                  text: "Giriş Yap!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.indigo),
-                ),
-              ],
-              style: TextStyle(color: Colors.white)),
-        ),
+        onPressed: () => _epostaDegistir(),
       ),
     );
   }
@@ -149,6 +95,11 @@ class _SignUpPageState extends State<SignUpPage> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            "Eposta Değiştir",
+          ),
+        ),
         body: Stack(
           children: <Widget>[
             Container(
@@ -172,65 +123,58 @@ class _SignUpPageState extends State<SignUpPage> {
                     ]),
               ),
             ),
-            Container(
-              height: double.infinity,
+            Center(
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 75),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/images/logo.png'),
-                      width: 150,
-                      height: 150,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              _tamAdBox(),
-                              SizedBox(height: 20),
-                              _eMailBox(),
-                              SizedBox(height: 20),
-                              _sifreBox(),
-                            ],
-                          ),
-                        ),
-                        _kayitOlBtn(),
-                        SizedBox(height: 10),
-                        _girisYapText()
-                      ],
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          _currentEmailBox(),
+                          SizedBox(height: 20),
+                          _changeEmailBox(),
+                          SizedBox(height: 20),
+                          _guncelleBtn(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
 
-  _formSubmit() async{
+  _epostaDegistir() async {
     _formKey.currentState.save();
-    final _userModel = Provider.of<UserModel>(context,listen: false);
-    User _kayitOlanUser =await _userModel.createUserWithEmailandPassword(_kullaniciAdi,_email, _sifre);
-    if (_kayitOlanUser != null) {
-      usr = _kayitOlanUser;
-      _showSnackBar();
-      await _userModel.signOut();
+    final _userModel = Provider.of<UserModel>(context, listen: false);
+    if (_mevcutEposta != _eposta) {
+      if (_userModel.user.userMail == _mevcutEposta) {
+        await _userModel.changeEmail(_eposta);
+        _showSnackBar(true, true);
+        _cikisYap(context);
+      } else {
+        _showSnackBar(false, true);
+      }
     } else {
-      usr = _kayitOlanUser;
-      _showSnackBar();
+      _showSnackBar(false, false);
     }
   }
 
-  _showSnackBar() {
-    if (usr != null) {
+  Future<bool> _cikisYap(BuildContext context) async {
+    final _userModel = Provider.of<UserModel>(context, listen: false);
+    bool sonuc = await _userModel.signOut();
+    return sonuc;
+  }
+
+  _showSnackBar(bool deger, bool falsedeger) {
+    if (deger == true) {
       final snackBar = SnackBar(
         duration: Duration(seconds: 7),
         backgroundColor: Colors.lightGreen,
@@ -242,7 +186,7 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             Text(
-              "Kayıt Başarılı!",
+              "E-Postanız Yenilendi!",
               style: mLabelStyle,
             ),
           ],
@@ -250,7 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
-    if (usr == null) {
+    if (deger == false && falsedeger == true) {
       final snackBar = SnackBar(
         duration: Duration(seconds: 7),
         backgroundColor: Colors.red,
@@ -262,7 +206,27 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             Text(
-              "Eposta adresi hatalı veya kullanılmış!",
+              "Mevcut Eposta Yanlış!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (deger == false && falsedeger == false) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              "Eposta Mevcut Epostadan Farklı Olmak Zorunda!",
               style: mLabelStyle,
             ),
           ],

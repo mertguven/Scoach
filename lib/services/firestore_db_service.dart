@@ -7,7 +7,7 @@ class FirestoreDBService implements DBBase {
   final Firestore _firestore = Firestore.instance;
 
   @override
-  Future<bool> saveUser(String kullaniciAdi,User user) async{
+  Future<bool> saveUser(String kullaniciAdi, User user) async {
     Map _eklenecekUser = user.toMap();
     _eklenecekUser['userName'] = kullaniciAdi;
 

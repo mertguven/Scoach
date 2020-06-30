@@ -109,4 +109,32 @@ class UserModel with ChangeNotifier implements AuthBase{
       state = ViewState.Idle;
     }
   }
+
+  @override
+  Future<bool> changePassword(String sifre) async{
+    try{
+      state = ViewState.Busy;
+      await _userRepository.changePassword(sifre);
+      return true;
+    }catch(e){
+      debugPrint("ViewModel changePassword hata: "+ e.toString());
+      return false;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<void> changeEmail(String email) async{
+    try{
+      state = ViewState.Busy;
+      await _userRepository.changeEmail(email);
+      return true;
+    }catch(e){
+      debugPrint("ViewModel changeEmail hata: "+ e.toString());
+      return false;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
 }
