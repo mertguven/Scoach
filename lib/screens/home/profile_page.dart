@@ -41,39 +41,92 @@ class HomeProfile extends StatelessWidget {
         SizedBox(height: 80),
         _oturumAcanUser(context),
         SizedBox(height: 30),
-        FlatButton(
-          color: Color(0xFF0288D1),
-          textColor: Colors.white,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChangePasswordPage(),
+        ListView(
+          padding: EdgeInsets.all(10),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: <Widget>[
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangeEmailPage(),
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.email,
+                    color: Color(0xFF0288D1),
+                  ),
+                  title: Text(
+                    "E-posta Değiştir",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF0288D1)),
+                  ),
+                  trailing:
+                      Icon(Icons.arrow_forward_ios, color: Color(0xFF0288D1)),
+                ),
               ),
-            );
-          },
-          child: Text("Şifre Değiştir"),
-        ),
-        SizedBox(height: 10),
-        FlatButton(
-          color: Color(0xFF0288D1),
-          textColor: Colors.white,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChangeEmailPage(),
+            ),
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangePasswordPage(),
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.lock,
+                    color: Color(0xFF0288D1),
+                  ),
+                  title: Text(
+                    "Şifre Değiştir",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF0288D1)),
+                  ),
+                  trailing:
+                      Icon(Icons.arrow_forward_ios, color: Color(0xFF0288D1)),
+                ),
               ),
-            );
-          },
-          child: Text("E-Posta Değiştir"),
-        ),
-        SizedBox(height: 10),
-        FlatButton(
-          color: Color(0xFF0288D1),
-          textColor: Colors.white,
-          onPressed: () => _cikisYap(context),
-          child: Text("Çıkış Yap"),
+            ),
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  onTap: () => _cikisYap(context),
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Color(0xFF0288D1),
+                  ),
+                  title: Text(
+                    "Çıkış Yap",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF0288D1)),
+                  ),
+                  trailing:
+                      Icon(Icons.arrow_forward_ios, color: Color(0xFF0288D1)),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -92,7 +145,7 @@ class HomeProfile extends StatelessWidget {
         child: Text(
           'Hoşgeldin ${_userModel.user.userName} !',
           style: TextStyle(
-              color: Colors.black,
+              color: Color(0xFF0288D1),
               letterSpacing: 2,
               fontSize: 17,
               fontFamily: 'OpenSans',
