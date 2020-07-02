@@ -23,12 +23,7 @@ class UserRepository implements AuthBase{
   @override
   Future<User> signInWithEmailandPassword(String email, String sifre) async{
     User _user = await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
-    bool _sonuc = await _firestoreDBService.saveUser(_user.userMail.substring(0,_user.userMail.indexOf('@')),_user);
-    if(_sonuc){
-      return await _firestoreDBService.readUser(_user);
-    }else{
-      return null;
-    }
+    return await _firestoreDBService.readUser(_user);
   }
 
   @override

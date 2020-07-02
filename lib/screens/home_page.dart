@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         animationCurve: Curves.easeInOutQuart,
         height: 50,
         color: Color(0xFF0288D1),
-        backgroundColor: Colors.white30,
+        backgroundColor: Colors.white,
         buttonBackgroundColor: Color(0xFF0288D1),
         animationDuration: Duration(milliseconds: 700),
         items: <Widget>[

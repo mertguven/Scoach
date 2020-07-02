@@ -20,10 +20,15 @@ class FirestoreDBService implements DBBase {
 
   @override
   Future<User> readUser(User user) async{
-    DocumentSnapshot _okunanUser = await Firestore.instance.document("users/${user.userId}").get();
+    DocumentSnapshot _okunanUser = await _firestore.document("users/${user.userId}").get();
     Map _okunanUserMap = _okunanUser.data;
     User _okunanUserBilgiler = User.fromMap(_okunanUserMap);
     return _okunanUserBilgiler;
+  }
+
+  @override
+  Future<void> updateUserInformation(String userId, String degisecekVeri, String yerineGelecekVeri) async{
+    await _firestore.collection('users').document(userId).updateData({ degisecekVeri : yerineGelecekVeri});
   }
 
 }
