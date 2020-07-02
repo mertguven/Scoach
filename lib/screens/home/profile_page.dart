@@ -23,30 +23,39 @@ class _HomeProfileState extends State<HomeProfile> {
     return SafeArea(
       child: Stack(
         children: <Widget>[
-          Opacity(
-            opacity: 0.7,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.topCenter,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage("assets/images/profilebg.png"),
-                ),
-              ),
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF0288D1),
+                    Color(0xFF03A9F4),
+                    Color(0xFF29B6F6),
+                    Color(0xFF4FC3F7),
+                  ],
+                  stops: [
+                    0.1,
+                    0.4,
+                    0.7,
+                    0.9
+                  ]),
             ),
           ),
           Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
+                margin: EdgeInsets.symmetric(vertical: 30),
+                alignment: Alignment.center,
+                height: MediaQuery.of(context).size.height / 2.5,
                 child: Column(
                   children: <Widget>[
                     CircleAvatar(
-                      radius: 60,
+                      radius: 70,
                       backgroundColor: Colors.white,
-                      backgroundImage: AssetImage("assets/images/coach.png"),
+                      backgroundImage: NetworkImage("https://yt3.ggpht.com/a/AATXAJwJVBfsCQpbbcsvEf3NKf23oU4d5aVweHNe8sDWrA=s100-c-k-c0xffffffff-no-rj-mo"),
                     ),
                     SizedBox(height: 20),
                     _oturumAcanUser(context),
@@ -60,8 +69,8 @@ class _HomeProfileState extends State<HomeProfile> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(100),
-                          topRight: Radius.circular(100)
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60)
                       ),
                     ),
                     child: ListView(
@@ -190,12 +199,13 @@ class _HomeProfileState extends State<HomeProfile> {
           children: <Widget>[
             Icon(
               Icons.person,
-              color: Color(0xFF0277BD),
+              color: Colors.white,
             ),
+            SizedBox(width: 5),
             Text(
               '${_userModel.user.userName}',
               style: TextStyle(
-                  color: Color(0xFF0277BD),
+                  color: Colors.white,
                   letterSpacing: 2,
                   fontSize: 20,
                   shadows: [
@@ -215,12 +225,13 @@ class _HomeProfileState extends State<HomeProfile> {
           children: <Widget>[
             Icon(
               Icons.mail,
-              color: Color(0xFF0277BD),
+              color: Colors.white,
             ),
+            SizedBox(width: 5),
             Text(
               '${_userModel.user.userMail}',
               style: TextStyle(
-                  color: Color(0xFF0277BD),
+                  color: Colors.white,
                   letterSpacing: 1,
                   fontSize: 18,
                   shadows: [
