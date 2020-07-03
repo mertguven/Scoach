@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/screens/home/profile/changeEmail.dart';
@@ -18,8 +19,10 @@ class HomeProfile extends StatefulWidget {
 }
 
 class _HomeProfileState extends State<HomeProfile> {
+  File profilFoto;
   @override
   Widget build(BuildContext context) {
+    final _userModel = Provider.of<UserModel>(context);
     return SafeArea(
       child: Stack(
         children: <Widget>[
@@ -38,24 +41,75 @@ class _HomeProfileState extends State<HomeProfile> {
                   ],
                   stops: [
                     0.1,
+                    0.3,
                     0.4,
-                    0.7,
-                    0.9
+                    0.5
                   ]),
             ),
           ),
           Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(vertical: 30),
+                margin: EdgeInsets.symmetric(vertical: 20),
                 alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height / 2.5,
+                height: MediaQuery.of(context).size.height / 2.3,
                 child: Column(
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 70,
-                      backgroundColor: Colors.white,
-                      backgroundImage: NetworkImage("https://yt3.ggpht.com/a/AATXAJwJVBfsCQpbbcsvEf3NKf23oU4d5aVweHNe8sDWrA=s100-c-k-c0xffffffff-no-rj-mo"),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.white,
+                          backgroundImage: profilFoto == null ? NetworkImage(_userModel.user.profileUrl) : FileImage(profilFoto),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: Colors.white, shape: BoxShape.circle),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: Color(0xFF0288D1),
+                                ),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+                                    ),
+                                    context: (context),
+                                    builder: (context) {
+                                      return Container(
+                                        height: 160,
+                                        child: Column(
+                                          children: <Widget>[
+                                            ListTile(
+                                              leading: Icon(Icons.camera),
+                                              title: Text("Kamera"),
+                                              onTap: () {
+                                                _kamerdanCek();
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading: Icon(Icons.photo),
+                                              title: Text("Galeri"),
+                                              onTap: () {
+                                                _galeridenCek();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     _oturumAcanUser(context),
@@ -70,8 +124,7 @@ class _HomeProfileState extends State<HomeProfile> {
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(60),
-                          topRight: Radius.circular(60)
-                      ),
+                          topRight: Radius.circular(60)),
                     ),
                     child: ListView(
                       primary: false,
@@ -139,8 +192,7 @@ class _HomeProfileState extends State<HomeProfile> {
                           ),
                         ),
                       ],
-                    )
-                ),
+                    )),
               ),
             ],
           ),
@@ -208,12 +260,7 @@ class _HomeProfileState extends State<HomeProfile> {
                   color: Colors.white,
                   letterSpacing: 2,
                   fontSize: 20,
-                  shadows: [
-                    Shadow(
-                      color: Color(0xFF0277BD),
-                      blurRadius: 1.5
-                    )
-                  ],
+                  shadows: [Shadow(color: Color(0xFF0277BD), blurRadius: 1.5)],
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold),
             ),
@@ -234,12 +281,7 @@ class _HomeProfileState extends State<HomeProfile> {
                   color: Colors.white,
                   letterSpacing: 1,
                   fontSize: 18,
-                  shadows: [
-                    Shadow(
-                        color: Color(0xFF0277BD),
-                        blurRadius: 1.5
-                    )
-                  ],
+                  shadows: [Shadow(color: Color(0xFF0277BD), blurRadius: 1.5)],
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold),
             ),
@@ -247,5 +289,30 @@ class _HomeProfileState extends State<HomeProfile> {
         ),
       ],
     );
+  }
+
+  Future _kamerdanCek() async{
+    var _yeniFoto = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      profilFoto = _yeniFoto;
+      Navigator.pop(context);
+    });
+    _profilFotoGuncelle(context);
+  }
+
+  Future _galeridenCek() async{
+    var _yeniFoto = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      profilFoto = _yeniFoto;
+      Navigator.pop(context);
+    });
+    _profilFotoGuncelle(context);
+  }
+
+  void _profilFotoGuncelle(BuildContext context) async{
+    final _userModel = Provider.of<UserModel>(context,listen: false);
+    if(profilFoto != null){
+      await _userModel.updateFoto(_userModel.user.userId, "profil_foto", profilFoto);
+    }
   }
 }

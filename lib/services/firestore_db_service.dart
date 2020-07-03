@@ -31,4 +31,12 @@ class FirestoreDBService implements DBBase {
     await _firestore.collection('users').document(userId).updateData({ degisecekVeri : yerineGelecekVeri});
   }
 
+  Future<bool> updateProfilFoto(String userId, String profilFotoUrl) async{
+    await _firestore
+        .collection("users")
+        .document(userId)
+        .updateData({ 'profileUrl' : profilFotoUrl});
+    return true;
+  }
+
 }

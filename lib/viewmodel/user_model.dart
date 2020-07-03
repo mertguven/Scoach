@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:scoach/locator.dart';
 import 'package:scoach/model/user.dart';
@@ -136,5 +138,10 @@ class UserModel with ChangeNotifier implements AuthBase{
     }finally{
       state = ViewState.Idle;
     }
+  }
+
+  Future<String> updateFoto(String userId, String dosyaAdi, File profilFoto) async{
+    var indirmeLinki = await _userRepository.updateFoto(userId, dosyaAdi, profilFoto);
+    return indirmeLinki;
   }
 }

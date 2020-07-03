@@ -1,13 +1,16 @@
+import 'dart:io';
 import 'package:scoach/locator.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
 import 'package:scoach/services/firebase_auth_service.dart';
+import 'package:scoach/services/firebase_storage_service.dart';
 import 'package:scoach/services/firestore_db_service.dart';
 
 class UserRepository implements AuthBase{
 
   FirebaseAuthService _firebaseAuthService = locator<FirebaseAuthService>();
   FirestoreDBService _firestoreDBService = locator<FirestoreDBService>();
+  FirebaseStorageService _firebaseStorageService = locator<FirebaseStorageService>();
 
   @override
   Future<User> currentUser() async{
@@ -61,5 +64,11 @@ class UserRepository implements AuthBase{
   @override
   Future<void> changeEmail(String email) async{
     await _firebaseAuthService.changeEmail(email);
+  }
+
+  Future<String> updateFoto(String userId, String dosyaAdi, File profilFoto) async{
+    var profilFotoUrl = await _firebaseStorageService.updatePhoto(userId, dosyaAdi, profilFoto);
+    await _firestoreDBService.updateProfilFoto(userId, profilFotoUrl);
+    return profilFotoUrl;
   }
 }
