@@ -8,20 +8,20 @@ class FirestoreDBService implements DBBase {
 
   @override
   Future<bool> saveUser(String kullaniciAdi, User user) async {
-    Map _eklenecekUser = user.toMap();
-    _eklenecekUser['userName'] = kullaniciAdi;
-
-    await _firestore
-        .collection("users")
-        .document(user.userId)
-        .setData(_eklenecekUser);
-    return true;
+    DocumentSnapshot _okunanUser =
+        await Firestore.instance.document("users/${user.userId}").get();
+    if(_okunanUser.data == null){
+      await _firestore.collection("users").document(user.userId).setData(user.toMap());
+      return true;
+    }else{
+      return true;
+    }
   }
 
   @override
   Future<User> readUser(User user) async{
-    DocumentSnapshot _okunanUser = await _firestore.document("users/${user.userId}").get();
-    Map _okunanUserMap = _okunanUser.data;
+    DocumentSnapshot _okunanUser = await _firestore.collection("users").document(user.userId).get();
+    Map<String, dynamic> _okunanUserMap = _okunanUser.data;
     User _okunanUserBilgiler = User.fromMap(_okunanUserMap);
     return _okunanUserBilgiler;
   }
@@ -33,7 +33,7 @@ class FirestoreDBService implements DBBase {
 
   Future<bool> updateProfilFoto(String userId, String profilFotoUrl) async{
     await _firestore
-        .collection("users")
+        .collection('users')
         .document(userId)
         .updateData({ 'profileUrl' : profilFotoUrl});
     return true;

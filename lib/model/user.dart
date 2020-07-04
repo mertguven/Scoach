@@ -19,7 +19,7 @@ class User{
     };
   }
   User.fromMap(Map<String, dynamic> map):
-      userId = map['userId'],
+        userId = map['userId'],
         userMail = map['userMail'],
         userName = map['userName'],
         profileUrl = map['profileUrl'],

@@ -312,7 +312,9 @@ class _HomeProfileState extends State<HomeProfile> {
   void _profilFotoGuncelle(BuildContext context) async{
     final _userModel = Provider.of<UserModel>(context,listen: false);
     if(profilFoto != null){
-      await _userModel.updateFoto(_userModel.user.userId, "profil_foto", profilFoto);
+      var url = await _userModel.updateFoto(_userModel.user.userId, "profil_foto", profilFoto);
+      _userModel.user.profileUrl = url;
+      print("gelen url :" +url);
     }
   }
 }

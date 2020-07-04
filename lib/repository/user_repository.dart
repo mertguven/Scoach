@@ -47,6 +47,7 @@ class UserRepository implements AuthBase{
     if(_sonuc){
       return await _firestoreDBService.readUser(_user);
     }else{
+      await _firebaseAuthService.signOut();
       return null;
     }
   }
