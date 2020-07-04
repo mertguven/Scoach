@@ -156,21 +156,15 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
     final _userModel = Provider.of<UserModel>(context, listen: false);
     if (_mevcutEposta != _eposta) {
       if (_userModel.user.userMail == _mevcutEposta) {
-        await _userModel.changeEmail(_eposta);
+        await _userModel.changeEmail(_userModel.user.userId, "userMail", _eposta);
         _showSnackBar(true, true);
-        _cikisYap(context);
+        _userModel.user.userMail = _eposta;
       } else {
         _showSnackBar(false, true);
       }
     } else {
       _showSnackBar(false, false);
     }
-  }
-
-  Future<bool> _cikisYap(BuildContext context) async {
-    final _userModel = Provider.of<UserModel>(context, listen: false);
-    bool sonuc = await _userModel.signOut();
-    return sonuc;
   }
 
   _showSnackBar(bool deger, bool falsedeger) {

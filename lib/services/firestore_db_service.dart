@@ -7,7 +7,7 @@ class FirestoreDBService implements DBBase {
   final Firestore _firestore = Firestore.instance;
 
   @override
-  Future<bool> saveUser(String kullaniciAdi, User user) async {
+  Future<bool> saveUser(User user) async {
     DocumentSnapshot _okunanUser =
         await Firestore.instance.document("users/${user.userId}").get();
     if(_okunanUser.data == null){
@@ -29,14 +29,6 @@ class FirestoreDBService implements DBBase {
   @override
   Future<void> updateUserInformation(String userId, String degisecekVeri, String yerineGelecekVeri) async{
     await _firestore.collection('users').document(userId).updateData({ degisecekVeri : yerineGelecekVeri});
-  }
-
-  Future<bool> updateProfilFoto(String userId, String profilFotoUrl) async{
-    await _firestore
-        .collection('users')
-        .document(userId)
-        .updateData({ 'profileUrl' : profilFotoUrl});
-    return true;
   }
 
 }

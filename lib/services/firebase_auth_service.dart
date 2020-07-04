@@ -90,7 +90,7 @@ class FirebaseAuthService implements AuthBase{
   }
 
   @override
-  Future<void> changeEmail(String email) async{
+  Future<void> changeEmail(String userId, String degisecekVeri, String email) async{
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.updateEmail(email);
   }

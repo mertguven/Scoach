@@ -127,10 +127,10 @@ class UserModel with ChangeNotifier implements AuthBase{
   }
 
   @override
-  Future<void> changeEmail(String email) async{
+  Future<void> changeEmail(String userId, String degisecekVeri,String email) async{
     try{
       state = ViewState.Busy;
-      await _userRepository.changeEmail(email);
+      await _userRepository.changeEmail(userId, degisecekVeri, email);
       return true;
     }catch(e){
       debugPrint("ViewModel changeEmail hata: "+ e.toString());

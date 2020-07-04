@@ -32,7 +32,8 @@ class UserRepository implements AuthBase{
   @override
   Future<User> createUserWithEmailandPassword(String kullaniciAdi,String email, String sifre) async{
     User _user = await _firebaseAuthService.createUserWithEmailandPassword(kullaniciAdi,email, sifre);
-    bool _sonuc = await _firestoreDBService.saveUser(kullaniciAdi,_user);
+    bool _sonuc = await _firestoreDBService.saveUser(_user);
+    await _firestoreDBService.updateUserInformation(_user.userId, "userName", kullaniciAdi);
     if(_sonuc){
       return await _firestoreDBService.readUser(_user);
     }else{
@@ -43,7 +44,8 @@ class UserRepository implements AuthBase{
   @override
   Future<User> signInWithGoogle() async{
     User _user = await _firebaseAuthService.signInWithGoogle();
-    bool _sonuc = await _firestoreDBService.saveUser(_user.userMail.substring(0,_user.userMail.indexOf('@')),_user);
+    bool _sonuc = await _firestoreDBService.saveUser(_user);
+    await _firestoreDBService.updateUserInformation(_user.userId, "userName", _user.userMail.substring(0,_user.userMail.indexOf("@")));
     if(_sonuc){
       return await _firestoreDBService.readUser(_user);
     }else{
@@ -63,13 +65,14 @@ class UserRepository implements AuthBase{
   }
 
   @override
-  Future<void> changeEmail(String email) async{
-    await _firebaseAuthService.changeEmail(email);
+  Future<void> changeEmail(String userId, String degisecekVeri,String email) async{
+    await _firebaseAuthService.changeEmail(userId, degisecekVeri, email);
+    await _firestoreDBService.updateUserInformation(userId, degisecekVeri, email);
   }
 
   Future<String> updateFoto(String userId, String dosyaAdi, File profilFoto) async{
     var profilFotoUrl = await _firebaseStorageService.updatePhoto(userId, dosyaAdi, profilFoto);
-    await _firestoreDBService.updateProfilFoto(userId, profilFotoUrl);
+    await _firestoreDBService.updateUserInformation(userId, "profileUrl", profilFotoUrl);
     return profilFotoUrl;
   }
 }
