@@ -96,6 +96,14 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          centerTitle: true,
           title: Text(
             "Eposta Değiştir",
           ),
