@@ -60,7 +60,7 @@ class _HomeProfileState extends State<HomeProfile> {
                       children: <Widget>[
                         CircleAvatar(
                           radius: 70,
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.white, //NetworkImage(_userModel.user.profileUrl)
                           backgroundImage: profilFoto == null ? NetworkImage(_userModel.user.profileUrl) : FileImage(profilFoto),
                           child: Align(
                             alignment: Alignment.bottomRight,

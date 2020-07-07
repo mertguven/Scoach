@@ -30,7 +30,7 @@ dependencies:
   cloud_firestore: ^0.13.7
   image_picker: 0.6.1+4
   firebase_storage: ^3.1.6
-  curved_navigation_bar: ^0.3.3
+  bottom_navy_bar: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -65,9 +65,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: multicolore
+    - family: Pacifico
       fonts:
-        - asset: assets/fonts/multicolore.otf
+        - asset: assets/fonts/Pacifico-Regular.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
