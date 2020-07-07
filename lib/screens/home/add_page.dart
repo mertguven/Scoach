@@ -55,7 +55,8 @@ class HomeAdd extends StatelessWidget {
                     alignment: Alignment.center,
                     children: <Widget>[
                       Image.asset(
-                        "assets/images/derece.jpg",
+                        "assets/images/dereceler.jpg",
+                        filterQuality: FilterQuality.low,
                         height: height /2,
                         width: width,
                         fit: BoxFit.cover,
