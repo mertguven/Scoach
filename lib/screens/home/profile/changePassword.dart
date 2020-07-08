@@ -99,6 +99,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: Color(0xFF0288D1),
+          elevation: 0.4,
           leading: IconButton(
             icon: Icon(
               Icons.close,

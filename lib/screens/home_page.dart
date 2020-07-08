@@ -75,38 +75,3 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
-
-/*
-CurvedNavigationBar(
-        key: _bottomNavigationKey,
-        index: 1,
-        onTap: (index) {
-          setState(() {
-            _page = index;
-          });
-        },
-        animationCurve: Curves.easeInOutQuart,
-        height: 50,
-        color: Color(0xFF0288D1),
-        backgroundColor: Colors.white,
-        buttonBackgroundColor: Color(0xFF0288D1),
-        animationDuration: Duration(milliseconds: 700),
-        items: <Widget>[
-          Icon(
-            Icons.timeline,
-            color: Colors.white,
-            size: 25,
-          ),
-          Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 25,
-          ),
-          Icon(
-            Icons.person,
-            color: Colors.white,
-            size: 25,
-          ),
-        ],
-      )
- */
