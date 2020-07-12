@@ -57,16 +57,16 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             height: 56,
             child: FlatButton(
               color: Colors.lightGreen,
-                onPressed: (){},
-                child: Text(
-                  "Başlat !",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    letterSpacing: 2,
-                    color: Colors.white,
-                  ),
+              onPressed: () {},
+              child: Text(
+                "Başlat !",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  letterSpacing: 2,
+                  color: Colors.white,
                 ),
+              ),
             ),
           ),
         ),
@@ -170,6 +170,62 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
     );
   }
 
+  /*
+  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          SizedBox(width: 1),
+          Column(
+            children: <Widget>[
+              Text("1",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              ),
+              Text("X",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text("100",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          SizedBox(width: 30),
+          Column(
+            children: <Widget>[
+              Text("Antrenman Adı",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold)),
+              Text("Açıklaması",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400))
+            ],
+          ),
+          SizedBox(width: 30),
+          Text("@ 1:40",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold)),
+          IconButton(
+            icon: Icon(Icons.border_color,color: Colors.white,),
+            onPressed: (){},
+          )
+        ],
+      )
+   */
+
   Widget _customCard() {
     return Card(
       color: Color(0xFF29B6F6),
@@ -214,9 +270,78 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               Icons.border_color,
               color: Colors.white,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              _showConfirmDialog();
+            }),
       ),
     );
+  }
+
+  Widget _customTextField(String labelText, Icon icon) {
+    return TextField(
+      keyboardType: TextInputType.number,
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        suffixIcon: icon,
+        labelText: "${labelText}",
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF29B6F6))),
+        labelStyle: TextStyle(color: Color(0xFF0288D1)),
+      ),
+      style: TextStyle(
+        color: Color(0xFF0288D1),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  Future<bool> _showConfirmDialog() {
+    return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: AlertDialog(
+              content: Column(
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  _customTextField("Tekrar", Icon(Icons.refresh)),
+                  SizedBox(height: 10),
+                  _customTextField("Mesafe", Icon(Icons.straighten)),
+                  SizedBox(height: 10),
+                  _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none)),
+                  SizedBox(height: 10),
+                  _customTextField("Antrenman Açıklaması", Icon(Icons.textsms)),
+                  SizedBox(height: 10),
+                  _customTextField("Süre", Icon(Icons.timer)),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  color: Colors.lightGreen,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.done,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        "Kaydet",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Widget _setMainTraining() {
@@ -288,6 +413,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
     );
   }
+
 /*Widget _informations() {
     return Column(
       children: <Widget>[
