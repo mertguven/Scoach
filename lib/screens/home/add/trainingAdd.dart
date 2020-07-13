@@ -10,22 +10,11 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int sayac = 1;
-
-  /*
-                  FlatButton(
-                  color: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                  ),
-                  child: Container(
-                    child: Icon(
-                      Icons.done,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {},
-                )
-   */
+  var tekrarList = new List();
+  var mesafeList = new List();
+  var antrenmanAdiList = new List();
+  var antrenmanAciklamasiList = new List();
+  var sureList = new List();
 
   @override
   Widget build(BuildContext context) {
@@ -170,70 +159,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
     );
   }
 
-  /*
-  Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          SizedBox(width: 1),
-          Column(
-            children: <Widget>[
-              Text("1",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
-              ),
-              Text("X",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text("100",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          SizedBox(width: 30),
-          Column(
-            children: <Widget>[
-              Text("Antrenman Adı",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
-              Text("Açıklaması",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400))
-            ],
-          ),
-          SizedBox(width: 30),
-          Text("@ 1:40",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold)),
-          IconButton(
-            icon: Icon(Icons.border_color,color: Colors.white,),
-            onPressed: (){},
-          )
-        ],
-      )
-   */
-
-  Widget _customCard() {
+  Widget _customCard(int sira) {
     return Card(
       color: Color(0xFF29B6F6),
       child: ListTile(
         leading: Column(
           children: <Widget>[
             Text(
-              "1",
+              tekrarList[sira] = null ? "1" : tekrarList[sira],
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -247,7 +180,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              "100",
+              mesafeList[sira] = null ? "100" : mesafeList[sira],
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -255,12 +188,12 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             ),
           ],
         ),
-        title: Text("Antrenman Adı",
+        title: Text(antrenmanAdiList[sira] = null ? "Antrenman Adı" : antrenmanAdiList[sira],
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.bold)),
-        subtitle: Text("Açıklaması",
+        subtitle: Text(antrenmanAciklamasiList[sira] = null ? "Antrenman Açıklaması" : antrenmanAciklamasiList[sira],
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -271,19 +204,19 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              _showConfirmDialog();
+              _showDetailDialog();
             }),
       ),
     );
   }
 
-  Widget _customTextField(String labelText, Icon icon) {
+  Widget _customTextField(String labelText, Icon icon, TextInputType type) {
     return TextField(
-      keyboardType: TextInputType.number,
+      keyboardType: type,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
         suffixIcon: icon,
-        labelText: "${labelText}",
+        labelText: labelText,
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF29B6F6))),
         labelStyle: TextStyle(color: Color(0xFF0288D1)),
@@ -293,33 +226,57 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
+      onChanged: (String girilen) {
+        if(labelText == "Tekrar"){
+          tekrarList[sayac] = girilen;
+        }
+        if(labelText == "Mesafe"){
+          mesafeList[sayac] = girilen;
+        }
+        if(labelText == "Antrenman Adı"){
+          antrenmanAdiList[sayac] = girilen;
+        }
+        if(labelText == "Antrenman Açıklaması"){
+          antrenmanAciklamasiList[sayac] = girilen;
+        }
+        if(labelText == "Süre"){
+          sureList[sayac] = girilen;
+        }
+      },
     );
   }
 
-  Future<bool> _showConfirmDialog() {
+  Future<bool> _showDetailDialog() {
     return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               content: Column(
                 children: <Widget>[
-                  SizedBox(height: 10),
-                  _customTextField("Tekrar", Icon(Icons.refresh)),
-                  SizedBox(height: 10),
-                  _customTextField("Mesafe", Icon(Icons.straighten)),
-                  SizedBox(height: 10),
-                  _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none)),
-                  SizedBox(height: 10),
-                  _customTextField("Antrenman Açıklaması", Icon(Icons.textsms)),
-                  SizedBox(height: 10),
-                  _customTextField("Süre", Icon(Icons.timer)),
+                  SizedBox(height: 15),
+                  _customTextField("Tekrar", Icon(Icons.refresh), TextInputType.number),
+                  SizedBox(height: 15),
+                  _customTextField("Mesafe", Icon(Icons.straighten), TextInputType.number),
+                  SizedBox(height: 15),
+                  _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none), TextInputType.text),
+                  SizedBox(height: 15),
+                  _customTextField("Antrenman Açıklaması", Icon(Icons.textsms), TextInputType.text),
+                  SizedBox(height: 15),
+                  _customTextField("Süre", Icon(Icons.timer), TextInputType.number),
                 ],
               ),
               actions: <Widget>[
                 FlatButton(
                   color: Colors.lightGreen,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -357,7 +314,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             padding: EdgeInsets.all(8.0),
             itemCount: sayac,
             itemBuilder: (context, index) {
-              return _customCard();
+              return _customCard(sayac);
             },
           ),
           Row(
