@@ -9,15 +9,22 @@ class TrainingAddPage extends StatefulWidget {
 class _TrainingAddPageState extends State<TrainingAddPage> {
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int sayac = 1;
-  var tekrarList = new List();
-  var mesafeList = new List();
-  var antrenmanAdiList = new List();
-  var antrenmanAciklamasiList = new List();
-  var sureList = new List();
+  int sayac = 0;
+  List<int> tekrarList = new List();
+  List<int> mesafeList = new List();
+  List<String> antrenmanAdiList = new List();
+  List<String> antrenmanAciklamasiList = new List();
+  List<int> sureList = new List();
+  int i = 0;
+  int mesafeToplam = 0;
 
   @override
   Widget build(BuildContext context) {
+    tekrarList.add(1);
+    mesafeList.add(100);
+    antrenmanAdiList.add("Antrenman Adı");
+    antrenmanAciklamasiList.add("Antrenman Açıklaması");
+    sureList.add(140);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -72,6 +79,10 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
     );
   }
+  String _mesafeHesapla(){
+    mesafeToplam = mesafeToplam + mesafeList.last;
+    return mesafeToplam.toString();
+  }
 
   Widget _setInformation() {
     return Container(
@@ -92,7 +103,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                "50",
+                "100",
                 style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 20,
@@ -159,14 +170,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
     );
   }
 
-  Widget _customCard(int sira) {
+  Widget _customCard(int index) {
     return Card(
       color: Color(0xFF29B6F6),
       child: ListTile(
         leading: Column(
           children: <Widget>[
             Text(
-              tekrarList[sira] = null ? "1" : tekrarList[sira],
+              tekrarList[index].toString(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -180,7 +191,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              mesafeList[sira] = null ? "100" : mesafeList[sira],
+              mesafeList[index].toString(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -188,12 +199,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             ),
           ],
         ),
-        title: Text(antrenmanAdiList[sira] = null ? "Antrenman Adı" : antrenmanAdiList[sira],
+        title: Text(
+            antrenmanAdiList[index].toString(),
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.bold)),
-        subtitle: Text(antrenmanAciklamasiList[sira] = null ? "Antrenman Açıklaması" : antrenmanAciklamasiList[sira],
+        subtitle: Text(
+          antrenmanAciklamasiList[index].toString(),
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -204,6 +217,9 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               color: Colors.white,
             ),
             onPressed: () {
+              setState(() {
+                i = index;
+              });
               _showDetailDialog();
             }),
       ),
@@ -226,7 +242,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      onChanged: (String girilen) {
+      onChanged: (dynamic girilen) {
         if(labelText == "Tekrar"){
           tekrarList[sayac] = girilen;
         }
@@ -312,9 +328,9 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.all(8.0),
-            itemCount: sayac,
+            itemCount: sayac+1,
             itemBuilder: (context, index) {
-              return _customCard(sayac);
+              return _customCard(index);
             },
           ),
           Row(
@@ -334,7 +350,12 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    if (sayac > 1) {
+                    if (sayac > 0) {
+                      tekrarList.removeLast();
+                      mesafeList.removeLast();
+                      antrenmanAdiList.removeLast();
+                      antrenmanAciklamasiList.removeLast();
+                      sureList.removeLast();
                       sayac--;
                     }
                   });
