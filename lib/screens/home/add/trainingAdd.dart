@@ -9,22 +9,27 @@ class TrainingAddPage extends StatefulWidget {
 class _TrainingAddPageState extends State<TrainingAddPage> {
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int sayac = 0;
-  List<int> tekrarList = new List();
-  List<int> mesafeList = new List();
-  List<String> antrenmanAdiList = new List();
-  List<String> antrenmanAciklamasiList = new List();
-  List<int> sureList = new List();
+  List<dynamic> tekrarList = new List();
+  List<dynamic> mesafeList = new List();
+  List<dynamic> antrenmanAdiList = new List();
+  List<dynamic> antrenmanAciklamasiList = new List();
+  List<dynamic> sureList = new List();
   int i = 0;
-  int mesafeToplam = 0;
+  dynamic toplam = 0;
+  int sayac = 0;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     tekrarList.add(1);
     mesafeList.add(100);
     antrenmanAdiList.add("Antrenman Adı");
     antrenmanAciklamasiList.add("Antrenman Açıklaması");
-    sureList.add(140);
+    sureList.add(60);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -79,9 +84,19 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
     );
   }
-  String _mesafeHesapla(){
-    mesafeToplam = mesafeToplam + mesafeList.last;
-    return mesafeToplam.toString();
+  String mesafeHesapla(){
+    toplam = 0;
+    for(var x in mesafeList){
+      toplam = toplam + x;
+    }
+    return toplam.toString();
+  }
+  String sureHesapla(){
+    int sureToplam = 0;
+    for(int x=0; x<sureList.length; x++){
+      sureToplam = sureToplam + sureList[x];
+    }
+    return sureToplam.toString();
   }
 
   Widget _setInformation() {
@@ -103,7 +118,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                "100",
+                mesafeHesapla(),
                 style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 20,
@@ -124,7 +139,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                "30",
+                "100",
                 style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 20,
@@ -177,7 +192,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         leading: Column(
           children: <Widget>[
             Text(
-              tekrarList[index].toString(),
+              tekrarList[i].toString(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -191,7 +206,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              mesafeList[index].toString(),
+              mesafeList[i].toString(),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -200,13 +215,13 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           ],
         ),
         title: Text(
-            antrenmanAdiList[index].toString(),
+            antrenmanAdiList[i].toString(),
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.bold)),
         subtitle: Text(
-          antrenmanAciklamasiList[index].toString(),
+            antrenmanAciklamasiList[i].toString(),
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -217,16 +232,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              setState(() {
-                i = index;
-              });
-              _showDetailDialog();
+              i = index;
+              _showDetailDialog(i);
             }),
       ),
     );
   }
 
-  Widget _customTextField(String labelText, Icon icon, TextInputType type) {
+  Widget _customTextField(String labelText, Icon icon, TextInputType type, int yer) {
     return TextField(
       keyboardType: type,
       textAlign: TextAlign.center,
@@ -244,25 +257,25 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
       onChanged: (dynamic girilen) {
         if(labelText == "Tekrar"){
-          tekrarList[sayac] = girilen;
+          tekrarList[yer] = girilen;
         }
         if(labelText == "Mesafe"){
-          mesafeList[sayac] = girilen;
+          mesafeList[yer] = girilen;
         }
         if(labelText == "Antrenman Adı"){
-          antrenmanAdiList[sayac] = girilen;
+          antrenmanAdiList[yer] = girilen;
         }
         if(labelText == "Antrenman Açıklaması"){
-          antrenmanAciklamasiList[sayac] = girilen;
+          antrenmanAciklamasiList[yer] = girilen;
         }
         if(labelText == "Süre"){
-          sureList[sayac] = girilen;
+          sureList[yer] = girilen;
         }
       },
     );
   }
 
-  Future<bool> _showDetailDialog() {
+  Future<bool> _showDetailDialog(int i) {
     return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
@@ -275,15 +288,15 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               content: Column(
                 children: <Widget>[
                   SizedBox(height: 15),
-                  _customTextField("Tekrar", Icon(Icons.refresh), TextInputType.number),
+                  _customTextField("Tekrar", Icon(Icons.refresh), TextInputType.number, i),
                   SizedBox(height: 15),
-                  _customTextField("Mesafe", Icon(Icons.straighten), TextInputType.number),
+                  _customTextField("Mesafe", Icon(Icons.straighten), TextInputType.number, i),
                   SizedBox(height: 15),
-                  _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none), TextInputType.text),
+                  _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none), TextInputType.text, i),
                   SizedBox(height: 15),
-                  _customTextField("Antrenman Açıklaması", Icon(Icons.textsms), TextInputType.text),
+                  _customTextField("Antrenman Açıklaması", Icon(Icons.textsms), TextInputType.text, i),
                   SizedBox(height: 15),
-                  _customTextField("Süre", Icon(Icons.timer), TextInputType.number),
+                  _customTextField("Süre", Icon(Icons.timer), TextInputType.number, i),
                 ],
               ),
               actions: <Widget>[
@@ -330,6 +343,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             padding: EdgeInsets.all(8.0),
             itemCount: sayac+1,
             itemBuilder: (context, index) {
+              i = index;
               return _customCard(index);
             },
           ),
@@ -351,12 +365,12 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 onPressed: () {
                   setState(() {
                     if (sayac > 0) {
+                      sayac--;
                       tekrarList.removeLast();
                       mesafeList.removeLast();
                       antrenmanAdiList.removeLast();
                       antrenmanAciklamasiList.removeLast();
                       sureList.removeLast();
-                      sayac--;
                     }
                   });
                 },
@@ -376,6 +390,11 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 onPressed: () {
                   setState(() {
                     sayac++;
+                    tekrarList.add(1);
+                    mesafeList.add(100);
+                    antrenmanAdiList.add("Antrenman Adı");
+                    antrenmanAciklamasiList.add("Antrenman Açıklaması");
+                    sureList.add(60);
                   });
                 },
               ),
