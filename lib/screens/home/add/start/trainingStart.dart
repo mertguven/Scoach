@@ -2,6 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TrainingStartPage extends StatefulWidget {
+
+  List<dynamic> tekrarList = new List();
+  List<dynamic> mesafeList = new List();
+  List<dynamic> antrenmanAdiList = new List();
+  List<dynamic> antrenmanAciklamasiList = new List();
+  List<dynamic> sureList = new List();
+  int dinlenmeSuresi = 0;
+
+
+  TrainingStartPage(this.tekrarList, this.mesafeList, this.antrenmanAdiList,
+      this.antrenmanAciklamasiList, this.sureList,this.dinlenmeSuresi);
+
   @override
   _TrainingStartPageState createState() => _TrainingStartPageState();
 }
@@ -17,17 +29,13 @@ class _TrainingStartPageState extends State<TrainingStartPage> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Color(0xFF0288D1),
-          elevation: 0.4,
+          elevation: 0,
           leading: IconButton(
             icon: Icon(
               Icons.close,
               color: Colors.white,
             ),
             onPressed: () => Navigator.pop(context),
-          ),
-          centerTitle: true,
-          title: Text(
-            "Dereceleri Gir",
           ),
         ),
         body: Stack(
@@ -60,11 +68,12 @@ class _TrainingStartPageState extends State<TrainingStartPage> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Text("Derece Gir"),
-                      Text("Derece Gir"),
-                      Text("Derece Gir"),
-                      Text("Derece Gir"),
-                      Text("Derece Gir"),
+                      Text(widget.tekrarList.toString()),
+                      Text(widget.mesafeList.toString()),
+                      Text(widget.antrenmanAdiList.toString()),
+                      Text(widget.antrenmanAciklamasiList.toString()),
+                      Text(widget.sureList.toString()),
+                      Text("dinlenme süresi: ${widget.dinlenmeSuresi}"),
                     ],
                   ),
                 ),

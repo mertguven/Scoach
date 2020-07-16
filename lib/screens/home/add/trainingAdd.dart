@@ -8,7 +8,6 @@ class TrainingAddPage extends StatefulWidget {
 }
 
 class _TrainingAddPageState extends State<TrainingAddPage> {
-  final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> tekrarList = new List();
   List<dynamic> mesafeList = new List();
@@ -19,6 +18,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
   dynamic mesafeToplam = 0;
   int sureToplam = 0;
   int sayac = 0;
+  int dinlenmeSuresi = 0;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             child: FlatButton(// Color(0xFF0288D1)
               color: Color(0xFF0288D1),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingStartPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingStartPage(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList,dinlenmeSuresi)));
               },
               child: Text(
                 "Başlat !",
@@ -154,8 +154,8 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(Icons.pool, color: Color(0xFF0288D1), size: 30),
-              Text("Havuz Uzunluğu",
+              Icon(Icons.refresh, color: Color(0xFF0288D1), size: 30),
+              Text("Dinlenme Süresi",
                   style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
@@ -163,10 +163,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               SizedBox(
                 width: 50,
                 child: TextField(
+                  onChanged: (dynamic girilen){
+                    int deger = int.parse(girilen);
+                    dinlenmeSuresi = deger;
+                  },
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    labelText: "m",
+                    labelText: "sn",
                     labelStyle: TextStyle(color: Color(0xFF0288D1)),
                   ),
                   style: TextStyle(
@@ -222,14 +226,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             antrenmanAdiList[i].toString(),
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: 18,
                 fontWeight: FontWeight.bold)),
         subtitle: Text(
             antrenmanAciklamasiList[i].toString() + "\n\n Süre: @${sureList[i].toString()}",
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w400)),
+                fontSize: 16,
+                fontWeight: FontWeight.w500)),
         trailing: IconButton(
             icon: Icon(
               Icons.border_color,
