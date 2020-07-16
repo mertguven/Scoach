@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoach/screens/home/add/start/trainingStart.dart';
 
 class TrainingAddPage extends StatefulWidget {
   @override
@@ -15,7 +16,8 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
   List<dynamic> antrenmanAciklamasiList = new List();
   List<dynamic> sureList = new List();
   int i = 0;
-  dynamic toplam = 0;
+  dynamic mesafeToplam = 0;
+  int sureToplam = 0;
   int sayac = 0;
 
   @override
@@ -56,9 +58,11 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           padding: EdgeInsets.symmetric(horizontal: 0),
           child: Container(
             height: 56,
-            child: FlatButton(
-              color: Colors.lightGreen,
-              onPressed: () {},
+            child: FlatButton(// Color(0xFF0288D1)
+              color: Color(0xFF0288D1),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingStartPage()));
+              },
               child: Text(
                 "Başlat !",
                 style: TextStyle(
@@ -85,16 +89,16 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
     );
   }
   String mesafeHesapla(){
-    toplam = 0;
+    mesafeToplam = 0;
     for(var x in mesafeList){
-      toplam = toplam + x;
+      mesafeToplam = mesafeToplam + x;
     }
-    return toplam.toString();
+    return mesafeToplam.toString();
   }
   String sureHesapla(){
-    int sureToplam = 0;
-    for(int x=0; x<sureList.length; x++){
-      sureToplam = sureToplam + sureList[x];
+    sureToplam = 0;
+    for(var x in sureList){
+      sureToplam = sureToplam + x;
     }
     return sureToplam.toString();
   }
@@ -109,7 +113,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(Icons.straighten, color: Colors.amber, size: 33),
+              Icon(Icons.straighten, color: Color(0xFF0288D1), size: 33),
               Text(
                 "Mesafe",
                 style: TextStyle(
@@ -118,7 +122,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                mesafeHesapla(),
+                mesafeHesapla() + " m",
                 style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 20,
@@ -130,7 +134,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(Icons.timer, color: Colors.amber, size: 30),
+              Icon(Icons.timer, color: Color(0xFF0288D1), size: 30),
               Text(
                 "Zaman",
                 style: TextStyle(
@@ -139,7 +143,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                "100",
+                sureHesapla() + " sn",
                 style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 20,
@@ -150,8 +154,8 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(Icons.pool, color: Colors.amber, size: 30),
-              Text("Havuz Boyu",
+              Icon(Icons.pool, color: Color(0xFF0288D1), size: 30),
+              Text("Havuz Uzunluğu",
                   style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
@@ -221,10 +225,10 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 fontSize: 15,
                 fontWeight: FontWeight.bold)),
         subtitle: Text(
-            antrenmanAciklamasiList[i].toString(),
+            antrenmanAciklamasiList[i].toString() + "\n\n Süre: @${sureList[i].toString()}",
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: FontWeight.w400)),
         trailing: IconButton(
             icon: Icon(
@@ -257,10 +261,12 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
       onChanged: (dynamic girilen) {
         if(labelText == "Tekrar"){
-          tekrarList[yer] = girilen;
+          int deger = int.parse(girilen);
+          tekrarList[yer] = deger;
         }
-        if(labelText == "Mesafe"){
-          mesafeList[yer] = girilen;
+        if(labelText == "Mesafe (m)"){
+          int deger = int.parse(girilen);
+          mesafeList[yer] = deger;
         }
         if(labelText == "Antrenman Adı"){
           antrenmanAdiList[yer] = girilen;
@@ -268,8 +274,9 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         if(labelText == "Antrenman Açıklaması"){
           antrenmanAciklamasiList[yer] = girilen;
         }
-        if(labelText == "Süre"){
-          sureList[yer] = girilen;
+        if(labelText == "Süre (sn)"){
+          int deger = int.parse(girilen);
+          sureList[yer] = deger;
         }
       },
     );
@@ -290,13 +297,13 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                   SizedBox(height: 15),
                   _customTextField("Tekrar", Icon(Icons.refresh), TextInputType.number, i),
                   SizedBox(height: 15),
-                  _customTextField("Mesafe", Icon(Icons.straighten), TextInputType.number, i),
+                  _customTextField("Mesafe (m)", Icon(Icons.straighten), TextInputType.number, i),
                   SizedBox(height: 15),
                   _customTextField("Antrenman Adı", Icon(Icons.text_rotation_none), TextInputType.text, i),
                   SizedBox(height: 15),
                   _customTextField("Antrenman Açıklaması", Icon(Icons.textsms), TextInputType.text, i),
                   SizedBox(height: 15),
-                  _customTextField("Süre", Icon(Icons.timer), TextInputType.number, i),
+                  _customTextField("Süre (sn)", Icon(Icons.timer), TextInputType.number, i),
                 ],
               ),
               actions: <Widget>[
