@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoach/screens/home/add/start/trainingComplete.dart';
 
 class TrainingStartPage extends StatefulWidget {
   List<dynamic> tekrarList = new List();
@@ -24,20 +25,24 @@ class _TrainingStartPageState extends State<TrainingStartPage>
     Duration duration = controller.duration * controller.value;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 10));
-  }
+  int sayac = 0;
+  String bittiMi = "Bitmedi !!!!!!!!!";
 
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    controller.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) { //widget.sureList[sayac]
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0));
+
+
     return GestureDetector(
       onTap: _durdurBaslat,
       child: Scaffold(
@@ -72,42 +77,49 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                           Expanded(
                             child: Align(
                               alignment: FractionalOffset.center,
-                              child: AspectRatio(
-                                aspectRatio: 1.0,
-                                child: Stack(
-                                  overflow: Overflow.visible,
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: FractionalOffset.center,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            "Count Down Timer",
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            timerString,
-                                            style: TextStyle(
-                                                fontSize: 112.0,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            "Durdurmak veya devam ettirmek için ekrana dokunun.",
-                                            style: TextStyle(
-                                                fontSize: 15.0,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
+                              child: Stack(
+                                overflow: Overflow.visible,
+                                children: <Widget>[
+                                  Align(
+                                    alignment: FractionalOffset.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          bittiMi,
+                                        ),
+                                        Text(
+                                          widget.antrenmanAdiList[sayac].toString(),
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          widget.antrenmanAciklamasiList[sayac].toString(),
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          timerString,
+                                          style: TextStyle(
+                                              fontSize: 112.0,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "Başlatmak, durdurmak veya devam ettirmek için ekrana dokunun.",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Colors.white),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -123,11 +135,26 @@ class _TrainingStartPageState extends State<TrainingStartPage>
   }
 
   _durdurBaslat() {
-    if (controller.isAnimating)
+    if (controller.isAnimating){
       controller.stop();
-    else {
+    }
+    else{
       controller.reverse(
           from: controller.value == 0.0 ? 1.0 : controller.value);
     }
+    controller.addStatusListener((AnimationStatus status) {
+      if(status == AnimationStatus.completed){
+        if(sayac < widget.tekrarList.length - 1){
+          setState(() {
+            sayac++;
+          });
+        }
+        else{
+          controller.stop();
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => TrainingIsCompletePage()));
+        }
+      }
+    }
+    );
   }
 }
