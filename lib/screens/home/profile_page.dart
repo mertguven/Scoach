@@ -150,7 +150,7 @@ class _HomeProfileState extends State<HomeProfile> {
                                 color: Color(0xFF0288D1),
                               ),
                               title: Text(
-                                "E-posta Değiştir",
+                                "E-posta Degistir",
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
@@ -179,7 +179,7 @@ class _HomeProfileState extends State<HomeProfile> {
                                 color: Color(0xFF0288D1),
                               ),
                               title: Text(
-                                "Şifre Değiştir",
+                                "Sifre Degistir",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -221,12 +221,11 @@ class _HomeProfileState extends State<HomeProfile> {
               color: Color(0xFF0277BD),
             ),
             Text(
-              "Çıkış Yap",
+              "Çıkıs Yap",
               style: TextStyle(
                   color: Color(0xFF0277BD),
                   letterSpacing: 2,
                   fontSize: 18,
-                  fontFamily: 'OpenSans',
                   fontWeight: FontWeight.w500),
             ),
           ],

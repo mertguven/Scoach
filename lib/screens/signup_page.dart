@@ -86,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Icons.lock,
               color: Colors.white,
             ),
-            hintText: 'Şifre',
+            hintText: 'Sifre',
             hintStyle: mHintTextStyle,
           ),
           onSaved: (String girilenSifre) {
@@ -133,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
               text: "Hesabınız var mı? ",
               children: [
                 TextSpan(
-                  text: "Giriş Yap!",
+                  text: "Giris Yap!",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.indigo),
                 ),
@@ -262,7 +262,7 @@ class _SignUpPageState extends State<SignUpPage> {
               color: Colors.white,
             ),
             Text(
-              "Eposta adresi hatalı veya kullanılmış!",
+              "Eposta adresi hatalı veya kullanılmıs!",
               style: mLabelStyle,
             ),
           ],

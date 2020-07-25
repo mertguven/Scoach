@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Şifre',
+              hintText: 'Sifre',
               hintStyle: mHintTextStyle,
             ),
             onChanged: (String girilenSifre) {
@@ -114,12 +114,11 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(25),
           ),
           child: Text(
-            "Giriş",
+            "Giris",
             style: TextStyle(
                 color: Color(0xFF0277BD),
                 letterSpacing: 2,
                 fontSize: 17,
-                fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold
             ),
           ),
@@ -157,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.push(context, SlideRightRoute(page: ForgotPasswordPage()));
           },
           splashColor: Colors.transparent,
-          child: Text("Şifreni mi Unuttun?",style: TextStyle(color: Colors.white),),
+          child: Text("Sifreni mi Unuttun?",style: TextStyle(color: Colors.white),),
         ),
       );
     }

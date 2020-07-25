@@ -64,7 +64,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingStartPage(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList,dinlenmeSuresi)));
               },
               child: Text(
-                "Başlat !",
+                "Baslat !",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -119,6 +119,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 style: TextStyle(
                     color: Colors.black87,
                     fontSize: 20,
+                    fontFamily: "Circular",
                     fontWeight: FontWeight.w400),
               ),
               Text(
@@ -227,12 +228,14 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
+                fontFamily: "Open-Sans",
                 fontWeight: FontWeight.bold)),
         subtitle: Text(
             antrenmanAciklamasiList[i].toString() + "\n\n Süre: @${sureList[i].toString()}",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
+                fontFamily: "Open-Sans",
                 fontWeight: FontWeight.w500)),
         trailing: IconButton(
             icon: Icon(

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 final mHintTextStyle = TextStyle(
   color: Colors.white54,
-  fontFamily: 'OpenSans',
+  fontFamily: 'Circular',
 );
 
 final mLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSans',
+  fontFamily: 'Circular',
 );
 
 final mBoxDecorationStyle = BoxDecoration(

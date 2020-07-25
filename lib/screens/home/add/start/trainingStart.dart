@@ -20,6 +20,7 @@ class TrainingStartPage extends StatefulWidget {
 class _TrainingStartPageState extends State<TrainingStartPage>
     with TickerProviderStateMixin {
   AnimationController controller;
+  Animation<double> animation;
 
   String get timerString {
     Duration duration = controller.duration * controller.value;
@@ -33,16 +34,31 @@ class _TrainingStartPageState extends State<TrainingStartPage>
 
   @override
   void dispose() {
-    controller.stop();
+    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) { //widget.sureList[sayac]
     controller =
-        AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0));
+        AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0))..forward();
 
-
+    animation = Tween<double>(begin: 0,end: 1).animate(controller)..addStatusListener((AnimationStatus status) {
+      if(status == AnimationStatus.dismissed){
+        controller.forward();
+      }
+      else if(status == AnimationStatus.completed){
+        if(sayac < widget.tekrarList.length - 1){
+          setState(() {
+            sayac++;
+          });
+        }
+        else{
+          controller.stop();
+          Navigator.push(context, CupertinoPageRoute(builder: (context) => TrainingIsCompletePage()));
+        }
+      }
+    });
     return GestureDetector(
       onTap: _durdurBaslat,
       child: Scaffold(
@@ -50,7 +66,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
         backgroundColor: Colors.white10,
         body: SafeArea(
           child: AnimatedBuilder(
-              animation: controller,
+              animation: animation,
               builder: (context, child) {
                 return Stack(
                   overflow: Overflow.visible,
@@ -65,7 +81,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                       alignment: Alignment.centerRight,
                       child: Container(
                         color: Color(0xFF4FC3F7),
-                        width: controller.value *
+                        width: animation.value *
                             MediaQuery.of(context).size.width,
                       ),
                     ),
@@ -110,7 +126,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                               color: Colors.white),
                                         ),
                                         Text(
-                                          "Başlatmak, durdurmak veya devam ettirmek için ekrana dokunun.",
+                                          "Baslatmak, durdurmak veya devam ettirmek için ekrana dokunun.",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 15.0,
@@ -139,10 +155,13 @@ class _TrainingStartPageState extends State<TrainingStartPage>
       controller.stop();
     }
     else{
+      controller.forward();
+    }
+    /*else{
       controller.reverse(
           from: controller.value == 0.0 ? 1.0 : controller.value);
-    }
-    controller.addStatusListener((AnimationStatus status) {
+    }*/
+    /*controller.addStatusListener((AnimationStatus status) {
       if(status == AnimationStatus.completed){
         if(sayac < widget.tekrarList.length - 1){
           setState(() {
@@ -155,6 +174,6 @@ class _TrainingStartPageState extends State<TrainingStartPage>
         }
       }
     }
-    );
+    );*/
   }
 }
