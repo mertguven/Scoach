@@ -27,7 +27,6 @@ class _TrainingStartPageState extends State<TrainingStartPage>
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
   int sayac = 0;
-  String bittiMi = "Bitmedi !!!!!!!!!";
 
   final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -39,26 +38,13 @@ class _TrainingStartPageState extends State<TrainingStartPage>
   }
 
   @override
-  Widget build(BuildContext context) { //widget.sureList[sayac]
+  Widget build(BuildContext context) { // widget.sureList[sayac]
     controller =
-        AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0))..forward();
+        AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0));
 
-    animation = Tween<double>(begin: 0,end: 1).animate(controller)..addStatusListener((AnimationStatus status) {
-      if(status == AnimationStatus.dismissed){
-        controller.forward();
-      }
-      else if(status == AnimationStatus.completed){
-        if(sayac < widget.tekrarList.length - 1){
-          setState(() {
-            sayac++;
-          });
-        }
-        else{
-          controller.stop();
-          Navigator.push(context, CupertinoPageRoute(builder: (context) => TrainingIsCompletePage()));
-        }
-      }
-    });
+    controller.forward();
+    controller.addStatusListener(_animasyonBittiMi);
+    animation = Tween<double>(begin: 0,end: 1).animate(controller);
     return GestureDetector(
       onTap: _durdurBaslat,
       child: Scaffold(
@@ -78,7 +64,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                           Navigator.pop(context);
                         }),
                     Align(
-                      alignment: Alignment.centerRight,
+                      alignment: Alignment.centerLeft,
                       child: Container(
                         color: Color(0xFF4FC3F7),
                         width: animation.value *
@@ -104,9 +90,6 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Text(
-                                          bittiMi,
-                                        ),
                                         Text(
                                           widget.antrenmanAdiList[sayac].toString(),
                                           style: TextStyle(
@@ -148,6 +131,23 @@ class _TrainingStartPageState extends State<TrainingStartPage>
         ),
       ),
     );
+  }
+
+  _animasyonBittiMi(status){
+    if(status == AnimationStatus.completed){
+      if(sayac < widget.tekrarList.length - 1){
+        setState(() {
+          sayac++;
+        });
+      }
+      else{
+        print("sayac: "+sayac.toString());
+        controller.removeStatusListener(_animasyonBittiMi);
+        controller.stop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingIsCompletePage()));
+
+      }
+    }
   }
 
   _durdurBaslat() {
