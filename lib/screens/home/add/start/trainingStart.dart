@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoach/screens/home/add/start/trainingComplete.dart';
 
+// ignore: must_be_immutable
 class TrainingStartPage extends StatefulWidget {
   List<dynamic> tekrarList = new List();
   List<dynamic> mesafeList = new List();
   List<dynamic> antrenmanAdiList = new List();
   List<dynamic> antrenmanAciklamasiList = new List();
   List<dynamic> sureList = new List();
-  int dinlenmeSuresi = 0;
 
   TrainingStartPage(this.tekrarList, this.mesafeList, this.antrenmanAdiList,
-      this.antrenmanAciklamasiList, this.sureList, this.dinlenmeSuresi);
+      this.antrenmanAciklamasiList, this.sureList);
 
   @override
   _TrainingStartPageState createState() => _TrainingStartPageState();
@@ -21,15 +21,12 @@ class _TrainingStartPageState extends State<TrainingStartPage>
     with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
+  int sayac = 0;
 
   String get timerString {
     Duration duration = controller.duration * controller.value;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
-  int sayac = 0;
-
-  final _formKey = GlobalKey<FormState>();
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
@@ -43,26 +40,18 @@ class _TrainingStartPageState extends State<TrainingStartPage>
         AnimationController(vsync: this, duration: Duration(seconds: sayac <= widget.tekrarList.length ? widget.sureList[sayac] : 0));
 
     controller.forward();
-    controller.addStatusListener(_animasyonBittiMi);
     animation = Tween<double>(begin: 0,end: 1).animate(controller);
+    animation.addStatusListener(_animasyonBittiMi);
     return GestureDetector(
       onTap: _durdurBaslat,
       child: Scaffold(
-        key: _scaffoldKey,
         backgroundColor: Colors.white10,
         body: SafeArea(
           child: AnimatedBuilder(
-              animation: animation,
+              animation: controller,
               builder: (context, child) {
                 return Stack(
-                  overflow: Overflow.visible,
                   children: <Widget>[
-                    IconButton(
-                        alignment: Alignment.topLeft,
-                        icon: Icon(Icons.close,color: Colors.white,),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
@@ -82,6 +71,12 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                               child: Stack(
                                 overflow: Overflow.visible,
                                 children: <Widget>[
+                                  IconButton(
+                                      alignment: Alignment.topLeft,
+                                      icon: Icon(Icons.close,color: Colors.white,),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
                                   Align(
                                     alignment: FractionalOffset.center,
                                     child: Column(
@@ -103,13 +98,19 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                               color: Colors.white),
                                         ),
                                         Text(
+                                          "Süre: ${widget.sureList[sayac]} sn",
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
                                           timerString,
                                           style: TextStyle(
                                               fontSize: 112.0,
                                               color: Colors.white),
                                         ),
                                         Text(
-                                          "Baslatmak, durdurmak veya devam ettirmek için ekrana dokunun.",
+                                          "Durdurmak veya devam ettirmek için ekrana dokunun.",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 15.0,
@@ -141,12 +142,9 @@ class _TrainingStartPageState extends State<TrainingStartPage>
         });
       }
       else{
-        print("sayac: "+sayac.toString());
-        controller.removeStatusListener(_animasyonBittiMi);
-        controller.stop();
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingIsCompletePage()));
-
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TrainingIsCompletePage()));
       }
+      animation.removeStatusListener(_animasyonBittiMi);
     }
   }
 

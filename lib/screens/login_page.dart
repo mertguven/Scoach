@@ -256,6 +256,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _formSubmit() async{
+
     _formKey.currentState.save();
     final _userModel = Provider.of<UserModel>(context,listen: false);
     await _userModel.signInWithEmailandPassword(_email, _sifre);

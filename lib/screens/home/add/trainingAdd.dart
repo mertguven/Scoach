@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scoach/screens/home/add/start/trainingStart.dart';
+import 'package:scoach/screens/home/add/start/waitingScreen.dart';
 
 class TrainingAddPage extends StatefulWidget {
   @override
@@ -61,7 +61,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             child: FlatButton(// Color(0xFF0288D1)
               color: Color(0xFF0288D1),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingStartPage(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList,dinlenmeSuresi)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
               },
               child: Text(
                 "Baslat !",
@@ -155,8 +155,8 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(Icons.refresh, color: Color(0xFF0288D1), size: 30),
-              Text("Dinlenme Süresi",
+              Icon(Icons.pool, color: Color(0xFF0288D1), size: 30),
+              Text("Havuz Uzunlugu",
                   style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
@@ -164,14 +164,10 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
               SizedBox(
                 width: 50,
                 child: TextField(
-                  onChanged: (dynamic girilen){
-                    int deger = int.parse(girilen);
-                    dinlenmeSuresi = deger;
-                  },
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    labelText: "sn",
+                    labelText: "m",
                     labelStyle: TextStyle(color: Color(0xFF0288D1)),
                   ),
                   style: TextStyle(
