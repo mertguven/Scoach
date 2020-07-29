@@ -66,10 +66,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 
-  fonts:
-    - family: Circular
-      fonts:
-        - asset: assets/fonts/Circular-Std-Book.ttf
+    #fonts:
+      # - family: Circular
+      #  fonts:
+    #     - asset: assets/fonts/Circular-Std-Book.ttf
 
   #         style: italic
   #   - family: Trajan Pro

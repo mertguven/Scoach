@@ -89,6 +89,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                           widget.antrenmanAdiList[sayac].toString(),
                                           style: TextStyle(
                                               fontSize: 20.0,
+
                                               color: Colors.white),
                                         ),
                                         Text(
@@ -98,7 +99,13 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                               color: Colors.white),
                                         ),
                                         Text(
-                                          "Süre: ${widget.sureList[sayac]} sn",
+                                          "${widget.tekrarList[sayac]} Tekrar",
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "Toplam Süre: ${widget.sureList[sayac]} sn",
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               color: Colors.white),
@@ -155,23 +162,5 @@ class _TrainingStartPageState extends State<TrainingStartPage>
     else{
       controller.forward();
     }
-    /*else{
-      controller.reverse(
-          from: controller.value == 0.0 ? 1.0 : controller.value);
-    }*/
-    /*controller.addStatusListener((AnimationStatus status) {
-      if(status == AnimationStatus.completed){
-        if(sayac < widget.tekrarList.length - 1){
-          setState(() {
-            sayac++;
-          });
-        }
-        else{
-          controller.stop();
-          Navigator.push(context, CupertinoPageRoute(builder: (context) => TrainingIsCompletePage()));
-        }
-      }
-    }
-    );*/
   }
 }

@@ -17,9 +17,6 @@ class MainPage extends StatelessWidget {
       create: (context) => UserModel(),
       child: MaterialApp(
         title: 'Scoach',
-        theme: ThemeData(
-          fontFamily: "Circular"
-        ),
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
       ),

@@ -64,7 +64,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
               },
               child: Text(
-                "Baslat !",
+                "Başlat !",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -156,7 +156,7 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Icon(Icons.pool, color: Color(0xFF0288D1), size: 30),
-              Text("Havuz Uzunlugu",
+              Text("Havuz Uzunluğu",
                   style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
