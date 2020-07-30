@@ -1,5 +1,11 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scoach/model/swimmer.dart';
+import 'package:scoach/viewmodel/user_model.dart';
+
+import '../../../design_settings.dart';
 
 class EnterDegreesPage extends StatefulWidget {
   @override
@@ -14,6 +20,8 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
   int mesafe = 0;
   String stil = "";
   String adSoyad = "";
+  var rnd = Random();
+  bool sonSonuc;
 
   @override
   void initState() {
@@ -110,7 +118,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
           ),
           SizedBox(height: 15),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () => _showChoiceSwimmerDialog(),
             color: Color(0xFF29B6F6),
             elevation: 4,
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -174,6 +182,34 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
     );
   }
 
+  Future<bool> _showChoiceSwimmerDialog() {
+    return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              content: Column(
+                children: <Widget>[
+                  SizedBox(height: 15),
+                  _customTextField(
+                      "Ad Soyad", Icon(Icons.text_format), TextInputType.text),
+                  SizedBox(height: 15),
+                  _customTextField(
+                      "Yaş", Icon(Icons.chrome_reader_mode), TextInputType.number),
+                  SizedBox(height: 15),
+                  _customTextField(
+                      "Takım", Icon(Icons.group), TextInputType.text),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   Future<bool> _showNewSwimmerDialog() {
     return showDialog<bool>(
         context: context,
@@ -195,7 +231,6 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   SizedBox(height: 15),
                   _customTextField(
                       "Takım", Icon(Icons.group), TextInputType.text),
-
                 ],
               ),
               actions: <Widget>[
@@ -206,6 +241,11 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () {
+                      if(adSoyad == null){
+                        print("hata");
+                      }else {
+                        _formSubmit();
+                      }
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -227,6 +267,61 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
             ),
           );
         });
+  }
+
+  _formSubmit() async{
+    final _userModel = Provider.of<UserModel>(context,listen: false);
+    Swimmer swimmer = Swimmer(swimmerId: rnd.nextInt(9999), swimmerAge: yas, swimmerNameSurname: adSoyad, swimmerTeam: takim);
+    bool sonuc =  await  _userModel.saveSwimmer(swimmer, _userModel.user);
+    if (sonuc == true) {
+      sonSonuc = sonuc;
+      _showSnackBar();
+    } else {
+      sonSonuc = sonuc;
+      _showSnackBar();
+    }
+  }
+  _showSnackBar() {
+    if (sonSonuc != null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.lightGreen,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.done,
+              color: Colors.white,
+            ),
+            Text(
+              "Sporcu başarılı bir şekilde kaydedildi!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    if (sonSonuc == null) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              "Sporcuyu kaydederken bir hata oluştu!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 
   Widget _setMainEnterDegree() {
@@ -327,6 +422,26 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.pool),
                   labelText: "Stil",
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF29B6F6))),
+                  labelStyle: TextStyle(color: Color(0xFF0288D1)),
+                ),
+                style: TextStyle(
+                  color: Color(0xFF0288D1),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                onChanged: (dynamic girilen){
+                  stil = girilen;
+                },
+              ),
+              SizedBox(height: 10),
+              TextField(
+                keyboardType: TextInputType.text,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.timer),
+                  labelText: "Süre",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF29B6F6))),
                   labelStyle: TextStyle(color: Color(0xFF0288D1)),

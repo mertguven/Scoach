@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
 
@@ -93,5 +94,10 @@ class FirebaseAuthService implements AuthBase{
   Future<void> changeEmail(String userId, String degisecekVeri, String email) async{
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.updateEmail(email);
+  }
+
+  @override
+  Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
+    return true;
   }
 }

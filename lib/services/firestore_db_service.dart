@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/services/database_base.dart';
 
@@ -16,6 +17,12 @@ class FirestoreDBService implements DBBase {
     }else{
       return true;
     }
+  }
+
+  @override
+  Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
+    await _firestore.collection("sporcu").document(user.userId).collection(swimmer.swimmerId.toString()).document("bilgiler").setData(swimmer.toMap());
+    return true;
   }
 
   @override

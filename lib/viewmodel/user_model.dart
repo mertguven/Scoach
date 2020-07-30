@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:scoach/locator.dart';
+import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/repository/user_repository.dart';
 import 'package:scoach/services/auth_base.dart';
@@ -143,5 +144,19 @@ class UserModel with ChangeNotifier implements AuthBase{
   Future<String> updateFoto(String userId, String dosyaAdi, File profilFoto) async{
     var indirmeLinki = await _userRepository.updateFoto(userId, dosyaAdi, profilFoto);
     return indirmeLinki;
+  }
+
+  @override
+  Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
+    try{
+      state = ViewState.Busy;
+      bool sonuc = await _userRepository.saveSwimmer(swimmer, user);
+      return sonuc;
+    }catch(e){
+      debugPrint("ViewModel saveSwimmer hata: "+ e.toString());
+      return false;
+    }finally{
+      state = ViewState.Idle;
+    }
   }
 }

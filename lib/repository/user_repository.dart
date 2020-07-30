@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:scoach/locator.dart';
+import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
 import 'package:scoach/services/firebase_auth_service.dart';
@@ -74,5 +75,11 @@ class UserRepository implements AuthBase{
     var profilFotoUrl = await _firebaseStorageService.updatePhoto(userId, dosyaAdi, profilFoto);
     await _firestoreDBService.updateUserInformation(userId, "profileUrl", profilFotoUrl);
     return profilFotoUrl;
+  }
+
+  @override
+  Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
+    bool sonuc = await _firestoreDBService.saveSwimmer(swimmer, user);
+    return sonuc;
   }
 }
