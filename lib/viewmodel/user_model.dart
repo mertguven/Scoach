@@ -159,4 +159,18 @@ class UserModel with ChangeNotifier implements AuthBase{
       state = ViewState.Idle;
     }
   }
+
+  @override
+  Future<List<Swimmer>> getAllSwimmer(User user) async{
+    try{
+      state = ViewState.Busy;
+      List<Swimmer> allSwimmer = await _userRepository.getAllSwimmer(user);
+      return allSwimmer;
+    }catch(e){
+      debugPrint("ViewModel getAllSwimmer hata: "+ e.toString());
+      return null;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
 }

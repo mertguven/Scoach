@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/swimmer.dart';
+import 'package:scoach/services/firestore_db_service.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 import '../../../design_settings.dart';
@@ -15,16 +16,25 @@ class EnterDegreesPage extends StatefulWidget {
 class _EnterDegreesPageState extends State<EnterDegreesPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  dynamic takim = "";
-  int yas = 0;
+  dynamic yeniTakim = "";
+  int yeniYas = 0;
   int mesafe = 0;
   String stil = "";
-  String adSoyad = "";
+  String yeniAdSoyad = "";
   var rnd = Random();
   bool sonSonuc;
+  int kontrol = 1;
+  String secilenAd = "Ad Soyad";
+  String secilenTakim = "Takım";
+  String secilenDTarihi = "Doğum Tarihi";
+  String secilenYas = "Yaş";
+  String _value = "";
+  List<String> _values = new List<String>();
 
   @override
   void initState() {
+    _values.addAll(["Serbest","Kurbağa","Sırt","Kelebek"]);
+    _value = _values.elementAt(0);
     super.initState();
   }
 
@@ -59,7 +69,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
             child: FlatButton(
               // Color(0xFF0288D1)
               color: Color(0xFF0288D1),
-              onPressed: () {},
+              onPressed: () => getir(),
               child: Text(
                 "Kaydet",
                 style: TextStyle(
@@ -167,46 +177,122 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      onChanged: (dynamic girilen){
-        if(labelText == "Ad Soyad"){
-          adSoyad = girilen;
+      onChanged: (dynamic girilen) {
+        if (labelText == "Ad Soyad") {
+          yeniAdSoyad = girilen;
         }
-        if(labelText == "Yaş"){
+        if (labelText == "Yaş") {
           int deger = int.parse(girilen);
-          yas = deger;
+          yeniYas = deger;
         }
-        if(labelText == "Takım"){
-          takim = girilen;
+        if (labelText == "Takım") {
+          yeniTakim = girilen;
         }
       },
     );
   }
 
   Future<bool> _showChoiceSwimmerDialog() {
+    final _userModel = Provider.of<UserModel>(context, listen: false);
     return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              content: Column(
-                children: <Widget>[
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Ad Soyad", Icon(Icons.text_format), TextInputType.text),
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Yaş", Icon(Icons.chrome_reader_mode), TextInputType.number),
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Takım", Icon(Icons.group), TextInputType.text),
-                ],
-              ),
-            ),
-          );
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  content: Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: FutureBuilder<List<Swimmer>>(
+                      future: _userModel.getAllSwimmer(_userModel.user),
+                      builder: (context, sonuc) {
+                        if (sonuc.hasData) {
+                          var tumSporcular = sonuc.data;
+                          if (tumSporcular.length > 0) {
+                            return ListView.builder(
+                              itemCount: tumSporcular.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 7),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white60,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 3,
+                                        blurRadius: 5,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    onTap: (){
+                                      setState(() {
+                                        secilenAd = sonuc.data[index].swimmerNameSurname;
+                                        secilenTakim = sonuc.data[index].swimmerTeam;
+                                        secilenYas = sonuc.data[index].swimmerAge.toString();
+                                        secilenDTarihi = (DateTime.now().year - sonuc.data[index].swimmerAge).toString();
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    trailing: Icon(Icons.arrow_forward_ios,color: Color(0xFF29B6F6),),
+                                    leading: Container(
+                                      alignment: Alignment.center,
+                                      height: 40,
+                                      width: 40,
+                                      child: Text(
+                                        sonuc.data[index].swimmerAge.toString(),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xFF29B6F6),
+                                      ),
+                                    ),
+                                    title: Text(
+                                        sonuc.data[index].swimmerNameSurname),
+                                    subtitle:
+                                        Text(sonuc.data[index].swimmerTeam),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Kayıtlı kullanıcı yok",style: TextStyle(fontSize: 20),),
+                                RaisedButton(
+                                  color: Color(0xFF29B6F6),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(Icons.arrow_back,color: Colors.white,),
+                                      Text("Geri git",style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
+                                  padding: EdgeInsets.all(20),
+                                  elevation: 5,
+                                ),
+                              ],
+                            );
+                          }
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              );
         });
   }
 
@@ -214,75 +300,97 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
     return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              content: Column(
-                children: <Widget>[
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Ad Soyad", Icon(Icons.text_format), TextInputType.text),
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Yaş", Icon(Icons.chrome_reader_mode), TextInputType.number),
-                  SizedBox(height: 15),
-                  _customTextField(
-                      "Takım", Icon(Icons.group), TextInputType.text),
-                ],
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  color: Colors.lightGreen,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: AlertDialog(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  onPressed: () {
-                      if(adSoyad == null){
-                        print("hata");
-                      }else {
-                        _formSubmit();
-                      }
-                    Navigator.pop(context);
-                  },
-                  child: Row(
+                  content: Column(
                     children: <Widget>[
-                      Icon(
-                        Icons.done,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        "Kaydet",
-                        style: TextStyle(
-                          color: Colors.white,
+                      SizedBox(height: 15),
+                      _customTextField("Ad Soyad", Icon(Icons.text_format),
+                          TextInputType.text),
+                      SizedBox(height: 15),
+                      _customTextField("Yaş", Icon(Icons.chrome_reader_mode),
+                          TextInputType.number),
+                      SizedBox(height: 15),
+                      _customTextField(
+                          "Takım", Icon(Icons.group), TextInputType.text),
+                      Container(
+                        height: kontrol == 0 ? 60 : 0,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Lütfen tüm alanları eksiksiz doldurun !",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10)),
                       )
                     ],
                   ),
+                  actions: <Widget>[
+                    FlatButton(
+                      color: Colors.lightGreen,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        if (yeniAdSoyad == "" || yeniYas == 0 || yeniTakim == "") {
+                          setState(() {
+                            kontrol = 0;
+                          });
+                        } else {
+                          _formSubmit();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Kaydet",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
 
-  _formSubmit() async{
-    final _userModel = Provider.of<UserModel>(context,listen: false);
-    Swimmer swimmer = Swimmer(swimmerId: rnd.nextInt(9999), swimmerAge: yas, swimmerNameSurname: adSoyad, swimmerTeam: takim);
-    bool sonuc =  await  _userModel.saveSwimmer(swimmer, _userModel.user);
+  _formSubmit() async {
+    final _userModel = Provider.of<UserModel>(context, listen: false);
+    Swimmer swimmer = Swimmer(
+        swimmerId: rnd.nextInt(9999),
+        swimmerAge: yeniYas,
+        swimmerNameSurname: yeniAdSoyad,
+        swimmerTeam: yeniTakim);
+    bool sonuc = await _userModel.saveSwimmer(swimmer, _userModel.user);
     if (sonuc == true) {
-      sonSonuc = sonuc;
-      _showSnackBar();
-    } else {
       sonSonuc = sonuc;
       _showSnackBar();
     }
   }
+
   _showSnackBar() {
-    if (sonSonuc != null) {
+    if (sonSonuc != false) {
       final snackBar = SnackBar(
         duration: Duration(seconds: 7),
         backgroundColor: Colors.lightGreen,
@@ -295,26 +403,6 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
             ),
             Text(
               "Sporcu başarılı bir şekilde kaydedildi!",
-              style: mLabelStyle,
-            ),
-          ],
-        ),
-      );
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-    }
-    if (sonSonuc == null) {
-      final snackBar = SnackBar(
-        duration: Duration(seconds: 7),
-        backgroundColor: Colors.red,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.close,
-              color: Colors.white,
-            ),
-            Text(
-              "Sporcuyu kaydederken bir hata oluştu!",
               style: mLabelStyle,
             ),
           ],
@@ -340,20 +428,26 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                     children: <Widget>[
                       Icon(Icons.person, color: Color(0xFF0288D1), size: 25),
                       SizedBox(width: 5),
-                      Text("Ad Soyad",style: TextStyle(
-                          color: Color(0xFF0288D1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400),),
+                      Text(
+                        secilenAd,
+                        style: TextStyle(
+                            color: Color(0xFF0288D1),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       Icon(Icons.group, color: Color(0xFF0288D1), size: 25),
                       SizedBox(width: 5),
-                      Text("Takım",style: TextStyle(
-                          color: Color(0xFF0288D1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400),),
+                      Text(
+                        secilenTakim,
+                        style: TextStyle(
+                            color: Color(0xFF0288D1),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ],
                   ),
                 ],
@@ -364,22 +458,30 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(Icons.chrome_reader_mode, color: Color(0xFF0288D1), size: 25),
+                      Icon(Icons.chrome_reader_mode,
+                          color: Color(0xFF0288D1), size: 25),
                       SizedBox(width: 5),
-                      Text("Yaş",style: TextStyle(
-                          color: Color(0xFF0288D1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400),),
+                      Text(
+                        secilenYas,
+                        style: TextStyle(
+                            color: Color(0xFF0288D1),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ],
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(Icons.date_range, color: Color(0xFF0288D1), size: 25),
+                      Icon(Icons.date_range,
+                          color: Color(0xFF0288D1), size: 25),
                       SizedBox(width: 5),
-                      Text("Doğum Tarihi",style: TextStyle(
-                          color: Color(0xFF0288D1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400),),
+                      Text(
+                        secilenDTarihi,
+                        style: TextStyle(
+                            color: Color(0xFF0288D1),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ],
                   ),
                 ],
@@ -388,13 +490,44 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 10,bottom: 20),
+            margin: EdgeInsets.only(top: 10, bottom: 20),
             height: 1,
             width: MediaQuery.of(context).size.width,
             color: Colors.grey,
           ),
           Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownButton(
+                  elevation: 100,
+                  dropdownColor: Colors.grey.shade300,
+                  value: _value,
+                  isExpanded: true,
+                  style: TextStyle(
+                    color: Color(0xFF0288D1),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  hint: Text("Stil Seç"),
+                  items: _values.map((String value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Row(
+                        children: <Widget>[
+                          Text(value),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String value){
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
               TextField(
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
@@ -410,34 +543,14 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                onChanged: (dynamic girilen){
+                onChanged: (dynamic girilen) {
                   int deger = int.parse(girilen);
                   mesafe = deger;
                 },
               ),
               SizedBox(height: 10),
               TextField(
-                keyboardType: TextInputType.text,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.pool),
-                  labelText: "Stil",
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF29B6F6))),
-                  labelStyle: TextStyle(color: Color(0xFF0288D1)),
-                ),
-                style: TextStyle(
-                  color: Color(0xFF0288D1),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                onChanged: (dynamic girilen){
-                  stil = girilen;
-                },
-              ),
-              SizedBox(height: 10),
-              TextField(
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.timer),
@@ -451,7 +564,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                onChanged: (dynamic girilen){
+                onChanged: (dynamic girilen) {
                   stil = girilen;
                 },
               ),
@@ -460,5 +573,12 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
         ],
       ),
     );
+  }
+
+  Future<List<Swimmer>> getir() async {
+    final _userModel = Provider.of<UserModel>(context, listen: false);
+    FirestoreDBService db = FirestoreDBService();
+    List<Swimmer> swimmers = await db.getAllSwimmer(_userModel.user);
+    return swimmers;
   }
 }

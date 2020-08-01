@@ -100,4 +100,9 @@ class FirebaseAuthService implements AuthBase{
   Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
     return true;
   }
+
+  @override
+  Future<List<Swimmer>> getAllSwimmer(User user) {
+    return null;
+  }
 }

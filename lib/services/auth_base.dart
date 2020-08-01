@@ -7,6 +7,7 @@ abstract class AuthBase {
   Future<User> signInWithEmailandPassword(String email, String sifre);
   Future<User> createUserWithEmailandPassword(String kullaniciAdi,String email, String sifre);
   Future<bool> saveSwimmer(Swimmer swimmer, User user);
+  Future<List<Swimmer>> getAllSwimmer(User user);
   Future<void> changePassword(String sifre);
   Future<void> changeEmail(String userId, String degisecekVeri,String email);
   Future<User> signInWithGoogle();

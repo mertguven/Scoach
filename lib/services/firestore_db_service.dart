@@ -21,8 +21,18 @@ class FirestoreDBService implements DBBase {
 
   @override
   Future<bool> saveSwimmer(Swimmer swimmer, User user) async{
-    await _firestore.collection("sporcu").document(user.userId).collection(swimmer.swimmerId.toString()).document("bilgiler").setData(swimmer.toMap());
+    await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).setData(swimmer.toMap());
     return true;
+  }
+
+  Future<List<Swimmer>> getAllSwimmer(User user) async{
+    QuerySnapshot querySnapshot = await _firestore.collection("sporcu").document(user.userId).collection("swimmer").getDocuments();
+    List<Swimmer> allSwimmer = [];
+    for(DocumentSnapshot tekSwimmer in querySnapshot.documents){
+      Swimmer _tekSwimmer = Swimmer.fromMap(tekSwimmer.data);
+      allSwimmer.add(_tekSwimmer);
+    }
+    return allSwimmer;
   }
 
   @override

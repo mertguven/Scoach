@@ -82,4 +82,10 @@ class UserRepository implements AuthBase{
     bool sonuc = await _firestoreDBService.saveSwimmer(swimmer, user);
     return sonuc;
   }
+
+  @override
+  Future<List<Swimmer>> getAllSwimmer(User user) async{
+    List<Swimmer> allSwimmer = await _firestoreDBService.getAllSwimmer(user);
+    return allSwimmer;
+  }
 }
