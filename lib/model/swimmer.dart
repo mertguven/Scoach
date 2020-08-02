@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Swimmer{
 
@@ -6,8 +6,10 @@ class Swimmer{
   String swimmerNameSurname;
   String swimmerTeam;
   int swimmerAge;
+  int styleTime;
+  DateTime created;
 
-  Swimmer({@required this.swimmerId, @required this.swimmerTeam, this.swimmerNameSurname, @required this.swimmerAge});
+  Swimmer({this.swimmerId, this.created, this.swimmerTeam, this.swimmerNameSurname, this.swimmerAge, this.styleTime});
   Map<String, dynamic> toMap(){
     return{
       'swimmerId' : swimmerId,
@@ -21,4 +23,12 @@ class Swimmer{
         swimmerNameSurname = map['swimmerNameSurname'],
         swimmerTeam = map['swimmerTeam'],
         swimmerAge = map['swimmerAge'];
+
+  Map<String, dynamic> styleSave(){
+    return{
+      'styleTime' : styleTime,
+      'created' : FieldValue.serverTimestamp(),
+    };
+  }
+
 }

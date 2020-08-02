@@ -35,6 +35,11 @@ class FirestoreDBService implements DBBase {
     return allSwimmer;
   }
 
+  Future<bool> setSwimmerStyle(String style,Swimmer swimmer,User user,int queue,int distance) async{
+    await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).document(distance.toString()).collection(queue.toString()).document().setData(swimmer.styleSave());
+    return true;
+  }
+
   @override
   Future<User> readUser(User user) async{
     DocumentSnapshot _okunanUser = await _firestore.collection("users").document(user.userId).get();

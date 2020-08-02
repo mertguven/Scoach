@@ -88,4 +88,10 @@ class UserRepository implements AuthBase{
     List<Swimmer> allSwimmer = await _firestoreDBService.getAllSwimmer(user);
     return allSwimmer;
   }
+
+  @override
+  Future<bool> setSwimmerStyle(String style, Swimmer swimmer, User user, int queue, int distance) async{
+    bool sonuc = await _firestoreDBService.setSwimmerStyle(style, swimmer, user, queue, distance);
+    return sonuc;
+  }
 }

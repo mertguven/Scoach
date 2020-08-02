@@ -5,6 +5,7 @@ abstract class DBBase {
 
   Future<bool> saveUser(User user);
   Future<bool> saveSwimmer(Swimmer swimmer, User user);
+  Future<bool> setSwimmerStyle(String style,Swimmer swimmer,User user,int queue,int distance);
   Future<User> readUser(User user);
   Future<void> updateUserInformation(String userId, String degisecekVeri, String yerineGelecekVeri);
 }

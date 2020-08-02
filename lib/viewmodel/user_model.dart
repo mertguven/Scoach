@@ -15,9 +15,13 @@ class UserModel with ChangeNotifier implements AuthBase{
   UserRepository _userRepository = locator<UserRepository>();
   User _user;
 
+  Swimmer _swimmer;
+
   UserModel(){
     currentUser();
   }
+
+  Swimmer get swimmer => _swimmer;
 
   User get user => _user;
 
@@ -169,6 +173,20 @@ class UserModel with ChangeNotifier implements AuthBase{
     }catch(e){
       debugPrint("ViewModel getAllSwimmer hata: "+ e.toString());
       return null;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<bool> setSwimmerStyle(String style, Swimmer swimmer, User user, int queue, int distance) async{
+    try{
+      state = ViewState.Busy;
+      bool sonuc = await _userRepository.setSwimmerStyle(style, swimmer, user, queue, distance);
+      return sonuc;
+    }catch(e){
+      debugPrint("ViewModel setSwimmerStyle hata: "+ e.toString());
+      return false;
     }finally{
       state = ViewState.Idle;
     }

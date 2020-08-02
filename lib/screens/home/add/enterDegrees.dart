@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/swimmer.dart';
-import 'package:scoach/services/firestore_db_service.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 import '../../../design_settings.dart';
@@ -19,7 +18,8 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
   dynamic yeniTakim = "";
   int yeniYas = 0;
   int mesafe = 0;
-  String stil = "";
+  String stil = "Serbest";
+  int sure = 0;
   String yeniAdSoyad = "";
   var rnd = Random();
   bool sonSonuc;
@@ -28,7 +28,9 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
   String secilenTakim = "Takım";
   String secilenDTarihi = "Doğum Tarihi";
   String secilenYas = "Yaş";
+  int secilenId = 0;
   String _value = "";
+  String snackBarMessage = "";
   List<String> _values = new List<String>();
 
   @override
@@ -69,7 +71,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
             child: FlatButton(
               // Color(0xFF0288D1)
               color: Color(0xFF0288D1),
-              onPressed: () => getir(),
+              onPressed: () => kaydet(),
               child: Text(
                 "Kaydet",
                 style: TextStyle(
@@ -218,13 +220,13 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                                 return Container(
                                   margin: EdgeInsets.symmetric(vertical: 7),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(10),
                                     color: Colors.white60,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
+                                        color: Colors.grey.withOpacity(0.4),
                                         spreadRadius: 3,
-                                        blurRadius: 5,
+                                        blurRadius: 6,
                                         offset: Offset(
                                             0, 3), // changes position of shadow
                                       ),
@@ -233,12 +235,13 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                                   child: ListTile(
                                     onTap: (){
                                       setState(() {
+                                        secilenId = sonuc.data[index].swimmerId;
                                         secilenAd = sonuc.data[index].swimmerNameSurname;
                                         secilenTakim = sonuc.data[index].swimmerTeam;
                                         secilenYas = sonuc.data[index].swimmerAge.toString();
                                         secilenDTarihi = (DateTime.now().year - sonuc.data[index].swimmerAge).toString();
-                                        Navigator.pop(context);
                                       });
+                                      Navigator.pop(context);
                                     },
                                     trailing: Icon(Icons.arrow_forward_ios,color: Color(0xFF29B6F6),),
                                     leading: Container(
@@ -412,6 +415,49 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
     }
   }
 
+  _showSaveSnackBar() {
+    if (sonSonuc != false) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.lightGreen,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.done,
+              color: Colors.white,
+            ),
+            Text(
+              "Bilgiler başarıyla kaydedildi!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+    else{
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 7),
+        backgroundColor: Colors.redAccent,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              snackBarMessage,
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
+  }
+
   Widget _setMainEnterDegree() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -500,7 +546,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: DropdownButton(
-                  elevation: 100,
+                  elevation: 10,
                   dropdownColor: Colors.grey.shade300,
                   value: _value,
                   isExpanded: true,
@@ -523,6 +569,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   onChanged: (String value){
                     setState(() {
                       _value = value;
+                      stil = _value;
                     });
                   },
                 ),
@@ -533,7 +580,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.straighten),
-                  labelText: "Mesafe",
+                  labelText: "Mesafe (m)",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF29B6F6))),
                   labelStyle: TextStyle(color: Color(0xFF0288D1)),
@@ -554,7 +601,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.timer),
-                  labelText: "Süre",
+                  labelText: "Süre (sn)",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF29B6F6))),
                   labelStyle: TextStyle(color: Color(0xFF0288D1)),
@@ -564,8 +611,9 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                onChanged: (dynamic girilen) {
-                  stil = girilen;
+                onSubmitted: (dynamic girilen) {
+                  int deger = int.parse(girilen);
+                  sure = deger;
                 },
               ),
             ],
@@ -575,10 +623,36 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
     );
   }
 
-  Future<List<Swimmer>> getir() async {
-    final _userModel = Provider.of<UserModel>(context, listen: false);
-    FirestoreDBService db = FirestoreDBService();
-    List<Swimmer> swimmers = await db.getAllSwimmer(_userModel.user);
-    return swimmers;
+   kaydet() async{
+    if(secilenAd == "Ad Soyad"){
+      sonSonuc = false;
+      snackBarMessage = "Lütfen önce sporcu seçin!";
+      _showSaveSnackBar();
+    }
+    else if(mesafe == null || mesafe == 0){
+      sonSonuc = false;
+      snackBarMessage = "Lütfen 'Mesafe' alanını doldurunuz!";
+      _showSaveSnackBar();
+    }
+    else if(sure == null || sure == 0){
+      sonSonuc = false;
+      snackBarMessage = "Lütfen 'Süre' alanını doldurunuz!";
+      _showSaveSnackBar();
+    }
+    else if(secilenAd != "Ad Soyad"){
+      int queue = rnd.nextInt(2000);
+      final _userModel = Provider.of<UserModel>(context, listen: false);
+      Swimmer swimmer = Swimmer(
+        styleTime: sure,
+        swimmerId: secilenId,
+      );
+      bool sonuc = await _userModel.setSwimmerStyle(stil, swimmer, _userModel.user, queue, mesafe);
+      if (sonuc == true) {
+        sonSonuc = sonuc;
+        _showSaveSnackBar();
+      }
+    }
   }
+
+
 }
