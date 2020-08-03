@@ -107,7 +107,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
           SizedBox(height: 5),
           RaisedButton(
             onPressed: () => _showNewSwimmerDialog(),
-            elevation: 4,
+            elevation: 10,
             color: Color(0xFF29B6F6),
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Row(
@@ -132,7 +132,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
           RaisedButton(
             onPressed: () => _showChoiceSwimmerDialog(),
             color: Color(0xFF29B6F6),
-            elevation: 4,
+            elevation: 10,
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -653,6 +653,4 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
       }
     }
   }
-
-
 }
