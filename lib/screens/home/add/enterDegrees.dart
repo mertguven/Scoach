@@ -643,9 +643,11 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
       int queue = rnd.nextInt(2000);
       final _userModel = Provider.of<UserModel>(context, listen: false);
       Swimmer swimmer = Swimmer(
+        mesafe: mesafe,
         styleTime: sure,
         swimmerId: secilenId,
       );
+      await _userModel.setSwimmerDistance(stil, swimmer, _userModel.user, mesafe);
       bool sonuc = await _userModel.setSwimmerStyle(stil, swimmer, _userModel.user, queue, mesafe);
       if (sonuc == true) {
         sonSonuc = sonuc;

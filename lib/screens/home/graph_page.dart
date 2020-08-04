@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/model/swimmer.dart';
+import 'package:scoach/services/firestore_db_service.dart';
 import 'package:scoach/viewmodel/user_model.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:intl/intl.dart';
 
 class HomeGraph extends StatefulWidget {
 
@@ -13,11 +16,20 @@ class HomeGraph extends StatefulWidget {
 
 class _HomeGraphState extends State<HomeGraph> {
 
+  String secilenZaman = "";
+  int secilenSure = 0;
+
   String secilenAd = "Ad Soyad";
   String secilenTakim = "Takım";
   String secilenDTarihi = "Doğum Tarihi";
   String secilenYas = "Yaş";
   int secilenId = 0;
+  static var chartdisplay;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +64,7 @@ class _HomeGraphState extends State<HomeGraph> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               GestureDetector(
+                onTap: () => _showSwimmerStyleDialog("Serbest"),
                 child: Container(
                   height: 90,
                   width: 80,
@@ -79,6 +92,7 @@ class _HomeGraphState extends State<HomeGraph> {
                 ),
               ),
               GestureDetector(
+                onTap: () => _showSwimmerStyleDialog("Kelebek"),
                 child: Container(
                   height: 90,
                   width: 80,
@@ -106,6 +120,7 @@ class _HomeGraphState extends State<HomeGraph> {
                 ),
               ),
               GestureDetector(
+                onTap: () => _showSwimmerStyleDialog("Sırt"),
                 child: Container(
                   height: 90,
                   width: 80,
@@ -133,6 +148,7 @@ class _HomeGraphState extends State<HomeGraph> {
                 ),
               ),
               GestureDetector(
+                onTap: () => _showSwimmerStyleDialog("Kurbağa"),
                 child: Container(
                   height: 90,
                   width: 80,
@@ -248,9 +264,102 @@ class _HomeGraphState extends State<HomeGraph> {
               ],
             ),
           ),
+          SizedBox(height: 20),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height /2.2,
+            child: chartdisplay,
+          ),
         ],
       ),
     );
+  }
+
+  Future<bool> _showSwimmerStyleDialog(String style) {
+    FirestoreDBService db = FirestoreDBService();
+    final _userModel = Provider.of<UserModel>(context, listen: false);
+    Swimmer swimmer = Swimmer(
+      swimmerId: secilenId,
+    );
+    return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              content: Container(
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width / 2,
+                child: FutureBuilder<List<Swimmer>>(
+                  future: db.getSelectedStyle(_userModel.user, swimmer, style),
+                  builder: (context, sonuc) {
+                    if (sonuc.hasData) {
+                      var tumSporcular = sonuc.data;
+                      if (tumSporcular.length > 0) {
+                        return ListView.builder(
+                          itemCount: tumSporcular.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: 7),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white60,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    spreadRadius: 3,
+                                    blurRadius: 6,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: ListTile(
+                                onTap: () => _veriCek(db, _userModel, sonuc, swimmer, style, index),
+                                trailing: Icon(Icons.arrow_forward_ios,color: Color(0xFF29B6F6),),
+                                leading: Icon(Icons.straighten, color: Color(0xFF29B6F6),),
+                                title: Text(
+                                    sonuc.data[index].mesafe.toString() + " metre"),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Kayıtlı veri yok",style: TextStyle(fontSize: 20),),
+                            RaisedButton(
+                              color: Color(0xFF29B6F6),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.arrow_back,color: Colors.white,),
+                                  Text("Geri git",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                              padding: EdgeInsets.all(20),
+                              elevation: 5,
+                            ),
+                          ],
+                        );
+                      }
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Future<bool> _showChoiceSwimmerDialog() {
@@ -357,4 +466,49 @@ class _HomeGraphState extends State<HomeGraph> {
           );
         });
   }
+
+  _veriCek(FirestoreDBService db, UserModel userModel, AsyncSnapshot<List<Swimmer>> sonuc, Swimmer swimmer, String style, int index) async{
+    List<Swimmer> deneme = await db.getSelectedInformation(userModel.user, swimmer, style, sonuc.data[index].mesafe);
+    _grafikGetir(deneme);
+    Navigator.pop(context);
+  }
+
+  _grafikGetir(List<Swimmer> deneme){
+    if(deneme.length < 5){
+      int sayac = deneme.length;
+      var data = new List(deneme.length);
+      for(int i=0; i < deneme.length; i++){
+        data[i] = deneme[deneme[sayac -1].styleTime];
+        sayac--;
+      }
+
+    }
+    setState(() {
+      var data = [
+        addcharts("15 Haziran", 20),
+        addcharts("16 Haziran", 40),
+        addcharts("17 Haziran", 30),
+        addcharts("18 Haziran", 50),
+        addcharts("19 Haziran", 10),
+      ];
+      var series = [charts.Series(
+        domainFn: (addcharts addcharts,_) => addcharts.clock,
+        measureFn: (addcharts addcharts,_) => addcharts.time,
+        id: "Grafik",
+        data: data,
+      ),
+      ];
+      chartdisplay = charts.BarChart(
+        series,
+        animationDuration: Duration(milliseconds: 1200),
+      );
+    });
+  }
+}
+
+class addcharts{
+  final String clock;
+  final time;
+
+  addcharts(this.clock, this.time);
 }

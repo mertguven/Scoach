@@ -35,8 +35,33 @@ class FirestoreDBService implements DBBase {
     return allSwimmer;
   }
 
+  Future<List<Swimmer>> getSelectedStyle(User user, Swimmer swimmer, String style) async{
+    QuerySnapshot querySnapshot = await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).getDocuments();
+    List<Swimmer> allDistance = [];
+    for(DocumentSnapshot oneDistance in querySnapshot.documents){
+      Swimmer _oneDistance = Swimmer.fromMap(oneDistance.data);
+      allDistance.add(_oneDistance);
+    }
+    return allDistance;
+  }
+
+  Future<List<Swimmer>> getSelectedInformation(User user, Swimmer swimmer, String style, int distance) async{
+    QuerySnapshot querySnapshot = await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).document(distance.toString()).collection("1").getDocuments();
+    List<Swimmer> allTime = [];
+    for(DocumentSnapshot oneTime in querySnapshot.documents){
+      Swimmer _oneTime = Swimmer.fromMap(oneTime.data);
+      allTime.add(_oneTime);
+    }
+    return allTime;
+  }
+
+  Future<bool> setSwimmerDistance(String style,Swimmer swimmer,User user,int distance) async{
+    await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).document(distance.toString()).setData(swimmer.distanceSave());
+    return true;
+  }
+
   Future<bool> setSwimmerStyle(String style,Swimmer swimmer,User user,int queue,int distance) async{
-    await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).document(distance.toString()).collection(queue.toString()).document().setData(swimmer.styleSave());
+    await _firestore.collection("sporcu").document(user.userId).collection("swimmer").document(swimmer.swimmerId.toString()).collection(style).document(distance.toString()).collection("1").document(DateTime.now().toString()).setData(swimmer.styleSave());
     return true;
   }
 

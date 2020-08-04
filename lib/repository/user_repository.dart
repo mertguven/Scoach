@@ -94,4 +94,16 @@ class UserRepository implements AuthBase{
     bool sonuc = await _firestoreDBService.setSwimmerStyle(style, swimmer, user, queue, distance);
     return sonuc;
   }
+
+  @override
+  Future<bool> setSwimmerDistance(String style, Swimmer swimmer, User user, int distance) async{
+    bool sonuc = await _firestoreDBService.setSwimmerDistance(style, swimmer, user, distance);
+    return sonuc;
+  }
+
+  @override
+  Future<List<Swimmer>> getSelectedStyle(User user, Swimmer swimmer, String style) async{
+    List<Swimmer> allDistance = await _firestoreDBService.getSelectedStyle(user, swimmer, style);
+    return allDistance;
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:time_formatter/time_formatter.dart';
+
 
 class Swimmer{
 
@@ -7,9 +9,10 @@ class Swimmer{
   String swimmerTeam;
   int swimmerAge;
   int styleTime;
-  DateTime created;
+  String created;
+  int mesafe;
 
-  Swimmer({this.swimmerId, this.created, this.swimmerTeam, this.swimmerNameSurname, this.swimmerAge, this.styleTime});
+  Swimmer({this.swimmerId, this.created, this.swimmerTeam, this.swimmerNameSurname, this.swimmerAge, this.styleTime, this.mesafe});
   Map<String, dynamic> toMap(){
     return{
       'swimmerId' : swimmerId,
@@ -18,16 +21,32 @@ class Swimmer{
       'swimmerAge' : swimmerAge,
     };
   }
+
+  static String convertTimeStamp(timeStamp){
+    String formatted = formatTime(timeStamp).toString();
+    return formatted;
+  }
+
   Swimmer.fromMap(Map<String, dynamic> map):
+        created = map['created'],
+        styleTime = map['styleTime'],
+        mesafe = map['mesafe'],
         swimmerId = map['swimmerId'],
         swimmerNameSurname = map['swimmerNameSurname'],
         swimmerTeam = map['swimmerTeam'],
         swimmerAge = map['swimmerAge'];
 
+
   Map<String, dynamic> styleSave(){
     return{
       'styleTime' : styleTime,
-      'created' : FieldValue.serverTimestamp(),
+      'created' : "${DateTime.now().day}" + " ${DateTime.now().month}" + " ${DateTime.now().year}",
+    };
+  }
+
+  Map<String, dynamic> distanceSave(){
+    return{
+      'mesafe' : mesafe,
     };
   }
 

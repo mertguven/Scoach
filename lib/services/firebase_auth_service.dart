@@ -110,4 +110,14 @@ class FirebaseAuthService implements AuthBase{
   Future<bool> setSwimmerStyle(String style, Swimmer swimmer, User user, int queue, int distance) async{
     return true;
   }
+
+  @override
+  Future<List<Swimmer>> getSelectedStyle(User user, Swimmer swimmer, String style) {
+    return null;
+  }
+
+  @override
+  Future<bool> setSwimmerDistance(String style, Swimmer swimmer, User user, int distance) async{
+    return true;
+  }
 }

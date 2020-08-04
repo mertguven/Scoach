@@ -191,4 +191,34 @@ class UserModel with ChangeNotifier implements AuthBase{
       state = ViewState.Idle;
     }
   }
+
+  @override
+  Future<bool> setSwimmerDistance(String style, Swimmer swimmer, User user, int distance) async{
+    try{
+      state = ViewState.Busy;
+      bool sonuc = await _userRepository.setSwimmerDistance(style, swimmer, user, distance);
+      return sonuc;
+    }catch(e){
+      debugPrint("ViewModel setSwimmerDistance hata: "+ e.toString());
+      return false;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
+
+  @override
+  Future<List<Swimmer>> getSelectedStyle(User user, Swimmer swimmer, String style) async{
+    try{
+      state = ViewState.Busy;
+      List<Swimmer> allDistance = await _userRepository.getSelectedStyle(user, swimmer, style);
+      return allDistance;
+    }catch(e){
+      debugPrint("ViewModel getSelectedStyle hata: "+ e.toString());
+      return null;
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
+
+
 }
