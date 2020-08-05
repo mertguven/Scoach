@@ -717,11 +717,14 @@ class _HomeGraphState extends State<HomeGraph> {
           measureFn: (Addcharts addcharts, _) => addcharts.time,
           id: "Grafik",
           data: veri,
+            labelAccessorFn: (Addcharts addcharts, _) =>
+            '${addcharts.time.toString()} sn'
         ),
       ];
       chartdisplay = charts.BarChart(
         series,
         animationDuration: Duration(milliseconds: 1200),
+        barRendererDecorator: new charts.BarLabelDecorator<String>(),
       );
     });
   }
