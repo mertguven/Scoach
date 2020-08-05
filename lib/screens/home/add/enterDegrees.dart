@@ -340,6 +340,30 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   ),
                   actions: <Widget>[
                     FlatButton(
+                      color: Colors.red,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Geri",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    FlatButton(
                       color: Colors.lightGreen,
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       shape: RoundedRectangleBorder(

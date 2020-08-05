@@ -6,7 +6,6 @@ import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/services/firestore_db_service.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:intl/intl.dart';
 
 class HomeGraph extends StatefulWidget {
 
@@ -25,9 +24,18 @@ class _HomeGraphState extends State<HomeGraph> {
   String secilenYas = "Yaş";
   int secilenId = 0;
   static var chartdisplay;
+  var veri;
 
   @override
   void initState() {
+    veri = [
+      Addcharts("1 Haz", 0),
+      Addcharts("2 Haz", 0),
+      Addcharts("3 Haz", 0),
+      Addcharts("4 Haz", 0),
+      Addcharts("5 Haz", 0),
+    ];
+    _grafikGetir([]);
     super.initState();
   }
 
@@ -186,7 +194,7 @@ class _HomeGraphState extends State<HomeGraph> {
                 color: Colors.grey.shade300,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.6),
+                    color: Colors.grey.withOpacity(0.7),
                     spreadRadius: 3,
                     blurRadius: 6,
                     offset: Offset(
@@ -266,8 +274,23 @@ class _HomeGraphState extends State<HomeGraph> {
           ),
           SizedBox(height: 20),
           Container(
+            height: 300,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height /2.2,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade300,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.9),
+                    spreadRadius: 3,
+                    blurRadius: 6,
+                    offset: Offset(
+                        0, 3), // changes position of shadow
+                  ),
+                ]
+            ),
             child: chartdisplay,
           ),
         ],
@@ -475,27 +498,57 @@ class _HomeGraphState extends State<HomeGraph> {
 
   _grafikGetir(List<Swimmer> deneme){
     if(deneme.length < 5){
-      int sayac = deneme.length;
-      var data = new List(deneme.length);
-      for(int i=0; i < deneme.length; i++){
-        data[i] = deneme[deneme[sayac -1].styleTime];
-        sayac--;
+      if(deneme.length == 4){
+        var data = [
+          Addcharts("1", deneme[deneme.length - 4].styleTime),
+          Addcharts("2", deneme[deneme.length - 3].styleTime),
+          Addcharts("3", deneme[deneme.length - 2].styleTime),
+          Addcharts("4", deneme[deneme.length - 1].styleTime),
+        ];
+        veri = data;
       }
-
+      else if(deneme.length == 3){
+        var data = [
+          Addcharts("1", deneme[deneme.length - 3].styleTime),
+          Addcharts("2", deneme[deneme.length - 2].styleTime),
+          Addcharts("3", deneme[deneme.length - 1].styleTime),
+        ];
+        veri = data;
+      }
+      else if(deneme.length == 2){
+        var data = [
+          Addcharts("1", deneme[deneme.length - 2].styleTime),
+          Addcharts("2", deneme[deneme.length - 1].styleTime),
+        ];
+        veri = data;
+      }
+    }
+     else if(deneme.length >= 5){
+      var data = [
+      Addcharts("1", deneme[deneme.length - 5].styleTime),
+      Addcharts("2", deneme[deneme.length - 4].styleTime),
+      Addcharts("3", deneme[deneme.length - 3].styleTime),
+      Addcharts("4", deneme[deneme.length - 2].styleTime),
+      Addcharts("5", deneme[deneme.length - 1].styleTime),
+      ];
+      veri = data;
+     }
+     else{
+      var data = [
+        Addcharts("1", 0),
+        Addcharts("2", 0),
+        Addcharts("3", 0),
+        Addcharts("4", 0),
+        Addcharts("5", 0),
+      ];
+      veri = data;
     }
     setState(() {
-      var data = [
-        addcharts("15 Haziran", 20),
-        addcharts("16 Haziran", 40),
-        addcharts("17 Haziran", 30),
-        addcharts("18 Haziran", 50),
-        addcharts("19 Haziran", 10),
-      ];
       var series = [charts.Series(
-        domainFn: (addcharts addcharts,_) => addcharts.clock,
-        measureFn: (addcharts addcharts,_) => addcharts.time,
+        domainFn: (Addcharts addcharts,_) => addcharts.clock,
+        measureFn: (Addcharts addcharts,_) => addcharts.time,
         id: "Grafik",
-        data: data,
+        data: veri,
       ),
       ];
       chartdisplay = charts.BarChart(
@@ -506,9 +559,9 @@ class _HomeGraphState extends State<HomeGraph> {
   }
 }
 
-class addcharts{
+class Addcharts{
   final String clock;
   final time;
 
-  addcharts(this.clock, this.time);
+  Addcharts(this.clock, this.time);
 }
