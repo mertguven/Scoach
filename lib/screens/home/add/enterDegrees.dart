@@ -30,8 +30,9 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
   String secilenYas = "Yaş";
   int secilenId = 0;
   String _value = "";
-  String snackBarMessage = "";
   List<String> _values = new List<String>();
+  String snackBarMessage = "";
+
 
   @override
   void initState() {
@@ -574,6 +575,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   dropdownColor: Colors.grey.shade300,
                   value: _value,
                   isExpanded: true,
+                  iconEnabledColor: Color(0xFF0288D1),
                   style: TextStyle(
                     color: Color(0xFF0288D1),
                     fontSize: 14,
