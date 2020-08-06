@@ -1,17 +1,16 @@
-import 'package:time_formatter/time_formatter.dart';
-
-
 class Swimmer{
 
   final int swimmerId;
   String swimmerNameSurname;
   String swimmerTeam;
   int swimmerAge;
-  int styleTime;
+  double styleTime;
   String created;
   int mesafe;
+  int distance;
+  String style;
 
-  Swimmer({this.swimmerId, this.created, this.swimmerTeam, this.swimmerNameSurname, this.swimmerAge, this.styleTime, this.mesafe});
+  Swimmer({this.distance,this.style, this.swimmerId, this.created, this.swimmerTeam, this.swimmerNameSurname, this.swimmerAge, this.styleTime, this.mesafe});
   Map<String, dynamic> toMap(){
     return{
       'swimmerId' : swimmerId,
@@ -21,15 +20,12 @@ class Swimmer{
     };
   }
 
-  static String convertTimeStamp(timeStamp){
-    String formatted = formatTime(timeStamp).toString();
-    return formatted;
-  }
-
   Swimmer.fromMap(Map<String, dynamic> map):
         created = map['created'],
         styleTime = map['styleTime'],
         mesafe = map['mesafe'],
+        distance = map['distance'],
+        style = map['style'],
         swimmerId = map['swimmerId'],
         swimmerNameSurname = map['swimmerNameSurname'],
         swimmerTeam = map['swimmerTeam'],
@@ -38,8 +34,10 @@ class Swimmer{
 
   Map<String, dynamic> styleSave(){
     return{
+      'style' : style,
+      'distance' : distance,
       'styleTime' : styleTime,
-      'created' : "${DateTime.now().day}" + " ${DateTime.now().month}" + " ${DateTime.now().year}",
+      'created' : created,
     };
   }
 

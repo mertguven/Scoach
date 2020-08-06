@@ -19,7 +19,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
   int yeniYas = 0;
   int mesafe = 0;
   String stil = "Serbest";
-  int sure = 0;
+  double sure = 0;
   String yeniAdSoyad = "";
   var rnd = Random();
   bool sonSonuc;
@@ -638,7 +638,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
                   fontWeight: FontWeight.w500,
                 ),
                 onSubmitted: (dynamic girilen) {
-                  int deger = int.parse(girilen);
+                  double deger = double.parse(girilen);
                   sure = deger;
                 },
               ),
@@ -669,9 +669,12 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
       int queue = rnd.nextInt(2000);
       final _userModel = Provider.of<UserModel>(context, listen: false);
       Swimmer swimmer = Swimmer(
+        distance: mesafe,
         mesafe: mesafe,
         styleTime: sure,
         swimmerId: secilenId,
+        style: stil,
+        created: "${DateTime.now().day}" + " ${DateTime.now().month}" + " ${DateTime.now().year}",
       );
       await _userModel.setSwimmerDistance(stil, swimmer, _userModel.user, mesafe);
       bool sonuc = await _userModel.setSwimmerStyle(stil, swimmer, _userModel.user, queue, mesafe);

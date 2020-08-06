@@ -25,6 +25,8 @@ class _HomeGraphState extends State<HomeGraph> {
   var veri;
   String _value = "";
   List<String> _values = new List<String>();
+  int presentation = 0;
+  List<Swimmer> veriler;
 
   @override
   void initState() {
@@ -36,6 +38,9 @@ class _HomeGraphState extends State<HomeGraph> {
       Addcharts("3 Haz", 0),
       Addcharts("4 Haz", 0),
       Addcharts("5 Haz", 0),
+    ];
+    veriler = [
+      Swimmer(created: "-", style: "-", distance: 0, styleTime: 0),
     ];
     _grafikGetir([]);
     super.initState();
@@ -315,49 +320,21 @@ class _HomeGraphState extends State<HomeGraph> {
                   ]),
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: DropdownButton(
-                      elevation: 10,
-                      dropdownColor: Colors.grey.shade300,
-                      value: _value,
-                      isExpanded: true,
-                      iconEnabledColor: Color(0xFF0288D1),
-                      style: TextStyle(
-                        color: Color(0xFF0288D1),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      hint: Text("Yıl Seç"),
-                      items: _values.map((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Row(
-                            children: <Widget>[
-                              Text(value),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        setState(() {
-                          _value = value;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            presentation = 0;
+                          });
+                        },
                         elevation: 3,
                         color: Color(0xFF0288D1),
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.equalizer,color: Colors.white),
-                            SizedBox(width: 5),
+                            Icon(Icons.equalizer, color: Colors.white),
+                            SizedBox(width: 15),
                             Text(
                               "Grafik",
                               style: TextStyle(color: Colors.white),
@@ -365,16 +342,20 @@ class _HomeGraphState extends State<HomeGraph> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
+                      SizedBox(width: 50),
                       RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            presentation = 1;
+                          });
+                        },
                         elevation: 3,
                         color: Color(0xFF0288D1),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Icon(Icons.table_chart,color: Colors.white),
-                            SizedBox(width: 5),
+                            Icon(Icons.table_chart, color: Colors.white),
+                            SizedBox(width: 15),
                             Text(
                               "Tablo",
                               style: TextStyle(color: Colors.white),
@@ -382,23 +363,23 @@ class _HomeGraphState extends State<HomeGraph> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 15),
-                      RaisedButton(
-                        onPressed: () {},
-                        elevation: 3,
-                        color: Color(0xFF0288D1),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.timeline,color: Colors.white),
-                            SizedBox(width: 5),
-                            Text(
-                              "Sparkline",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      )
                     ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Not: Grafik, kaydedilen son 5 sonucu gösterir. \n Tablo, kaydedilen bütün sonuçları gösterir.",
+                    style: TextStyle(
+                      color: Color(0xFF0288D1),
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                      shadows: [
+                        Shadow(
+                          color: Colors.grey,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 5),
                 ],
@@ -421,7 +402,7 @@ class _HomeGraphState extends State<HomeGraph> {
                       offset: Offset(0, 3), // changes position of shadow
                     ),
                   ]),
-              child: chartdisplay,
+              child: presentation == 0 ? chartdisplay : _table(veriler),
             ),
           ],
         ),
@@ -472,8 +453,10 @@ class _HomeGraphState extends State<HomeGraph> {
                                 ],
                               ),
                               child: ListTile(
-                                onTap: () => _veriCek(db, _userModel, sonuc,
-                                    swimmer, style, index),
+                                onTap: () {
+                                  _veriCek(db, _userModel, sonuc, swimmer,
+                                      style, index);
+                                },
                                 trailing: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Color(0xFF29B6F6),
@@ -661,43 +644,93 @@ class _HomeGraphState extends State<HomeGraph> {
       Swimmer swimmer,
       String style,
       int index) async {
-    List<Swimmer> deneme = await db.getSelectedInformation(
+    List<Swimmer> gelenVeri = await db.getSelectedInformation(
         userModel.user, swimmer, style, sonuc.data[index].mesafe);
-    _grafikGetir(deneme);
+    _grafikGetir(gelenVeri);
+    veriler = gelenVeri;
     Navigator.pop(context);
+  }
+
+  Widget _table(List<Swimmer> veriler) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: AlwaysScrollableScrollPhysics(),
+        child: DataTable(
+          columnSpacing: 50,
+          columns: [
+            DataColumn(label: Text('Tarih')),
+            DataColumn(label: Text('Stil')),
+            DataColumn(label: Text('Mesafe')),
+            DataColumn(label: Text('Süre')),
+          ],
+          rows: veriler
+              .map(
+                (veri) => DataRow(cells: [
+                  DataCell(Text(veri.created.toString())),
+                  DataCell(Text(veri.style.toString())),
+                  DataCell(Text(veri.distance.toString() + " m")),
+                  DataCell(Text(veri.styleTime.toString() + "sn")),
+                ]),
+              )
+              .toList(),
+        ),
+      ),
+    );
   }
 
   _grafikGetir(List<Swimmer> deneme) {
     if (deneme.length < 5) {
       if (deneme.length == 4) {
         var data = [
-          Addcharts("1", deneme[deneme.length - 4].styleTime),
-          Addcharts("2", deneme[deneme.length - 3].styleTime),
-          Addcharts("3", deneme[deneme.length - 2].styleTime),
-          Addcharts("4", deneme[deneme.length - 1].styleTime),
+          Addcharts(deneme[deneme.length - 4].created,
+              deneme[deneme.length - 4].styleTime),
+          Addcharts(deneme[deneme.length - 3].created,
+              deneme[deneme.length - 3].styleTime),
+          Addcharts(deneme[deneme.length - 2].created,
+              deneme[deneme.length - 2].styleTime),
+          Addcharts(deneme[deneme.length - 1].created,
+              deneme[deneme.length - 1].styleTime),
         ];
         veri = data;
       } else if (deneme.length == 3) {
         var data = [
-          Addcharts("1", deneme[deneme.length - 3].styleTime),
-          Addcharts("2", deneme[deneme.length - 2].styleTime),
-          Addcharts("3", deneme[deneme.length - 1].styleTime),
+          Addcharts(deneme[deneme.length - 3].created,
+              deneme[deneme.length - 3].styleTime),
+          Addcharts(deneme[deneme.length - 2].created,
+              deneme[deneme.length - 2].styleTime),
+          Addcharts(deneme[deneme.length - 1].created,
+              deneme[deneme.length - 1].styleTime),
         ];
         veri = data;
       } else if (deneme.length == 2) {
         var data = [
-          Addcharts("1", deneme[deneme.length - 2].styleTime),
-          Addcharts("2", deneme[deneme.length - 1].styleTime),
+          Addcharts(deneme[deneme.length - 2].created,
+              deneme[deneme.length - 2].styleTime),
+          Addcharts(deneme[deneme.length - 1].created,
+              deneme[deneme.length - 1].styleTime),
+        ];
+        veri = data;
+      } else if (deneme.length == 1) {
+        var data = [
+          Addcharts(deneme[deneme.length - 1].created,
+              deneme[deneme.length - 1].styleTime),
         ];
         veri = data;
       }
     } else if (deneme.length >= 5) {
       var data = [
-        Addcharts("1", deneme[deneme.length - 5].styleTime),
-        Addcharts("2", deneme[deneme.length - 4].styleTime),
-        Addcharts("3", deneme[deneme.length - 3].styleTime),
-        Addcharts("4", deneme[deneme.length - 2].styleTime),
-        Addcharts("5", deneme[deneme.length - 1].styleTime),
+        Addcharts(deneme[deneme.length - 5].created,
+            deneme[deneme.length - 5].styleTime),
+        Addcharts(deneme[deneme.length - 4].created,
+            deneme[deneme.length - 4].styleTime),
+        Addcharts(deneme[deneme.length - 3].created,
+            deneme[deneme.length - 3].styleTime),
+        Addcharts(deneme[deneme.length - 2].created,
+            deneme[deneme.length - 2].styleTime),
+        Addcharts(deneme[deneme.length - 1].created,
+            deneme[deneme.length - 1].styleTime),
       ];
       veri = data;
     } else {
@@ -713,13 +746,12 @@ class _HomeGraphState extends State<HomeGraph> {
     setState(() {
       var series = [
         charts.Series(
-          domainFn: (Addcharts addcharts, _) => addcharts.clock,
-          measureFn: (Addcharts addcharts, _) => addcharts.time,
-          id: "Grafik",
-          data: veri,
+            domainFn: (Addcharts addcharts, _) => addcharts.clock,
+            measureFn: (Addcharts addcharts, _) => addcharts.time,
+            id: "Grafik",
+            data: veri,
             labelAccessorFn: (Addcharts addcharts, _) =>
-            '${addcharts.time.toString()} sn'
-        ),
+                '${addcharts.time.toString()} sn'),
       ];
       chartdisplay = charts.BarChart(
         series,
