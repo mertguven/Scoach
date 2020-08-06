@@ -91,7 +91,7 @@ class _HomeGraphState extends State<HomeGraph> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Image.asset("assets/images/s.png"),
+                        Image.asset("assets/images/se.png",height: 40,width: 40),
                         Text(
                           "Serbest",
                           style: TextStyle(
@@ -124,7 +124,7 @@ class _HomeGraphState extends State<HomeGraph> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Image.asset("assets/images/k.png"),
+                        Image.asset("assets/images/ke.png",height: 40,width: 40),
                         Text(
                           "Kelebek",
                           style: TextStyle(
@@ -157,7 +157,7 @@ class _HomeGraphState extends State<HomeGraph> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Image.asset("assets/images/s.png"),
+                        Image.asset("assets/images/sı.png",height: 40,width: 40),
                         Text(
                           "Sırt",
                           style: TextStyle(
@@ -190,7 +190,7 @@ class _HomeGraphState extends State<HomeGraph> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Image.asset("assets/images/k.png"),
+                        Image.asset("assets/images/ku.png",height: 40,width: 40),
                         Text(
                           "Kurbağa",
                           style: TextStyle(

@@ -623,7 +623,7 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
               ),
               SizedBox(height: 10),
               TextField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.timer),

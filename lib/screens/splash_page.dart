@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/screens/home_page.dart';
 import 'package:scoach/screens/login_page.dart';
+import 'package:scoach/screens/onboarding_page.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 class SplashPage extends StatelessWidget {
@@ -12,7 +13,7 @@ class SplashPage extends StatelessWidget {
     final _userModel = Provider.of<UserModel>(context);
     if (_userModel.state == ViewState.Idle) {
       if (_userModel.user == null) {
-        return LoginPage();
+        return OnboardingPage();
       } else {
         return HomePage();
       }
