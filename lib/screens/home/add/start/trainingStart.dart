@@ -87,6 +87,7 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                       children: <Widget>[
                                         Text(
                                           widget.antrenmanAdiList[sayac].toString(),
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 20.0,
 
@@ -94,24 +95,28 @@ class _TrainingStartPageState extends State<TrainingStartPage>
                                         ),
                                         Text(
                                           widget.antrenmanAciklamasiList[sayac].toString(),
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               color: Colors.white),
                                         ),
                                         Text(
                                           "${widget.tekrarList[sayac]} Tekrar",
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               color: Colors.white),
                                         ),
                                         Text(
                                           "Toplam Süre: ${widget.sureList[sayac]} sn",
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               color: Colors.white),
                                         ),
                                         Text(
                                           timerString,
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 112.0,
                                               color: Colors.white),

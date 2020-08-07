@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoach/screens/home_page.dart';
-import 'package:scoach/screens/login_page.dart';
 import 'package:scoach/screens/onboarding_page.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
