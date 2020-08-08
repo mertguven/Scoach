@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scoach/model/user.dart';
 import 'package:scoach/screens/forgotpasword_page.dart';
+import 'package:scoach/screens/home_page.dart';
 import 'package:scoach/screens/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scoach/viewmodel/user_model.dart';
@@ -259,11 +261,23 @@ class _LoginPageState extends State<LoginPage> {
 
     _formKey.currentState.save();
     final _userModel = Provider.of<UserModel>(context,listen: false);
-    await _userModel.signInWithEmailandPassword(_email, _sifre);
+    User user = await _userModel.signInWithEmailandPassword(_email, _sifre);
+    if(user != null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+    else{
+      print("hata var");
+    }
   }
 
   _googleIleGiris() async{
     final _userModel = Provider.of<UserModel>(context,listen: false);
-    await _userModel.signInWithGoogle();
+    User user = await _userModel.signInWithGoogle();
+    if(user != null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+    else{
+      print("hata var");
+    }
   }
 }

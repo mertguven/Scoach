@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/screens/home/profile/changeEmail.dart';
 import 'package:scoach/screens/home/profile/changePassword.dart';
+import 'package:scoach/screens/login_page.dart';
 import 'package:scoach/viewmodel/user_model.dart';
 
 class HomeProfile extends StatefulWidget {
@@ -237,6 +238,7 @@ class _HomeProfileState extends State<HomeProfile> {
 
   Future<bool> _cikisYap(BuildContext context) async {
     final _userModel = Provider.of<UserModel>(context, listen: false);
+    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginPage()));
     bool sonuc = await _userModel.signOut();
     return sonuc;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoach/screens/login_page.dart';
 
 class OnboardingPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int currentIndex = 0;
   PageController controller;
 
-  Widget _buildPageIndicator(bool isCurrentPage){
+  Widget _buildPageIndicator(bool isCurrentPage) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       height: isCurrentPage ? 12.0 : 6.0,
@@ -21,6 +22,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ),
     );
   }
+
   @override
   void initState() {
     controller = new PageController();
@@ -58,35 +60,134 @@ class _OnboardingPageState extends State<OnboardingPage> {
               itemCount: 5,
               controller: controller,
               onPageChanged: (val) {
-                currentIndex = val;
+                setState(() {
+                  currentIndex = val;
+                });
               },
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Eleman(index);
               },
             ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      height: currentIndex == 0 ? 12.0 : 6.0,
+                      width: currentIndex == 0 ? 12.0 : 6.0,
+                      decoration: BoxDecoration(
+                        color: currentIndex == 0 ? Colors.white : Colors.black38,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      height: currentIndex == 1 ? 12.0 : 6.0,
+                      width: currentIndex == 1 ? 12.0 : 6.0,
+                      decoration: BoxDecoration(
+                        color: currentIndex == 1 ? Colors.white : Colors.black38,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      height: currentIndex == 2 ? 12.0 : 6.0,
+                      width: currentIndex == 2 ? 12.0 : 6.0,
+                      decoration: BoxDecoration(
+                        color: currentIndex == 2 ? Colors.white : Colors.black38,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      height: currentIndex == 3 ? 12.0 : 6.0,
+                      width: currentIndex == 3 ? 12.0 : 6.0,
+                      decoration: BoxDecoration(
+                        color: currentIndex == 3 ? Colors.white : Colors.black38,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      height: currentIndex == 4 ? 12.0 : 6.0,
+                      width: currentIndex == 4 ? 12.0 : 6.0,
+                      decoration: BoxDecoration(
+                        color: currentIndex == 4 ? Colors.white : Colors.black38,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
-      bottomSheet: currentIndex != 4 ?
-      Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {},
-              child: Text("Geç"),
-            ),
-            
-            GestureDetector(
-              onTap: () {},
-              child: Text("İleri"),
-            ),
-          ],
+      bottomNavigationBar: currentIndex != 4 ? Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0),
+        child: Container(
+          color: Color(0xFF4FC3F7),
+          height: 56,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              FlatButton(
+                color: Color(0xFF4FC3F7),
+                padding: EdgeInsets.symmetric(horizontal: 70),
+                onPressed: () {
+                  setState(() {
+                    currentIndex = 4;
+                    controller.animateToPage(currentIndex, duration: Duration(milliseconds: 500), curve: Curves.easeInToLinear);
+                  });
+                },
+                child: Text(
+                  "Geç",
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),
+                ),
+              ),
+              FlatButton(
+                color: Color(0xFF4FC3F7),
+                padding: EdgeInsets.symmetric(horizontal: 70),
+                onPressed: () {
+                  if(currentIndex <= 3){
+                    setState(() {
+                      currentIndex++;
+                      controller.animateToPage(currentIndex, duration: Duration(milliseconds: 500), curve: Curves.easeInToLinear);
+                    });
+                  }
+                },
+                child: Text(
+                  "İleri",
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),
+                ),
+              ),
+            ],
+          ),
         ),
-      ): Container(
-        child: Text("data"),
+      ) : Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0),
+        child: Container(
+          color: Color(0xFF4FC3F7),
+          height: 56,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+            ),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginPage()));
+            },
+            child: Text(
+              "Hadi Başlayalım!",
+              style: TextStyle(letterSpacing: 1,color: Color(0xFF29B6F6),fontWeight: FontWeight.bold,fontSize: 20),
+            ),
+          ),
+        ),
       )
     );
   }
