@@ -17,8 +17,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: changePage(),
+      body: Hero(
+        tag: "getir",
+        child: Container(
+          child: changePage(),
+        ),
       ),
       bottomNavigationBar: BottomNavyBar(
         key: _bottomNavigationKey,

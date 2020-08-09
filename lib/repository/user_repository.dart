@@ -1,4 +1,8 @@
 import 'dart:io';
+// ignore: implementation_imports
+import 'package:flutter/src/material/scaffold.dart';
+// ignore: implementation_imports
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:scoach/locator.dart';
 import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
@@ -25,8 +29,8 @@ class UserRepository implements AuthBase{
   }
 
   @override
-  Future<User> signInWithEmailandPassword(String email, String sifre) async{
-    User _user = await _firebaseAuthService.signInWithEmailandPassword(email, sifre);
+  Future<User> signInWithEmailandPassword(String email, String sifre, GlobalKey<ScaffoldState> scaffoldKey) async{
+    User _user = await _firebaseAuthService.signInWithEmailandPassword(email, sifre, scaffoldKey);
     return await _firestoreDBService.readUser(_user);
   }
 

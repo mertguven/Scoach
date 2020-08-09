@@ -238,8 +238,12 @@ class _HomeProfileState extends State<HomeProfile> {
 
   Future<bool> _cikisYap(BuildContext context) async {
     final _userModel = Provider.of<UserModel>(context, listen: false);
-    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginPage()));
     bool sonuc = await _userModel.signOut();
+    if(sonuc){
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context)=>LoginPage()));
+    }else{
+      print("hata var");
+    }
     return sonuc;
   }
 

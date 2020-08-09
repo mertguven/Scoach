@@ -1,6 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+// ignore: implementation_imports
+import 'package:flutter/src/material/scaffold.dart';
 import 'package:scoach/locator.dart';
 import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
@@ -47,10 +48,10 @@ class UserModel with ChangeNotifier implements AuthBase{
   }
 
   @override
-  Future<User> signInWithEmailandPassword(String email, String sifre) async{
+  Future<User> signInWithEmailandPassword(String email, String sifre, GlobalKey<ScaffoldState> scaffoldKey) async{
     try{
       state = ViewState.Busy;
-      _user = await _userRepository.signInWithEmailandPassword(email, sifre);
+      _user = await _userRepository.signInWithEmailandPassword(email, sifre, scaffoldKey);
       return _user;
     }catch(e){
       debugPrint("ViewModel signInWithEP hata: "+ e.toString());
@@ -62,17 +63,9 @@ class UserModel with ChangeNotifier implements AuthBase{
 
   @override
   Future<bool> signOut() async{
-    try{
-      state = ViewState.Busy;
-      bool sonuc = await _userRepository.signOut();
-      _user = null;
-      return sonuc;
-    }catch(e){
-      debugPrint("ViewModel signOut hata: "+ e.toString());
-      return false;
-    }finally{
-      state = ViewState.Idle;
-    }
+    bool sonuc = await _userRepository.signOut();
+    _user = null;
+    return sonuc;
   }
 
   @override

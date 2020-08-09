@@ -56,20 +56,23 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.symmetric(horizontal: 0),
-          child: Container(
-            height: 56,
-            child: FlatButton(// Color(0xFF0288D1)
-              color: Color(0xFF0288D1),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
-              },
-              child: Text(
-                "Başlat !",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  letterSpacing: 2,
-                  color: Colors.white,
+          child: Hero(
+            tag: "baslat",
+            child: Container(
+              height: 56,
+              child: FlatButton(// Color(0xFF0288D1)
+                color: Color(0xFF0288D1),
+                onPressed: () {
+                  Navigator.push(context, PageRouteBuilder(transitionDuration: Duration(seconds: 1),pageBuilder: (_,__,___) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
+                },
+                child: Text(
+                  "Başlat !",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    letterSpacing: 2,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

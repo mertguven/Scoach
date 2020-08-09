@@ -25,64 +25,71 @@ class _WaitingScreenState extends State<WaitingScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF0288D1),
-                      Color(0xFF03A9F4),
-                      Color(0xFF29B6F6),
-                      Color(0xFF4FC3F7),
-                    ],
-                    stops: [
-                      0.1,
-                      0.4,
-                      0.7,
-                      0.9
-                    ]),
-              ),
-            ),
-            Center(
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: SizedBox(
-                  width: 250.0,
-                  child: ScaleAnimatedTextKit(
-                    onFinished: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TrainingStartPage(
-                                  widget.tekrarList,
-                                  widget.mesafeList,
-                                  widget.antrenmanAdiList,
-                                  widget.antrenmanAciklamasiList,
-                                  widget.sureList)));
-                    },
-                    duration: Duration(milliseconds: 800),
-                    isRepeatingAnimation: false,
-                    text: [
-                      "3",
-                      "2",
-                      "1",
-                    ],
-                    textStyle: TextStyle(
-                        fontSize: 220.0,
-                        color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                    alignment: AlignmentDirectional.center,
+        body: Hero(
+          tag: "baslat",
+          child: Stack(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF0288D1),
+                          Color(0xFF03A9F4),
+                          Color(0xFF29B6F6),
+                          Color(0xFF4FC3F7),
+                        ],
+                        stops: [
+                          0.1,
+                          0.4,
+                          0.7,
+                          0.9
+                        ]),
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      width: 250.0,
+                      child: ScaleAnimatedTextKit(
+                        onFinished: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TrainingStartPage(
+                                      widget.tekrarList,
+                                      widget.mesafeList,
+                                      widget.antrenmanAdiList,
+                                      widget.antrenmanAciklamasiList,
+                                      widget.sureList)));
+                        },
+                        duration: Duration(milliseconds: 800),
+                        isRepeatingAnimation: false,
+                        text: [
+                          "3",
+                          "2",
+                          "1",
+                        ],
+                        textStyle: TextStyle(
+                            fontSize: 220.0,
+                            color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                        alignment: AlignmentDirectional.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

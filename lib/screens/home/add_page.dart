@@ -17,60 +17,64 @@ class HomeAdd extends StatelessWidget {
           width: width,
           child: Column(
             children: <Widget>[
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingAddPage()));
-                },
-                child: Card(
-                  margin: EdgeInsets.symmetric(horizontal: 0),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        "assets/images/swimmer.jpg",
-                        height: height /2,
-                        width: width,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        "Antrenman Hazırla",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 3,
+              Expanded(
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TrainingAddPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          "assets/images/swimmer.jpg",
+                          height: height /2,
+                          width: width,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                        Text(
+                          "Antrenman Hazırla",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EnterDegreesPage()));
-                },
-                child: Card(
-                  margin: EdgeInsets.symmetric(horizontal: 0),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        "assets/images/dereceler.jpg",
-                        filterQuality: FilterQuality.low,
-                        height: height /2,
-                        width: width,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        "Dereceleri Gir",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 3,
+              Expanded(
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EnterDegreesPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 0),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          "assets/images/dereceler.jpg",
+                          filterQuality: FilterQuality.low,
+                          height: height /2,
+                          width: width,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                        Text(
+                          "Dereceleri Gir",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

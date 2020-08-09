@@ -11,18 +11,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int currentIndex = 0;
   PageController controller;
 
-  Widget _buildPageIndicator(bool isCurrentPage) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.0),
-      height: isCurrentPage ? 12.0 : 6.0,
-      width: isCurrentPage ? 12.0 : 6.0,
-      decoration: BoxDecoration(
-        color: isCurrentPage ? Color(0xFF0288D1) : Colors.grey,
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
-  }
-
   @override
   void initState() {
     controller = new PageController();
@@ -193,12 +181,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 }
 
+// ignore: must_be_immutable
 class Eleman extends StatelessWidget {
   int index;
 
   Eleman(this.index);
 
   @override
+  // ignore: missing_return
   Widget build(BuildContext context) {
     if (index == 0) {
       return Column(
@@ -220,7 +210,8 @@ class Eleman extends StatelessWidget {
           )
         ],
       );
-    } else if (index == 1) {
+    }
+    else if (index == 1) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -240,7 +231,8 @@ class Eleman extends StatelessWidget {
           )
         ],
       );
-    } else if (index == 2) {
+    }
+    else if (index == 2) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -260,7 +252,8 @@ class Eleman extends StatelessWidget {
           )
         ],
       );
-    } else if (index == 3) {
+    }
+    else if (index == 3) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -280,7 +273,8 @@ class Eleman extends StatelessWidget {
           )
         ],
       );
-    } else if (index == 4) {
+    }
+    else if (index == 4) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

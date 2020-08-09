@@ -23,15 +23,11 @@ class _HomeGraphState extends State<HomeGraph> {
   int secilenId = 0;
   static var chartdisplay;
   var veri;
-  String _value = "";
-  List<String> _values = new List<String>();
   int presentation = 0;
   List<Swimmer> veriler;
 
   @override
   void initState() {
-    _values.addAll(["2014", "2015", "2016", "2017", "2018", "2019", "2020"]);
-    _value = _values.elementAt(0);
     veri = [
       Addcharts("1 Haz", 0),
       Addcharts("2 Haz", 0),

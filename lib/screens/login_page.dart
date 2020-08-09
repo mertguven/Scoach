@@ -41,15 +41,34 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  String _email;
-  String _sifre;
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
+  String _email = "";
+  String _sifre = "";
   FirebaseUser user;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  AnimationController controller;
+  Animation<double> animation;
+  Animation colorTween1;
+  Animation colorTween2;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 1500));
+
+    colorTween1 = ColorTween(begin: Colors.white, end: Colors.lightGreen).animate(controller);
+    colorTween2 = ColorTween(begin: Color(0xFF0277BD), end: Colors.white).animate(controller);
+
+    animation = Tween<double>(begin: 1,end: 0).animate(controller);
 
     Widget _eMailBox() {
       return Container(
@@ -103,31 +122,46 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    Widget kontrol(){
+      if(animation.value == 1){
+        return Text(
+          "Giriş",
+          style: TextStyle(
+              color: Color(0xFF0277BD),
+              letterSpacing: 2,
+              fontSize: 17,
+              fontWeight: FontWeight.bold
+          ),
+        );
+      }
+      else if(animation.value == 0){
+        return Icon(Icons.done,color: colorTween2.value);
+      }
+      else{
+        return Container(width: 24,height: 24,child: CircularProgressIndicator());
+      }
+    }
+
     Widget _loginBtn() {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 50),
-        padding: EdgeInsets.only(top: 40),
-        width: double.infinity,
-        child: RaisedButton(
-          elevation: 5.0,
-          padding: EdgeInsets.all(15),
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Text(
-            "Giris",
-            style: TextStyle(
-                color: Color(0xFF0277BD),
-                letterSpacing: 2,
-                fontSize: 17,
-                fontWeight: FontWeight.bold
+      return AnimatedBuilder(
+        animation: controller,
+        builder: (context, child){
+          return Hero(
+            tag: "getir",
+            child: RaisedButton(
+              elevation: 5.0,
+              padding: EdgeInsets.symmetric(vertical: 15,horizontal: 120 * animation.value),
+              color: colorTween1.value,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: kontrol(),
+              onPressed: () {
+                _formSubmit();
+              },
             ),
-          ),
-          onPressed: () {
-            _formSubmit();
-          },
-        ),
+          );
+        },
       );
     }
 
@@ -188,6 +222,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
             Container(
@@ -224,29 +259,25 @@ class _LoginPageState extends State<LoginPage> {
                       width: 150,
                       height: 150,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              _eMailBox(),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              _sifreBox(),
-                            ],
+                    SizedBox(height: 10),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          _eMailBox(),
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        _loginBtn(),
-                        SizedBox(height: 10),
-                        _sifremiUnuttumText(),
-                        _googleBtn(),
-                        _kayitOlText(),
-                      ],
+                          _sifreBox(),
+                        ],
+                      ),
                     ),
+                    SizedBox(height: 20),
+                    _loginBtn(),
+                    SizedBox(height: 10),
+                    _sifremiUnuttumText(),
+                    _googleBtn(),
+                    _kayitOlText(),
                   ],
                 ),
               ),
@@ -257,16 +288,43 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _formSubmit() async{
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      duration: Duration(seconds: 5),
+      backgroundColor: Colors.red,
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          Text(
+            "Lütfen E-posta ve Şifre alanlarını doldurun.",
+            style: mLabelStyle,
+          ),
+        ],
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
-    _formKey.currentState.save();
-    final _userModel = Provider.of<UserModel>(context,listen: false);
-    User user = await _userModel.signInWithEmailandPassword(_email, _sifre);
-    if(user != null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+  _formSubmit() async{
+    if(_email == "" || _sifre == ""){
+      _showSnackBar();
     }
     else{
-      print("hata var");
+      _formKey.currentState.save();
+      final _userModel = Provider.of<UserModel>(context,listen: false);
+      User user = await _userModel.signInWithEmailandPassword(_email, _sifre, _scaffoldKey);
+      if(user != null){
+        controller.forward();
+        controller.addStatusListener((status) {
+          if(status == AnimationStatus.completed){
+            Navigator.pushReplacement(context, PageRouteBuilder(transitionDuration: Duration(seconds: 1),pageBuilder: (_,__,___) => HomePage()));
+          }
+        });
+      }
     }
   }
 

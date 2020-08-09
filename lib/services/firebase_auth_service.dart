@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:scoach/model/swimmer.dart';
 import 'package:scoach/model/user.dart';
 import 'package:scoach/services/auth_base.dart';
+
+import '../design_settings.dart';
 
 class FirebaseAuthService implements AuthBase{
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -36,13 +39,35 @@ class FirebaseAuthService implements AuthBase{
     }
   }
 
+  _showSnackBar(GlobalKey<ScaffoldState> scaffoldKey, e) {
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 5),
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            Text(
+              e.toString().contains('PASSWORD') == true ? "Girmiş olduğunuz şifre hatalı!" : "Sistemde bu bilgilere sahip bir kullanıcı yok!",
+              style: mLabelStyle,
+            ),
+          ],
+        ),
+      );
+      scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
-  Future<User> signInWithEmailandPassword(String email, String sifre) async{
+  Future<User> signInWithEmailandPassword(String email, String sifre, GlobalKey<ScaffoldState> scaffoldKey) async{
     try {
       AuthResult sonuc = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: sifre);
       return _firebaseUser(sonuc.user);
     } catch (e) {
-      print("Email and sifre giris hata:" + e.toString());
+      print("bu ne:" +e.toString());
+      _showSnackBar(scaffoldKey, e);
       return null;
     }
   }
