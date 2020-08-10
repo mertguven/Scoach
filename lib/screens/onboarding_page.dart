@@ -195,7 +195,7 @@ class Eleman extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde ekleyebilirsiniz.",
+            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde antrenman programı ekleyebilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
@@ -216,7 +216,7 @@ class Eleman extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde ekleyebilirsiniz.",
+            "Sayaçla geçen süreyi görebilir ve animasyonla ne kadar süre kaldığını görebilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
@@ -237,7 +237,7 @@ class Eleman extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde ekleyebilirsiniz.",
+            "Yeni sporcular ekleyebilir ve sporcuların derecelerini tutabilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
@@ -258,7 +258,7 @@ class Eleman extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde ekleyebilirsiniz.",
+            "Sporcunun seçilen stil ve mesafesiyle, grafik veya tabloyu seçerek sporcunun gelişimini takip edebilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
@@ -279,7 +279,7 @@ class Eleman extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sporcuların antrenmanlarını daha kolay takip edebilecekleri şekilde ekleyebilirsiniz.",
+            "Profil sayfasından epostanızı veya şifrenizi değiştirebilirsiniz.",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
