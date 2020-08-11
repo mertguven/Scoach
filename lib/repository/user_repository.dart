@@ -110,4 +110,11 @@ class UserRepository implements AuthBase{
     List<Swimmer> allDistance = await _firestoreDBService.getSelectedStyle(user, swimmer, style);
     return allDistance;
   }
+
+  @override
+  Future<void> deleteUser(User user) async{
+    await _firebaseStorageService.deleteUserPhoto(user);
+    await _firestoreDBService.deleteUser(user);
+    await _firebaseAuthService.deleteUser(user);
+  }
 }

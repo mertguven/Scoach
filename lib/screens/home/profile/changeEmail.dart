@@ -66,7 +66,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
 
   Widget _guncelleBtn() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50),
+      margin: EdgeInsets.symmetric(horizontal: 50,vertical: 20),
       padding: EdgeInsets.only(top: 40),
       width: double.infinity,
       child: RaisedButton(

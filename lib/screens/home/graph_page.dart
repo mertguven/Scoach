@@ -654,7 +654,7 @@ class _HomeGraphState extends State<HomeGraph> {
         scrollDirection: Axis.vertical,
         physics: AlwaysScrollableScrollPhysics(),
         child: DataTable(
-          columnSpacing: 50,
+          columnSpacing: 30,
           columns: [
             DataColumn(label: Text('Tarih')),
             DataColumn(label: Text('Stil')),

@@ -56,23 +56,20 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
         ),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.symmetric(horizontal: 0),
-          child: Hero(
-            tag: "baslat",
-            child: Container(
-              height: 56,
-              child: FlatButton(// Color(0xFF0288D1)
-                color: Color(0xFF0288D1),
-                onPressed: () {
-                  Navigator.push(context, PageRouteBuilder(transitionDuration: Duration(seconds: 1),pageBuilder: (_,__,___) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
-                },
-                child: Text(
-                  "Başlat !",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    letterSpacing: 2,
-                    color: Colors.white,
-                  ),
+          child: Container(
+            height: 56,
+            child: FlatButton(// Color(0xFF0288D1)
+              color: Color(0xFF0288D1),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingScreen(tekrarList,mesafeList,antrenmanAdiList,antrenmanAciklamasiList,sureList)));
+              },
+              child: Text(
+                "Başlat !",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  letterSpacing: 2,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -423,65 +420,4 @@ class _TrainingAddPageState extends State<TrainingAddPage> {
       ),
     );
   }
-
-/*Widget _informations() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: ListTile(
-                leading: Icon(Icons.straighten,color: Colors.amber,size: 36),
-                title: Center(child: Text("Mesafe",style: TextStyle(color: Colors.black87,fontSize: 20,fontWeight: FontWeight.w500))),
-                subtitle: Center(child: Text("800 m",style: TextStyle(color: Color(0xFF0288D1),fontSize: 22,fontWeight: FontWeight.bold))),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              child: ListTile(
-                leading: Icon(Icons.pool,color: Colors.brown,size: 36),
-                title: Center(child: Text("Havuz Boyu",style: TextStyle(color: Colors.black87,fontSize: 20,fontWeight: FontWeight.w500))),
-                subtitle: Center(child: Text("50 m",style: TextStyle(color: Color(0xFF0288D1),fontSize: 22,fontWeight: FontWeight.bold))),
-              ),
-            ),
-          ],
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: ListTile(
-              leading: Icon(Icons.timer,color: Colors.indigo,size: 36),
-              title: Center(child: Text("Zaman",style: TextStyle(color: Colors.black87,fontSize: 20,fontWeight: FontWeight.w500))),
-              subtitle: Center(child: Text("3 dk",style: TextStyle(color: Color(0xFF0288D1),fontSize: 22,fontWeight: FontWeight.bold))),
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
-
-/*
-              SizedBox(
-                width: 60,
-                child: DropdownButton(
-                  value: dropdownValue,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: ['1', '2', '3', '4'].map(
-                    (String value) {
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(value),
-                      );
-                    },
-                  ).toList(),
-                ),
-              )
-
- */
 }

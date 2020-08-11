@@ -213,5 +213,17 @@ class UserModel with ChangeNotifier implements AuthBase{
     }
   }
 
+  @override
+  Future<void> deleteUser(User user) async{
+    try{
+      state = ViewState.Busy;
+      await _userRepository.deleteUser(user);
+    }catch(e){
+      debugPrint("ViewModel deleteUser hata: "+ e.toString());
+    }finally{
+      state = ViewState.Idle;
+    }
+  }
+
 
 }

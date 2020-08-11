@@ -18,6 +18,14 @@ class FirestoreDBService implements DBBase {
       return true;
     }
   }
+  
+  Future<void> deleteUser(User user) async{
+    await _firestore.collection("users").document(user.userId).delete();
+    QuerySnapshot querySnapshot = await _firestore.collection("sporcu").document(user.userId).collection("swimmer").getDocuments();
+    if(querySnapshot.documents != null){
+      await _firestore.collection("sporcu").document(user.userId).delete();
+    }
+  }
 
   @override
   Future<bool> saveSwimmer(Swimmer swimmer, User user) async{

@@ -250,7 +250,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
               height: double.infinity,
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 75),
+                padding: EdgeInsets.symmetric(vertical: 50),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -259,7 +259,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
                       width: 150,
                       height: 150,
                     ),
-                    SizedBox(height: 10),
+                    Text(
+                      "Scoach",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600
+                      ),
+                    ),
+                    SizedBox(height: 15),
                     Form(
                       key: _formKey,
                       child: Column(

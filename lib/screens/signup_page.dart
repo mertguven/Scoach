@@ -176,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: double.infinity,
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(vertical: 75),
+                padding: EdgeInsets.symmetric(vertical: 50),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -185,6 +185,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       width: 150,
                       height: 150,
                     ),
+                    Text(
+                      "Scoach",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w600
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[

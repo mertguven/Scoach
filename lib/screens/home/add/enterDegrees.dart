@@ -303,104 +303,101 @@ class _EnterDegreesPageState extends State<EnterDegreesPage> {
     return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
-          return Hero(
-            tag: "ekle",
-            child: StatefulBuilder(
-              builder: (context, setState) {
-                return SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    content: Column(
-                      children: <Widget>[
-                        SizedBox(height: 15),
-                        _customTextField("Ad Soyad", Icon(Icons.text_format),
-                            TextInputType.text),
-                        SizedBox(height: 15),
-                        _customTextField("Yaş", Icon(Icons.chrome_reader_mode),
-                            TextInputType.number),
-                        SizedBox(height: 15),
-                        _customTextField(
-                            "Takım", Icon(Icons.group), TextInputType.text),
-                        Container(
-                          height: kontrol == 0 ? 60 : 0,
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Lütfen tüm alanları eksiksiz doldurun !",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)),
-                        )
-                      ],
-                    ),
-                    actions: <Widget>[
-                      FlatButton(
-                        color: Colors.red,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  content: Column(
+                    children: <Widget>[
+                      SizedBox(height: 15),
+                      _customTextField("Ad Soyad", Icon(Icons.text_format),
+                          TextInputType.text),
+                      SizedBox(height: 15),
+                      _customTextField("Yaş", Icon(Icons.chrome_reader_mode),
+                          TextInputType.number),
+                      SizedBox(height: 15),
+                      _customTextField(
+                          "Takım", Icon(Icons.group), TextInputType.text),
+                      Container(
+                        height: kontrol == 0 ? 60 : 0,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Lütfen tüm alanları eksiksiz doldurun !",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "Geri",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      FlatButton(
-                        color: Colors.lightGreen,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        onPressed: () {
-                          if (yeniAdSoyad == "" || yeniYas == 0 || yeniTakim == "") {
-                            setState(() {
-                              kontrol = 0;
-                            });
-                          } else {
-                            _formSubmit();
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.done,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "Kaydet",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10)),
+                      )
                     ],
                   ),
-                );
-              },
-            ),
+                  actions: <Widget>[
+                    FlatButton(
+                      color: Colors.red,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Geri",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    FlatButton(
+                      color: Colors.lightGreen,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onPressed: () {
+                        if (yeniAdSoyad == "" || yeniYas == 0 || yeniTakim == "") {
+                          setState(() {
+                            kontrol = 0;
+                          });
+                        } else {
+                          _formSubmit();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Kaydet",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         });
   }

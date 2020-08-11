@@ -5,6 +5,7 @@ import 'package:scoach/model/user.dart';
 abstract class AuthBase {
 
   Future<User> currentUser();
+  Future<void> deleteUser(User user);
   Future<User> signInWithEmailandPassword(String email, String sifre, GlobalKey<ScaffoldState> scaffoldKey);
   Future<User> createUserWithEmailandPassword(String kullaniciAdi,String email, String sifre);
   Future<bool> saveSwimmer(Swimmer swimmer, User user);

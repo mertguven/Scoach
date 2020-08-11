@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "29308191291-ecfj9gcggv3hh8ocijntb3gq4d597h09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mertguven.scoach",
+            "certificate_hash": "ecd02899bdf1c81e493c71fe4cf93087ada15a94"
+          }
+        },
+        {
           "client_id": "29308191291-opq9u0ceul556904e34ciker0rgleqdn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

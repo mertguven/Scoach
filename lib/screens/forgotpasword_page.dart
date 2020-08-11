@@ -44,6 +44,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 width: 150,
                 height: 150,
               ),
+              Text(
+                "Scoach",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600
+                ),
+              ),
               SizedBox(height:15),
               _forgotEmail(),
               _passwordReset(),

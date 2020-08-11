@@ -105,6 +105,12 @@ class FirebaseAuthService implements AuthBase{
   }
 
   @override
+  Future<void> deleteUser(User user) async{
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    await user.delete();
+  }
+
+  @override
   Future<void> forgotPassword(String email) async{
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
