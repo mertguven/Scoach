@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+key.properties
 .atom/
 .buildlog/
 .history
